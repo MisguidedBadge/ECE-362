@@ -66,9 +66,7 @@ R_num:
             beq r_res     	  ;if so then reset
             inx               ;increment the selection to the next right value if not
             stx seloff
-            bra DONE
-            
-  
+            bra DONE              
   
 
 L_num:      
