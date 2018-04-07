@@ -68,7 +68,8 @@ R_num:
             stx seloff
             bra DONE
             
-            
+  
+  
 
 L_num:      
             ldx seloff        ;load selection offset
