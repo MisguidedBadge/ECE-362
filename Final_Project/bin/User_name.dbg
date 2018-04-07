@@ -1,0 +1,35 @@
+    XDEF    Username_start
+    XREF    command
+
+    pshd
+    pshx
+    pshy   
+
+
+Username_start:   
+;output username inputs    
+    ldab    command
+    cmpb    #2          
+    beq     inc_alph    ;increment alphabet    
+    cmpb    #6
+    beq     R_curs      ;move cursor right on LCD
+    cmpb    #8
+    beq     dec_alph    ;decrement alphabet
+    cmpb    #4
+    beq     L_curs      ;move cursor left on LCD
+    ;cmpb    #15
+    ;beq     F_key    
+    
+inc_alph:   rts
+
+R_curs:     rts
+
+dec_alph:   rts
+
+L_curs:     rts    
+    
+    
+    puly
+    pulx
+    puld
+    rts
