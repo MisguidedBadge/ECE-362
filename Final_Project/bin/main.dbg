@@ -7305,7 +7305,7 @@ mPMFDTMC_PMFDTMC11:                      equ        This_symb_has_been_depreciat
             XDEF Entry, _Startup, disp, start_f
             XDEF command
             XDEF port_u, delay
-            XDEF date, col,seloff, date_f, time,enter_f,User_name,name
+            XDEF date, col,seloff, date_f, time,enter_f,name;, User_name
             
             ; we use export 'Entry' as symbol. This allows us to
             ; reference 'Entry' either in the linker .prm file
@@ -7315,6 +7315,7 @@ mPMFDTMC_PMFDTMC11:                      equ        This_symb_has_been_depreciat
             XREF Startup_1, Startup_2, date_str
             XREF Date_Start, Time_Start
             XREF scan,admin_u
+            XREF Door_Song, Door_Song_Start 
             ; LCD References
 	         
 
@@ -7382,7 +7383,7 @@ _Startup:
 			lds #__SEG_END_SSTACK
 			CLI
 			movb	#$40, RTICTL	;Initi RTI to 1ms
-		;	Movb	#$80, CRGINT	;enable RTI
+			Movb	#$80, CRGINT	;enable RTI
 			
 			
 	        MOVB  #$F0,port_u_ddr   ;init bits 4-7 of hexpad as outputs    
@@ -7449,7 +7450,9 @@ SRTMSG2:	BRCLR start_f, #1, SRTMSG2
 			jsr Date_Change	      ;jump to date change subroutine
 
 			jsr Time_Change		;jump to time change subroutine
-			bra User_name
+			
+			jsr SONG_TIME_START
+			;bra User_name
 			
 			bra DONE
 
@@ -7484,16 +7487,24 @@ Time_Change:
           stx enter_f
             
           rts
-;----------------------------Default Admin Username and PW---------------;
 
-User_name:
-          jsr   admin_u         ;Display default admin username   
-          ldd   #disp           ;store effective address of admin display
-          jsr   display_string  ;display admin display
+;----------------------------Default Admin Username and PW---------------;
+;
+;User_name:
+;          jsr   admin_u         ;Display default admin username   
+;          ldd   #disp           ;store effective address of admin display
+;          jsr   display_string  ;display admin display
 ;-----------------------------Username Creation-----------------------------;
-          jsr   scan
+;          jsr   scan
           
-               
+;----------------------------SONG TIME--------------------------------;               
+
+SONG_TIME_START:
+      jsr Door_Song_Start
+SONG_TIME:
+      jsr Door_Song
+      
+      bra SONG_TIME
 
 
             
