@@ -1,34 +1,46 @@
-    XDEF Door_Song, Door_Song_Start       
+    XDEF Door_Song, Door_Song_Start, sound_rdy         
 
-    XREF SendsChr     
+    XREF SendsChr, PlayTone, tone_count  
 
 MY_EXTENDED_ROM: SECTION
-song1:    dc.b    $45, $97, $01, $50, 0
+song1:    dc.b    120, 150, 10, 20, 0
 
 MY_EXTENDED_RAM: SECTION
-place:    ds.b    1
+place:    	ds.w    1
+sound_rdy: 	ds.b	1
 
+MY_SONG:	SECTION
 
 Door_Song_Start:      
 ;            jsr Start
-            ldx #song1  ;load the address of song 1
+            ldx #0  ;load the address of song 1
             stx place
-             
+            rts 
 Door_Song:  
             
-            ldx place
-            ldaa 1, x+
-            cmpa 0
-            beq  Door_Song_Start
+            ldy sound_rdy  ;see if the sound hit the right frequency
+            cpy 1		   ;determined in the ISR
+            beq DONE
             
-            psha  ; note
-            pshd  ; Dummy            
-            CALL SendsChr
-
-            leas +3, sp ;compensate for the stack
+            ldx place    ;load x with the place within the song
+            ldaa #0
+            ldab song1, x
+            cmpb 0
+            beq  Door_Song_Start  ; loop song if at the end
             
             inx
             stx  place
+            
+            std tone_count
+            
+            psha  ; note
+            pshd  ; Dummy            
+            jsr SendsChr
+
+            leas +3, sp ;compensate for the stack
+            
+
+            MOVB #1, sound_rdy
             
             bra DONE
             

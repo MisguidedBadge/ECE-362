@@ -14,6 +14,7 @@
             XDEF command
             XDEF port_u, delay
             XDEF date, col,seloff, date_f, time,enter_f,name;, User_name
+            XDEF sound_f
             
             ; we use export 'Entry' as symbol. This allows us to
             ; reference 'Entry' either in the linker .prm file
@@ -22,8 +23,8 @@
             XREF __SEG_END_SSTACK, read_pot, display_string, pot_value, init_LCD, RTI_ISR, start_c    ; symbol defined by the linker for the end of the stack
             XREF Startup_1, Startup_2, date_str
             XREF Date_Start, Time_Start
-            XREF scan,admin_u
-            XREF Door_Song, Door_Song_Start 
+            XREF scan,admin_u, SendsChr
+            XREF Door_Song, Door_Song_Start, sound_rdy,  tone_count
             ; LCD References
 	         
 
@@ -40,7 +41,10 @@ port_s      equ   $248                    ;leds address
 port_u_ddr  equ   $26A                    ;hexpad ddr
 port_u      equ   $268                    ;hexpad address
 PER         equ   $26C                    ;pull_enable register
-PSR         equ   $26D                    ;polarity_select                  
+PSR         equ   $26D                    ;polarity_select
+port_t_ddr	equ	  $244
+port_t		equ	  $240
+                  
 
 ; variable/data section
 MY_EXTENDED_RAM: SECTION
@@ -66,8 +70,9 @@ time:		ds.b  4
 ;Admin Variables
 name:       ds.b  15
 ;date variables stored in mem array
-
 seloff:   ds.w  1   
+
+sound_f:	ds.b  1
 
 ;LCD Variables
 my_LCD: SECTION
@@ -90,8 +95,6 @@ _Startup:
 ;-----------------START SEQUENCE-----------------------------------------;
 			lds #__SEG_END_SSTACK
 			CLI
-			movb	#$40, RTICTL	;Initi RTI to 1ms
-			Movb	#$80, CRGINT	;enable RTI
 			
 			
 	        MOVB  #$F0,port_u_ddr   ;init bits 4-7 of hexpad as outputs    
@@ -99,8 +102,13 @@ _Startup:
 	        MOVB  #$FF,PSR          ;init hexpad input bits 0-3 as 
 			
 			MOVB  #0, start_f		;Make the start flag 0
+			MOVB  #%00100000, port_t_ddr
+			
+			MOVB  #0, sound_rdy
+			
 			ldx #0
-			stx seloff	
+			stx seloff
+			stx tone_count	
 			jsr init_LCD            ; call init_LCD
 			
 
@@ -129,7 +137,9 @@ name_res:   stab name,x      ;store ascii value into each memory location
             inx
             cpx #15          ;check if all locations have been stored
 			bne name_res 		 		
-						
+			
+			Movb	#$10, RTICTL	;Initi RTI to 1ms
+			Movb	#$80, CRGINT	;enable RTI			
 			ldx #0
 			stx start_c	
 ;---------------------------SHOW WELCOME MESSAGE------------------;
@@ -208,6 +218,8 @@ Time_Change:
 ;----------------------------SONG TIME--------------------------------;               
 
 SONG_TIME_START:
+	
+	  ;MOVB	#1, sound_f 	;set the sound flag to 1
       jsr Door_Song_Start
 SONG_TIME:
       jsr Door_Song
