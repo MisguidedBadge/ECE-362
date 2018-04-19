@@ -82,21 +82,21 @@ F_key:      movb #1,enter_f  ;set zero flag for enter_f
 
 n_res_high: ldab  #0
 		addb #$30
-        stab  date, x   ;increment value
-        bra DONE
+        	stab  date, x   ;increment value
+        	bra DONE
 
 n_res_low:  ldab  #9
 		addb #$30
-        stab  date, x   ;decrement value
-        bra DONE
+        	stab  date, x   ;decrement value
+        	bra DONE
             
 l_res: 	ldx #7
         stx seloff
         bra DONE  
 
 r_res: 	ldx #0
-        stx seloff
-        bra DONE  
+        	stx seloff
+        	bra DONE  
             
             
 DONE:      
@@ -107,4 +107,4 @@ DONE:
 		puly
 		pulx
 		puld	
-        rts
+            rts
