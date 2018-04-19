@@ -1,5 +1,5 @@
 *** EVALUATION ***
-PROGRAM "C:\Users\mitpeter.ADS\Documents\GitHub\ECE-362\Final_Project\bin\Project.abs"
+PROGRAM "C:\Users\mitpeter\Documents\GitHub\ECE-362\Final_Project\bin\Project.abs"
 
 *********************************************************************************************
 TARGET SECTION
@@ -23,6 +23,7 @@ time.asm.o                              Model: SMALL,         Lang: Assembler
 debounce.asm.o                          Model: SMALL,         Lang: Assembler
 keypad_input.asm.o                      Model: SMALL,         Lang: Assembler
 sound.asm.o                             Model: SMALL,         Lang: Assembler
+Control_Menu.asm.o                      Model: SMALL,         Lang: Assembler
 
 *********************************************************************************************
 STARTUP SECTION
@@ -33,8 +34,8 @@ Entry point: 0xC000 (Entry)
 SECTION-ALLOCATION SECTION
 Section Name                    Size  Type     From       To       Segment
 ---------------------------------------------------------------------------------------------
-.init                            240     R     0xC000     0xC0EF   ROM_C000
-NON_BANKED                       246     R     0xC0F0     0xC1E5   ROM_C000
+.init                            346     R     0xC000     0xC159   ROM_C000
+NON_BANKED                       246     R     0xC15A     0xC24F   ROM_C000
 .stack                           256   R/W      0x400      0x4FF   RAM
 .abs_section_8                     1   N/I        0x8        0x8   .absSeg0
 .abs_section_9                     1   N/I        0x9        0x9   .absSeg1
@@ -310,27 +311,27 @@ NON_BANKED                       246     R     0xC0F0     0xC1E5   ROM_C000
 .abs_section_27c                   2   N/I      0x27C      0x27D   .absSeg271
 .abs_section_27e                   2   N/I      0x27E      0x27F   .absSeg272
 .bss                               6   R/W      0x500      0x505   RAM
-MY_EXTENDED_ROM                   24     R     0xC1E6     0xC1FD   ROM_C000
-MY_EXTENDED_RAM                   77   R/W      0x506      0x552   RAM
-StringCode                       691     R     0xC1FE     0xC4B0   ROM_C000
-My_code                           67     R     0xC4B1     0xC4F3   ROM_C000
-Highlight_section                349     R     0xC4F4     0xC650   ROM_C000
-debounce.asm._SEC000000            9     R     0xC651     0xC659   ROM_C000
-keypad_input.asm._SEC000000        101     R     0xC65A     0xC6BE   ROM_C000
-MY_SONG                           51     R     0xC6BF     0xC6F1   ROM_C000
+MY_EXTENDED_ROM                   24     R     0xC250     0xC267   ROM_C000
+MY_EXTENDED_RAM                   80   R/W      0x506      0x555   RAM
+StringCode                      1047     R     0xC268     0xC67E   ROM_C000
+My_code                           65     R     0xC67F     0xC6BF   ROM_C000
+Highlight_section                511     R     0xC6C0     0xC8BE   ROM_C000
+debounce.asm._SEC000000            9     R     0xC8BF     0xC8C7   ROM_C000
+keypad_input.asm._SEC000000        101     R     0xC8C8     0xC92C   ROM_C000
+MY_SONG                           51     R     0xC92D     0xC95F   ROM_C000
 .vectSeg273_vect                   2     R     0xFFF0     0xFFF1   .vectSeg273
 .vectSeg274_vect                   2     R     0xFFFE     0xFFFF   .vectSeg274
 
 Summary of section sizes per section type:
-READ_ONLY (R):         6F6 (dec:     1782)
-READ_WRITE (R/W):      153 (dec:      339)
+READ_ONLY (R):         964 (dec:     2404)
+READ_WRITE (R/W):      156 (dec:      342)
 NO_INIT (N/I):         160 (dec:      352)
 
 *********************************************************************************************
 VECTOR-ALLOCATION SECTION
     Address     InitValue   InitFunction
 ---------------------------------------------------------------------------------------------
-     0xFFF0        0xC4B1   RTI_ISR
+     0xFFF0        0xC67F   RTI_ISR
      0xFFFE        0xC000   _Startup
 
 *********************************************************************************************
@@ -339,42 +340,48 @@ OBJECT-ALLOCATION SECTION
 ---------------------------------------------------------------------------------------------
 MODULE:                 -- main.asm.o --
 - PROCEDURES:
-     Entry                                     C000      42      66       0   .init       
+     Entry                                     C000      5E      94       0   .init       
      _Startup                                  C000       0       0       0   .init       
-     date_res                                  C042      11      17       0   .init       
-     time_res                                  C053       F      15       0   .init       
-     name_res                                  C062      1D      29       0   .init       
-     SRTMSG1                                   C07F      13      19       0   .init       
-     SRTMSG2                                   C092      19      25       0   .init       
-     Date_Change                               C0AB      1E      30       1   .init       
-     Time_Change                               C0C9      1E      30       1   .init       
-     SONG_TIME_START                           C0E7       3       3       1   .init       
-     Song                                      C0EA       5       5       0   .init       
-     DONE                                      C0EF       1       1       0   .init       
+     date_res                                  C05E      11      17       0   .init       
+     time_res                                  C06F       F      15       0   .init       
+     name_res                                  C07E      1D      29       0   .init       
+     SRTMSG1                                   C09B      13      19       0   .init       
+     SRTMSG2                                   C0AE      22      34       0   .init       
+     DONE                                      C0D0       1       1       0   .init       
+     Date_Change                               C0D1      1E      30       1   .init       
+     Time_Change                               C0EF      21      33       1   .init       
+     Song                                      C110       5       5       0   .init       
+     MENU                                      C115      1B      27       1   .init       
+     MENU2                                     C130       C      12       0   .init       
+     Cont_Men                                  C13C      1E      30       1   .init       
 - VARIABLES:
-     delay                                     C1E6       2       2       1   MY_EXTENDED_ROM
-     keys                                      C1E8       4       4       0   MY_EXTENDED_ROM
+     delay                                     C250       2       2       1   MY_EXTENDED_ROM
+     keys                                      C252       4       4       0   MY_EXTENDED_ROM
      user_input                                 506       1       1       0   MY_EXTENDED_RAM
-     disp                                       507      21      33     137   MY_EXTENDED_RAM
+     disp                                       507      21      33     205   MY_EXTENDED_RAM
      start_f                                    528       1       1       6   MY_EXTENDED_RAM
-     enter_f                                    529       1       1       6   MY_EXTENDED_RAM
+     enter_f                                    529       1       1      13   MY_EXTENDED_RAM
      date_f                                     52A       1       1       0   MY_EXTENDED_RAM
-     command                                    52B       1       1      11   MY_EXTENDED_RAM
-     date                                       52C       8       8      15   MY_EXTENDED_RAM
-     time                                       534       4       4      12   MY_EXTENDED_RAM
-     name                                       538       F      15      16   MY_EXTENDED_RAM
-     seloff                                     547       2       2      19   MY_EXTENDED_RAM
-     sound_f                                    549       1       1       0   MY_EXTENDED_RAM
+     command                                    52B       1       1      16   MY_EXTENDED_RAM
+     prev_val                                   52C       1       1       5   MY_EXTENDED_RAM
+     date                                       52D       8       8      23   MY_EXTENDED_RAM
+     time                                       535       4       4      16   MY_EXTENDED_RAM
+     name                                       539       F      15      16   MY_EXTENDED_RAM
+     seloff                                     548       2       2      27   MY_EXTENDED_RAM
+     sound_f                                    54A       1       1       0   MY_EXTENDED_RAM
+     gens1                                      54B       1       1       8   MY_EXTENDED_RAM
+     gens2                                      54C       1       1       8   MY_EXTENDED_RAM
+     gens3                                      54D       1       1       8   MY_EXTENDED_RAM
 - LABELS:
      __SEG_END_SSTACK                           500       0       0       1               
      port_u                                     268       0       0       2   .text       
 MODULE:                 -- lcddisp.c.o --
 - PROCEDURES:
-     delay_ms                                  C0F0      17      23       5   NON_BANKED  
-     init_LCD                                  C107      52      82       1   NON_BANKED  
-     display_string                            C159      38      56       5   NON_BANKED  
-     epulse                                    C191      24      36       3   NON_BANKED  
-     sendCommand                               C1B5       F      15       7   NON_BANKED  
+     delay_ms                                  C15A      17      23       5   NON_BANKED  
+     init_LCD                                  C171      52      82       1   NON_BANKED  
+     display_string                            C1C3      38      56       7   NON_BANKED  
+     epulse                                    C1FB      24      36       3   NON_BANKED  
+     sendCommand                               C21F       F      15       7   NON_BANKED  
 - VARIABLES:
      data                                       500       2       2       4   .bss        
 MODULE:                 -- mc9s12e128.c.o --
@@ -655,102 +662,118 @@ MODULE:                 -- mc9s12e128.c.o --
      _PIFAD                                     27E       2       2       0   .abs_section_27e
 MODULE:                 -- SendsChr.c.o --
 - PROCEDURES:
-     SendsChr                                  C1C4       8       8       1   NON_BANKED  
-     PlayTone                                  C1CC      1A      26       1   NON_BANKED  
+     SendsChr                                  C22E       8       8       1   NON_BANKED  
+     PlayTone                                  C236      1A      26       1   NON_BANKED  
 - VARIABLES:
      tone                                       502       2       2       2   .bss        
      tone_count                                 504       2       2       4   .bss        
 MODULE:                 -- strings.asm.o --
 - PROCEDURES:
-     Startup_1                                 C1FE      A6     166       1   StringCode  
-     Startup_2                                 C2A4      A6     166       1   StringCode  
-     date_str                                  C34A      B2     178       3   StringCode  
-     admin_u                                   C3FC      B5     181       0   StringCode  
+     Startup_1                                 C268      A6     166       1   StringCode  
+     Startup_2                                 C30E      A6     166       1   StringCode  
+     date_str                                  C3B4      B2     178       3   StringCode  
+     admin_u                                   C466      B5     181       0   StringCode  
+     menu_str                                  C51B      B2     178       1   StringCode  
+     GenSelStr                                 C5CD      B2     178       1   StringCode  
 - VARIABLES:
 MODULE:                 -- interrupt.asm.o --
 - PROCEDURES:
-     RTI_ISR                                   C4B1      17      23       0   My_code     
-     MIDDLE                                    C4C8      18      24       0   My_code     
-     done_sound                                C4E0       7       7       0   My_code     
-     skip_sound                                C4E7       2       2       0   My_code     
-     exit_start_ISR                            C4E9       7       7       0   My_code     
-     exit_ISR                                  C4F0       4       4       0   My_code     
+     RTI_ISR                                   C67F      17      23       0   My_code     
+     MIDDLE                                    C696       7       7       0   My_code     
+     SOUND_RT                                  C69D      11      17       0   My_code     
+     done_sound                                C6AE       7       7       0   My_code     
+     exit_start_ISR                            C6B5       7       7       0   My_code     
+     exit_ISR                                  C6BC       4       4       0   My_code     
 - VARIABLES:
-     start_c                                    54A       2       2       3   MY_EXTENDED_RAM
-     sound_c                                    54C       2       2       4   MY_EXTENDED_RAM
+     start_c                                    54E       2       2       3   MY_EXTENDED_RAM
+     sound_c                                    550       2       2       4   MY_EXTENDED_RAM
 MODULE:                 -- date.asm.o --
 - PROCEDURES:
-     Date_Start                                C4F4      2D      45       1   Highlight_section
-     I_num                                     C521      12      18       0   Highlight_section
-     D_num                                     C533      12      18       0   Highlight_section
-     R_num                                     C545       E      14       0   Highlight_section
-     L_num                                     C553       E      14       0   Highlight_section
-     F_key                                     C561       7       7       0   Highlight_section
-     n_res_high                                C568       A      10       0   Highlight_section
-     n_res_low                                 C572       A      10       0   Highlight_section
-     l_res                                     C57C       8       8       0   Highlight_section
-     r_res                                     C584       8       8       0   Highlight_section
-     DONE                                      C58C       F      15       0   Highlight_section
+     Date_Start                                C6C0      2D      45       1   Highlight_section
+     I_num                                     C6ED      12      18       0   Highlight_section
+     D_num                                     C6FF      12      18       0   Highlight_section
+     R_num                                     C711       E      14       0   Highlight_section
+     L_num                                     C71F       E      14       0   Highlight_section
+     F_key                                     C72D       7       7       0   Highlight_section
+     n_res_high                                C734       A      10       0   Highlight_section
+     n_res_low                                 C73E       A      10       0   Highlight_section
+     l_res                                     C748       8       8       0   Highlight_section
+     r_res                                     C750       8       8       0   Highlight_section
+     DONE                                      C758       F      15       0   Highlight_section
 - VARIABLES:
-     prev_val                                   54E       1       1       2   MY_EXTENDED_RAM
 MODULE:                 -- time.asm.o --
 - PROCEDURES:
-     Time_Start                                C59B      27      39       1   Highlight_section
-     I_num                                     C5C2      1C      28       0   Highlight_section
-     T_Comp                                    C5DE       B      11       0   Highlight_section
-     D_num                                     C5E9      12      18       0   Highlight_section
-     R_num                                     C5FB       E      14       0   Highlight_section
-     L_num                                     C609       E      14       0   Highlight_section
-     F_key                                     C617       7       7       0   Highlight_section
-     n_res_high                                C61E       A      10       0   Highlight_section
-     n_res_low                                 C628       A      10       0   Highlight_section
-     l_res                                     C632       8       8       0   Highlight_section
-     r_res                                     C63A       8       8       0   Highlight_section
-     DONE                                      C642       F      15       0   Highlight_section
+     Time_Start                                C767      27      39       1   Highlight_section
+     I_num                                     C78E      1C      28       0   Highlight_section
+     T_Comp                                    C7AA       B      11       0   Highlight_section
+     D_num                                     C7B5      12      18       0   Highlight_section
+     R_num                                     C7C7       E      14       0   Highlight_section
+     L_num                                     C7D5       E      14       0   Highlight_section
+     F_key                                     C7E3       7       7       0   Highlight_section
+     n_res_high                                C7EA       A      10       0   Highlight_section
+     n_res_low                                 C7F4       A      10       0   Highlight_section
+     l_res                                     C7FE       8       8       0   Highlight_section
+     r_res                                     C806       8       8       0   Highlight_section
+     DONE                                      C80E       F      15       0   Highlight_section
 - VARIABLES:
-     prev_val                                   54F       1       1       2   MY_EXTENDED_RAM
+     prev_val                                   552       1       1       2   MY_EXTENDED_RAM
 MODULE:                 -- debounce.asm.o --
 - PROCEDURES:
-     delay1ms                                  C651       4       4       1   debounce.asm._SEC000000
-     loop                                      C655       5       5       0   debounce.asm._SEC000000
+     delay1ms                                  C8BF       4       4       1   debounce.asm._SEC000000
+     loop                                      C8C3       5       5       0   debounce.asm._SEC000000
 - VARIABLES:
 MODULE:                 -- keypad_input.asm.o --
 - PROCEDURES:
-     scan                                      C65A       3       3       2   keypad_input.asm._SEC000000
-     rescan                                    C65D      24      36       0   keypad_input.asm._SEC000000
-     up                                        C681       C      12       0   keypad_input.asm._SEC000000
-     right                                     C68D       C      12       0   keypad_input.asm._SEC000000
-     down                                      C699       C      12       0   keypad_input.asm._SEC000000
-     left                                      C6A5       C      12       0   keypad_input.asm._SEC000000
-     prompt                                    C6B1       C      12       0   keypad_input.asm._SEC000000
-     leave                                     C6BD       2       2       0   keypad_input.asm._SEC000000
+     scan                                      C8C8       3       3       4   keypad_input.asm._SEC000000
+     rescan                                    C8CB      24      36       0   keypad_input.asm._SEC000000
+     up                                        C8EF       C      12       0   keypad_input.asm._SEC000000
+     right                                     C8FB       C      12       0   keypad_input.asm._SEC000000
+     down                                      C907       C      12       0   keypad_input.asm._SEC000000
+     left                                      C913       C      12       0   keypad_input.asm._SEC000000
+     prompt                                    C91F       C      12       0   keypad_input.asm._SEC000000
+     leave                                     C92B       2       2       0   keypad_input.asm._SEC000000
 - VARIABLES:
 MODULE:                 -- sound.asm.o --
 - PROCEDURES:
-     Door_Song_Start                           C6BF       7       7       1   MY_SONG     
-     Door_Song                                 C6C6      2B      43       1   MY_SONG     
-     DONE                                      C6F1       1       1       0   MY_SONG     
+     Door_Song_Start                           C92D       7       7       1   MY_SONG     
+     Door_Song                                 C934      2B      43       1   MY_SONG     
+     DONE                                      C95F       1       1       0   MY_SONG     
 - VARIABLES:
-     song1                                     C1EC       F      15       1   MY_EXTENDED_ROM
-     song2                                     C1FB       3       3       0   MY_EXTENDED_ROM
-     place                                      550       2       2       3   MY_EXTENDED_RAM
-     sound_rdy                                  552       1       1       5   MY_EXTENDED_RAM
+     song1                                     C256       F      15       1   MY_EXTENDED_ROM
+     song2                                     C265       3       3       0   MY_EXTENDED_ROM
+     place                                      553       2       2       3   MY_EXTENDED_RAM
+     sound_rdy                                  555       1       1       5   MY_EXTENDED_RAM
+MODULE:                 -- Control_Menu.asm.o --
+- PROCEDURES:
+     GenSel                                    C81D      21      33       1   Highlight_section
+     R_num                                     C83E       E      14       0   Highlight_section
+     L_num                                     C84C       E      14       0   Highlight_section
+     F_key                                     C85A       7       7       0   Highlight_section
+     l_res                                     C861       8       8       0   Highlight_section
+     r_res                                     C869       8       8       0   Highlight_section
+     SEL                                       C871       C      12       0   Highlight_section
+     Sel0                                      C87D      11      17       0   Highlight_section
+     Sel1                                      C88E      11      17       0   Highlight_section
+     Sel2                                      C89F      11      17       0   Highlight_section
+     DONE                                      C8B0       F      15       0   Highlight_section
+- VARIABLES:
 
 *********************************************************************************************
 MODULE STATISTIC
   Name                                      Data   Code  Const
 ---------------------------------------------------------------------------------------------
-  main.asm.o                                  68    240      6
+  main.asm.o                                  72    346      6
   lcddisp.c.o                                  2    212      0
   mc9s12e128.c.o                             352      0      0
   SendsChr.c.o                                 4     34      0
-  strings.asm.o                                0    691      0
-  interrupt.asm.o                              4     67      0
-  date.asm.o                                   1    167      0
+  strings.asm.o                                0   1047      0
+  interrupt.asm.o                              4     65      0
+  date.asm.o                                   0    167      0
   time.asm.o                                   1    182      0
   debounce.asm.o                               0      9      0
   keypad_input.asm.o                           0    101      0
   sound.asm.o                                  3     51     18
+  Control_Menu.asm.o                           0    162      0
   other                                      256      4      0
 
 *********************************************************************************************
@@ -761,15 +784,15 @@ SECTION: ".text"
 SECTION: ".bss"
   data tone tone_count 
 SECTION: ".init"
-  _Startup Entry date_res time_res name_res SRTMSG1 SRTMSG2 Date_Change 
-  Time_Change SONG_TIME_START Song DONE 
+  _Startup Entry date_res time_res name_res SRTMSG1 SRTMSG2 DONE Date_Change 
+  Time_Change Song MENU MENU2 Cont_Men 
 SECTION: "NON_BANKED"
   delay_ms init_LCD display_string epulse sendCommand SendsChr PlayTone 
 SECTION: "MY_EXTENDED_ROM"
   delay keys song1 song2 
 SECTION: "MY_EXTENDED_RAM"
-  user_input disp start_f enter_f date_f command date time name seloff sound_f 
-  start_c sound_c prev_val prev_val place sound_rdy 
+  user_input disp start_f enter_f date_f command prev_val date time name 
+  seloff sound_f gens1 gens2 gens3 start_c sound_c prev_val place sound_rdy 
 SECTION: ".abs_section_8"
   _PORTE 
 SECTION: ".abs_section_9"
@@ -1317,13 +1340,13 @@ SECTION: ".abs_section_27c"
 SECTION: ".abs_section_27e"
   _PIFAD 
 SECTION: "StringCode"
-  Startup_1 Startup_2 date_str admin_u 
+  Startup_1 Startup_2 date_str admin_u menu_str GenSelStr 
 SECTION: "My_code"
-  RTI_ISR MIDDLE done_sound skip_sound exit_start_ISR exit_ISR 
+  RTI_ISR MIDDLE SOUND_RT done_sound exit_start_ISR exit_ISR 
 SECTION: "Highlight_section"
   Date_Start I_num D_num R_num L_num F_key n_res_high n_res_low l_res r_res 
   DONE Time_Start I_num T_Comp D_num R_num L_num F_key n_res_high n_res_low 
-  l_res r_res DONE 
+  l_res r_res DONE GenSel R_num L_num F_key l_res r_res SEL Sel0 Sel1 Sel2 DONE 
 SECTION: "debounce.asm._SEC000000"
   delay1ms loop 
 SECTION: "keypad_input.asm._SEC000000"
@@ -1613,91 +1636,109 @@ OBJECT LIST SORTED BY ADDRESS
      tone                                       502       2       2       2   .bss        
      tone_count                                 504       2       2       4   .bss        
      user_input                                 506       1       1       0   MY_EXTENDED_RAM
-     disp                                       507      21      33     137   MY_EXTENDED_RAM
+     disp                                       507      21      33     205   MY_EXTENDED_RAM
      start_f                                    528       1       1       6   MY_EXTENDED_RAM
-     enter_f                                    529       1       1       6   MY_EXTENDED_RAM
+     enter_f                                    529       1       1      13   MY_EXTENDED_RAM
      date_f                                     52A       1       1       0   MY_EXTENDED_RAM
-     command                                    52B       1       1      11   MY_EXTENDED_RAM
-     date                                       52C       8       8      15   MY_EXTENDED_RAM
-     time                                       534       4       4      12   MY_EXTENDED_RAM
-     name                                       538       F      15      16   MY_EXTENDED_RAM
-     seloff                                     547       2       2      19   MY_EXTENDED_RAM
-     sound_f                                    549       1       1       0   MY_EXTENDED_RAM
-     start_c                                    54A       2       2       3   MY_EXTENDED_RAM
-     sound_c                                    54C       2       2       4   MY_EXTENDED_RAM
-     prev_val                                   54E       1       1       2   MY_EXTENDED_RAM
-     prev_val                                   54F       1       1       2   MY_EXTENDED_RAM
-     place                                      550       2       2       3   MY_EXTENDED_RAM
-     sound_rdy                                  552       1       1       5   MY_EXTENDED_RAM
+     command                                    52B       1       1      16   MY_EXTENDED_RAM
+     prev_val                                   52C       1       1       5   MY_EXTENDED_RAM
+     date                                       52D       8       8      23   MY_EXTENDED_RAM
+     time                                       535       4       4      16   MY_EXTENDED_RAM
+     name                                       539       F      15      16   MY_EXTENDED_RAM
+     seloff                                     548       2       2      27   MY_EXTENDED_RAM
+     sound_f                                    54A       1       1       0   MY_EXTENDED_RAM
+     gens1                                      54B       1       1       8   MY_EXTENDED_RAM
+     gens2                                      54C       1       1       8   MY_EXTENDED_RAM
+     gens3                                      54D       1       1       8   MY_EXTENDED_RAM
+     start_c                                    54E       2       2       3   MY_EXTENDED_RAM
+     sound_c                                    550       2       2       4   MY_EXTENDED_RAM
+     prev_val                                   552       1       1       2   MY_EXTENDED_RAM
+     place                                      553       2       2       3   MY_EXTENDED_RAM
+     sound_rdy                                  555       1       1       5   MY_EXTENDED_RAM
      _Startup                                  C000       0       0       0   .init       
-     Entry                                     C000      42      66       0   .init       
-     date_res                                  C042      11      17       0   .init       
-     time_res                                  C053       F      15       0   .init       
-     name_res                                  C062      1D      29       0   .init       
-     SRTMSG1                                   C07F      13      19       0   .init       
-     SRTMSG2                                   C092      19      25       0   .init       
-     Date_Change                               C0AB      1E      30       1   .init       
-     Time_Change                               C0C9      1E      30       1   .init       
-     SONG_TIME_START                           C0E7       3       3       1   .init       
-     Song                                      C0EA       5       5       0   .init       
-     DONE                                      C0EF       1       1       0   .init       
-     delay_ms                                  C0F0      17      23       5   NON_BANKED  
-     init_LCD                                  C107      52      82       1   NON_BANKED  
-     display_string                            C159      38      56       5   NON_BANKED  
-     epulse                                    C191      24      36       3   NON_BANKED  
-     sendCommand                               C1B5       F      15       7   NON_BANKED  
-     SendsChr                                  C1C4       8       8       1   NON_BANKED  
-     PlayTone                                  C1CC      1A      26       1   NON_BANKED  
-     delay                                     C1E6       2       2       1   MY_EXTENDED_ROM
-     keys                                      C1E8       4       4       0   MY_EXTENDED_ROM
-     song1                                     C1EC       F      15       1   MY_EXTENDED_ROM
-     song2                                     C1FB       3       3       0   MY_EXTENDED_ROM
-     Startup_1                                 C1FE      A6     166       1   StringCode  
-     Startup_2                                 C2A4      A6     166       1   StringCode  
-     date_str                                  C34A      B2     178       3   StringCode  
-     admin_u                                   C3FC      B5     181       0   StringCode  
-     RTI_ISR                                   C4B1      17      23       0   My_code     
-     MIDDLE                                    C4C8      18      24       0   My_code     
-     done_sound                                C4E0       7       7       0   My_code     
-     skip_sound                                C4E7       2       2       0   My_code     
-     exit_start_ISR                            C4E9       7       7       0   My_code     
-     exit_ISR                                  C4F0       4       4       0   My_code     
-     Date_Start                                C4F4      2D      45       1   Highlight_section
-     I_num                                     C521      12      18       0   Highlight_section
-     D_num                                     C533      12      18       0   Highlight_section
-     R_num                                     C545       E      14       0   Highlight_section
-     L_num                                     C553       E      14       0   Highlight_section
-     F_key                                     C561       7       7       0   Highlight_section
-     n_res_high                                C568       A      10       0   Highlight_section
-     n_res_low                                 C572       A      10       0   Highlight_section
-     l_res                                     C57C       8       8       0   Highlight_section
-     r_res                                     C584       8       8       0   Highlight_section
-     DONE                                      C58C       F      15       0   Highlight_section
-     Time_Start                                C59B      27      39       1   Highlight_section
-     I_num                                     C5C2      1C      28       0   Highlight_section
-     T_Comp                                    C5DE       B      11       0   Highlight_section
-     D_num                                     C5E9      12      18       0   Highlight_section
-     R_num                                     C5FB       E      14       0   Highlight_section
-     L_num                                     C609       E      14       0   Highlight_section
-     F_key                                     C617       7       7       0   Highlight_section
-     n_res_high                                C61E       A      10       0   Highlight_section
-     n_res_low                                 C628       A      10       0   Highlight_section
-     l_res                                     C632       8       8       0   Highlight_section
-     r_res                                     C63A       8       8       0   Highlight_section
-     DONE                                      C642       F      15       0   Highlight_section
-     delay1ms                                  C651       4       4       1   debounce.asm._SEC000000
-     loop                                      C655       5       5       0   debounce.asm._SEC000000
-     scan                                      C65A       3       3       2   keypad_input.asm._SEC000000
-     rescan                                    C65D      24      36       0   keypad_input.asm._SEC000000
-     up                                        C681       C      12       0   keypad_input.asm._SEC000000
-     right                                     C68D       C      12       0   keypad_input.asm._SEC000000
-     down                                      C699       C      12       0   keypad_input.asm._SEC000000
-     left                                      C6A5       C      12       0   keypad_input.asm._SEC000000
-     prompt                                    C6B1       C      12       0   keypad_input.asm._SEC000000
-     leave                                     C6BD       2       2       0   keypad_input.asm._SEC000000
-     Door_Song_Start                           C6BF       7       7       1   MY_SONG     
-     Door_Song                                 C6C6      2B      43       1   MY_SONG     
-     DONE                                      C6F1       1       1       0   MY_SONG     
+     Entry                                     C000      5E      94       0   .init       
+     date_res                                  C05E      11      17       0   .init       
+     time_res                                  C06F       F      15       0   .init       
+     name_res                                  C07E      1D      29       0   .init       
+     SRTMSG1                                   C09B      13      19       0   .init       
+     SRTMSG2                                   C0AE      22      34       0   .init       
+     DONE                                      C0D0       1       1       0   .init       
+     Date_Change                               C0D1      1E      30       1   .init       
+     Time_Change                               C0EF      21      33       1   .init       
+     Song                                      C110       5       5       0   .init       
+     MENU                                      C115      1B      27       1   .init       
+     MENU2                                     C130       C      12       0   .init       
+     Cont_Men                                  C13C      1E      30       1   .init       
+     delay_ms                                  C15A      17      23       5   NON_BANKED  
+     init_LCD                                  C171      52      82       1   NON_BANKED  
+     display_string                            C1C3      38      56       7   NON_BANKED  
+     epulse                                    C1FB      24      36       3   NON_BANKED  
+     sendCommand                               C21F       F      15       7   NON_BANKED  
+     SendsChr                                  C22E       8       8       1   NON_BANKED  
+     PlayTone                                  C236      1A      26       1   NON_BANKED  
+     delay                                     C250       2       2       1   MY_EXTENDED_ROM
+     keys                                      C252       4       4       0   MY_EXTENDED_ROM
+     song1                                     C256       F      15       1   MY_EXTENDED_ROM
+     song2                                     C265       3       3       0   MY_EXTENDED_ROM
+     Startup_1                                 C268      A6     166       1   StringCode  
+     Startup_2                                 C30E      A6     166       1   StringCode  
+     date_str                                  C3B4      B2     178       3   StringCode  
+     admin_u                                   C466      B5     181       0   StringCode  
+     menu_str                                  C51B      B2     178       1   StringCode  
+     GenSelStr                                 C5CD      B2     178       1   StringCode  
+     RTI_ISR                                   C67F      17      23       0   My_code     
+     MIDDLE                                    C696       7       7       0   My_code     
+     SOUND_RT                                  C69D      11      17       0   My_code     
+     done_sound                                C6AE       7       7       0   My_code     
+     exit_start_ISR                            C6B5       7       7       0   My_code     
+     exit_ISR                                  C6BC       4       4       0   My_code     
+     Date_Start                                C6C0      2D      45       1   Highlight_section
+     I_num                                     C6ED      12      18       0   Highlight_section
+     D_num                                     C6FF      12      18       0   Highlight_section
+     R_num                                     C711       E      14       0   Highlight_section
+     L_num                                     C71F       E      14       0   Highlight_section
+     F_key                                     C72D       7       7       0   Highlight_section
+     n_res_high                                C734       A      10       0   Highlight_section
+     n_res_low                                 C73E       A      10       0   Highlight_section
+     l_res                                     C748       8       8       0   Highlight_section
+     r_res                                     C750       8       8       0   Highlight_section
+     DONE                                      C758       F      15       0   Highlight_section
+     Time_Start                                C767      27      39       1   Highlight_section
+     I_num                                     C78E      1C      28       0   Highlight_section
+     T_Comp                                    C7AA       B      11       0   Highlight_section
+     D_num                                     C7B5      12      18       0   Highlight_section
+     R_num                                     C7C7       E      14       0   Highlight_section
+     L_num                                     C7D5       E      14       0   Highlight_section
+     F_key                                     C7E3       7       7       0   Highlight_section
+     n_res_high                                C7EA       A      10       0   Highlight_section
+     n_res_low                                 C7F4       A      10       0   Highlight_section
+     l_res                                     C7FE       8       8       0   Highlight_section
+     r_res                                     C806       8       8       0   Highlight_section
+     DONE                                      C80E       F      15       0   Highlight_section
+     GenSel                                    C81D      21      33       1   Highlight_section
+     R_num                                     C83E       E      14       0   Highlight_section
+     L_num                                     C84C       E      14       0   Highlight_section
+     F_key                                     C85A       7       7       0   Highlight_section
+     l_res                                     C861       8       8       0   Highlight_section
+     r_res                                     C869       8       8       0   Highlight_section
+     SEL                                       C871       C      12       0   Highlight_section
+     Sel0                                      C87D      11      17       0   Highlight_section
+     Sel1                                      C88E      11      17       0   Highlight_section
+     Sel2                                      C89F      11      17       0   Highlight_section
+     DONE                                      C8B0       F      15       0   Highlight_section
+     delay1ms                                  C8BF       4       4       1   debounce.asm._SEC000000
+     loop                                      C8C3       5       5       0   debounce.asm._SEC000000
+     scan                                      C8C8       3       3       4   keypad_input.asm._SEC000000
+     rescan                                    C8CB      24      36       0   keypad_input.asm._SEC000000
+     up                                        C8EF       C      12       0   keypad_input.asm._SEC000000
+     right                                     C8FB       C      12       0   keypad_input.asm._SEC000000
+     down                                      C907       C      12       0   keypad_input.asm._SEC000000
+     left                                      C913       C      12       0   keypad_input.asm._SEC000000
+     prompt                                    C91F       C      12       0   keypad_input.asm._SEC000000
+     leave                                     C92B       2       2       0   keypad_input.asm._SEC000000
+     Door_Song_Start                           C92D       7       7       1   MY_SONG     
+     Door_Song                                 C934      2B      43       1   MY_SONG     
+     DONE                                      C95F       1       1       0   MY_SONG     
 
 *********************************************************************************************
 UNUSED-OBJECTS SECTION
@@ -1707,11 +1748,13 @@ lcddisp.c.o:
   Delay 
 NOT USED VARIABLES
 main.asm.o:
-  pot_value col row 
+  pot_value 
 date.asm.o:
-  numbers col 
+  numbers 
 time.asm.o:
-  numbers col 
+  numbers 
+Control_Menu.asm.o:
+  numbers 
 
 *********************************************************************************************
 COPYDOWN SECTION
@@ -1720,20 +1763,25 @@ COPYDOWN SECTION
 *********************************************************************************************
 OBJECT-DEPENDENCIES SECTION
 ---------------------------------------------------------------------------------------------
-Entry                     USES __SEG_END_SSTACK start_f sound_rdy seloff 
-                                tone_count init_LCD sound_c start_c 
+Entry                     USES __SEG_END_SSTACK start_f sound_rdy enter_f 
+                                command seloff tone_count gens1 gens2 gens3 sound_c 
+                                start_c init_LCD 
 date_res                  USES date 
 time_res                  USES time 
 name_res                  USES name Startup_1 disp display_string 
 SRTMSG1                   USES start_f Startup_2 disp display_string 
-SRTMSG2                   USES start_f date_str disp display_string 
-                                Date_Change Time_Change SONG_TIME_START 
+SRTMSG2                   USES start_f date_str disp display_string seloff 
+                                Date_Change Time_Change MENU Cont_Men 
 Date_Change               USES scan Date_Start date_str disp display_string 
                                 enter_f seloff 
 Time_Change               USES scan Time_Start date_str disp display_string 
-                                enter_f seloff 
-SONG_TIME_START           USES Door_Song_Start 
+                                enter_f seloff Door_Song_Start 
 Song                      USES Door_Song 
+MENU                      USES scan menu_str disp display_string command 
+                                enter_f prev_val 
+MENU2                     USES enter_f 
+Cont_Men                  USES scan GenSel GenSelStr disp display_string 
+                                enter_f seloff 
 init_LCD                  USES _DDRAD _PTAD _DDRM delay_ms _PTM data 
                                 sendCommand epulse 
 display_string            USES sendCommand data _PTAD epulse 
@@ -1743,10 +1791,13 @@ SendsChr                  USES tone
 PlayTone                  USES tone_count tone _PTT 
 Startup_1                 USES disp 
 Startup_2                 USES disp 
-date_str                  USES disp date time 
+date_str                  USES date disp time 
 admin_u                   USES disp name 
+menu_str                  USES date disp time 
+GenSelStr                 USES disp gens1 gens2 gens3 
 RTI_ISR                   USES start_f start_c 
-MIDDLE                    USES sound_rdy sound_c PlayTone 
+MIDDLE                    USES sound_rdy 
+SOUND_RT                  USES sound_c PlayTone 
 done_sound                USES sound_rdy 
 exit_start_ISR            USES start_c 
 Date_Start                USES command prev_val 
@@ -1771,6 +1822,16 @@ n_res_high                USES time
 n_res_low                 USES time 
 l_res                     USES seloff 
 r_res                     USES seloff 
+DONE                      USES command prev_val 
+GenSel                    USES command prev_val 
+R_num                     USES seloff 
+L_num                     USES seloff 
+F_key                     USES enter_f 
+l_res                     USES seloff 
+r_res                     USES seloff 
+Sel0                      USES gens1 gens2 gens3 
+Sel1                      USES gens2 gens1 gens3 
+Sel2                      USES gens3 gens1 gens2 
 DONE                      USES command prev_val 
 delay1ms                  USES delay 
 rescan                    USES port_u delay1ms 
@@ -1807,6 +1868,6 @@ STATISTIC SECTION
 
 ExeFile:
 --------
-Number of blocks to be downloaded: 9
-Total size of all blocks to be downloaded: 1782
+Number of blocks to be downloaded: 10
+Total size of all blocks to be downloaded: 2404
 

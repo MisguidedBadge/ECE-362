@@ -36,14 +36,19 @@ MIDDLE:
 ;Check if sound is ready to play from sound.asm
 ;
 ;		
-		ldaa sound_rdy					;load with the sound flag
-		cmpa #1
-		bne	skip_sound					;skip sound if the flag isn't set
+		;ldaa sound_rdy					;load with the sound flag
+		;cmpa #1
+		;bne	skip_sound					;skip sound if the flag isn't set
+		BRSET sound_rdy, #1, SOUND_RT
+
+		bra exit_ISR
+ 
 
 ;----------------------SOUND COUNTER CHECK----------------------------;
 ;Check if sound count ("delay") is done
 ;If not then continue playing same note
 ;
+SOUND_RT:
 		ldx sound_c						;load sound count ("delay")
 		cpx #0							;If 0 then sound is done playing
 		beq done_sound					;
@@ -60,9 +65,7 @@ done_sound:
 		MOVB #0, sound_rdy				;Reset sound flag to let sound.asm play new note
 		bra exit_ISR					;Exit ISR
 					
-skip_sound:
-        bra exit_ISR					;Exit ISR
-    
+
 ;----------------------END SOUND---------------------------------------;
 		
 

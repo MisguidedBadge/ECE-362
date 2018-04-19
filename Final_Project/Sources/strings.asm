@@ -1,7 +1,7 @@
 	
-	XDEF Startup_1, Startup_2, date_str,admin_u
+	XDEF Startup_1, Startup_2, date_str,admin_u,menu_str,GenSelStr
 	
-	XREF disp, date, time,name
+	XREF disp, date, time, name, gens1, gens2, gens3
 	
 MY_EXTENDED_RAM: SECTION	
 
@@ -86,32 +86,32 @@ Startup_2  movb #'P',disp
 
 		   rts
 		   
-date_str   movb #' ',disp
-           movb date,disp+1
-           movb date+1,disp+2
-           movb #'/',disp+3
-           movb date+2,disp+4
-           movb date+3,disp+5
-           movb #'/',disp+6
-           movb date+4,disp+7
-           movb date+5,disp+8
-           movb date+6,disp+9
-           movb date+7,disp+10
+date_str   movb date,disp
+           movb date+1,disp+1
+           movb #'/',disp+2
+           movb date+2,disp+3
+           movb date+3,disp+4
+           movb #'/',disp+5
+           movb date+4,disp+6
+           movb date+5,disp+7
+           movb date+6,disp+8
+           movb date+7,disp+9
+           movb #' ',disp+10
            movb #' ',disp+11
            movb #' ',disp+12
            movb #' ',disp+13
            movb #' ',disp+14
            movb #' ',disp+15
-           movb #' ',disp+16
-           movb time,disp+17
-           movb time+1,disp+18
-           movb #':',disp+19
-           movb time+2,disp+20
-           movb time+3,disp+21
+           movb time,disp+16
+           movb time+1,disp+17
+           movb #':',disp+18
+           movb time+2,disp+19
+           movb time+3,disp+20
+           movb #' ',disp+21
            movb #' ',disp+22
-           movb #'E',disp+23
-           movb #'S',disp+24
-           movb #'T',disp+25
+           movb #' ',disp+23
+           movb #' ',disp+24
+           movb #' ',disp+25
            movb #' ',disp+26
            movb #' ',disp+27
            movb #' ',disp+28
@@ -156,5 +156,83 @@ admin_u:   movb #'E',disp
            movb #' ',disp+31
            movb #0,disp+32     
 		   
+		   
+		   rts
+		   
+;*********************string Menu Poseidon Ind.*********************
+
+		   
+menu_str:  movb date,disp
+           movb date+1,disp+1
+           movb #'/',disp+2
+           movb date+2,disp+3
+           movb date+3,disp+4
+           movb #'/',disp+5
+           movb date+4,disp+6
+           movb date+5,disp+7
+           movb date+6,disp+8
+           movb date+7,disp+9
+           movb #' ',disp+10
+           movb #' ',disp+11
+           movb #' ',disp+12
+           movb #' ',disp+13
+           movb #' ',disp+14
+           movb #' ',disp+15
+           movb time,disp+16
+           movb time+1,disp+17
+           movb #':',disp+18
+           movb time+2,disp+19
+           movb time+3,disp+20
+           movb #' ',disp+21
+           movb #' ',disp+22
+           movb #'1',disp+23
+           movb #'2',disp+24
+           movb #'0',disp+25
+           movb #'M',disp+26
+           movb #'W',disp+27
+           movb #' ',disp+28
+           movb #' ',disp+29
+           movb #' ',disp+30
+           movb #' ',disp+31
+           movb #0,  disp+32    ;string terminator, acts like '\0' 
+		   
+		   rts
+		   
+;*********************Control Menu Poseidon Ind.*********************
+
+		   
+GenSelStr: movb #'G',disp
+           movb #'E',disp+1
+           movb #'N',disp+2
+           movb #'1',disp+3
+           movb #' ',disp+4
+           movb #'G',disp+5
+           movb #'E',disp+6
+           movb #'N',disp+7
+           movb #'2',disp+8
+           movb #' ',disp+9
+           movb #'G',disp+10
+           movb #'E',disp+11
+           movb #'N',disp+12
+           movb #'3',disp+13
+           movb #' ',disp+14
+           movb #' ',disp+15
+           movb gens1,disp+16
+           movb gens1,disp+17
+           movb gens1,disp+18
+           movb gens1,disp+19
+           movb #' ',disp+20
+           movb gens2,disp+21
+           movb gens2,disp+22
+           movb gens2,disp+23
+           movb gens2,disp+24
+           movb #' ',disp+25
+           movb gens3,disp+26
+           movb gens3,disp+27
+           movb gens3,disp+28
+           movb gens3,disp+29
+           movb #' ',disp+30
+           movb #' ',disp+31
+           movb #0,  disp+32    ;string terminator, acts like '\0' 
 		   
 		   rts

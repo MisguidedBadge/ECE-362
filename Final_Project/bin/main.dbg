@@ -7305,18 +7305,20 @@ mPMFDTMC_PMFDTMC11:                      equ        This_symb_has_been_depreciat
             XDEF Entry, _Startup, disp, start_f
             XDEF command
             XDEF port_u, delay
-            XDEF date, col,seloff, date_f, time,enter_f,name;, User_name
+            XDEF date,date_f, time,enter_f,name, prev_val, seloff;, User_name
             XDEF sound_f
+            XDEF gens1, gens2, gens3			; generator selection
             
             ; we use export 'Entry' as symbol. This allows us to
             ; reference 'Entry' either in the linker .prm file
             ; or from C/C++ later on
 
             XREF __SEG_END_SSTACK, read_pot, display_string, pot_value, init_LCD, RTI_ISR, start_c    ; symbol defined by the linker for the end of the stack
-            XREF Startup_1, Startup_2, date_str
+            XREF Startup_1, Startup_2, date_str, menu_str,GenSelStr
             XREF Date_Start, Time_Start
             XREF scan,admin_u, SendsChr
             XREF Door_Song, Door_Song_Start, sound_rdy,  tone_count, sound_c
+            XREF GenSel
             ; LCD References
 	         
 
@@ -7352,25 +7354,29 @@ enter_f:    ds.b 1	    ;enter flag
 date_f:     ds.b 1      ; date change flag
 
 
-;temporary
+;temporary variables
 command:    ds.b 1
-
+prev_val:	ds.b 1	    ; previous command received from user
 
 
 ;Time Variables
-date:    	ds.b  8
-time:		ds.b  4
+date:    	ds.b  8		; Date string
+time:		ds.b  4		; Time string
 ;Admin Variables
-name:       ds.b  15
+name:       ds.b  15    ; Name String
 ;date variables stored in mem array
-seloff:   ds.w  1   
+seloff:   	ds.w  1     ; Selection Offset
 
+;sound variables
 sound_f:	ds.b  1
+
+;control menu
+gens1:		ds.b  1
+gens2:		ds.b  1
+gens3:		ds.b  1
 
 ;LCD Variables
 my_LCD: SECTION
-col:    ds.b 1 ; This is where the column be
-row:    ds.b 1 ; This is where the row be
 
 
 MY_EXTENDED_ROM:  SECTION
@@ -7397,16 +7403,21 @@ _Startup:
 			MOVB  #0, start_f				;Make the start flag 0
 			MOVB  #$20, port_t_ddr
 			
+;-----------------Variable Reset----------------------------------------------------------;			
 			MOVB  #0, sound_rdy
+			MOVB  #0, enter_f
+			MOVB  #0, command
+			MOVW  #0, seloff
+			MOVW  #0, tone_count	
+			MOVB  #$2D, gens1				; Select generator 1 as the default value
+			MOVB  #$20, gens2				; 
+			MOVB  #$20, gens3				;
+			MOVW #0, sound_c				; reset sound_c
+			MOVW #0, start_c
 			
-			ldx #0
-			stx seloff
-			stx tone_count	
 			jsr init_LCD            		; call init_LCD
 			
-			MOVW #0, sound_c				; reset sound_c
-			ldx #0
-			stx start_c
+
 			
 
 ;---------------------------------------START LCD DISPLAY STUFF---------------------------;
@@ -7475,16 +7486,29 @@ SRTMSG2:	BRCLR start_f, #1, SRTMSG2
 			jsr date_str								;show the default time
 			ldd #disp									;
 			jsr display_string
+			MOVW #0, seloff
 			jsr Date_Change	     					 	;jump to date change subroutine
-
 			jsr Time_Change								;jump to time change subroutine
+;-----------------------MAIN MENU SUBROUTINES---------------------------------;
 			
-			jsr SONG_TIME_START 						;test song subroutine
+			;Prompt username and password
+			;
+			;
+			jsr MENU									;jump to main menu subroutine
+
+			;Prompt username and password
+			;Prompt password
+			jsr Cont_Men			
+			
+			;jsr SONG_TIME_START 						;test song subroutine
 			;bra User_name
 			
 			bra DONE
 
 
+;----------------------------DONE SEQUENCE-----------------;
+DONE:
+			nop
 ;----------------------------DATE CHANGE SEQUENCE-----------------;
 								
 Date_Change:
@@ -7528,10 +7552,47 @@ Song:
       
       bra Song			  						;loop until done with someting
 
+;----------------------------MAIN MENU--------------------------------;
+; Use this with the main menu screen
+; Done
+;
+MENU:
+	jsr scan									;look for the F key (enter key)
+	jsr menu_str    							;display the menu string
+	ldd #disp		
+	jsr display_string							;If enter then exit loop if not then keep looping menu
+	;Check to see if the enter_f command is set
+	ldab command
+	cmpb #15
+	bne MENU2
+	bset enter_f, #1
+	bset prev_val, #15
+	;exit
+MENU2:
+	BRCLR enter_f, #1, MENU
+	ldx #0
+	stx enter_f 								;reset enter flag
+	
+	rts
+;----------------------------
 
-            
-DONE:
-			nop
+;----------------------------Control Menu--------------------------------;
+; After main menu password
+; WIP
+;
+Cont_Men:
+	jsr scan	   								;keyboard input scan
+	jsr GenSel									;generator selection subroutine
+	jsr GenSelStr								;generator selection String
+	ldd #disp
+	jsr display_string
+	BRCLR enter_f, #1, Cont_Men
+	ldx #0
+	stx seloff									;reset offset value
+	stx enter_f	 								;reset enter flag
+	
+	rts
+	
 
 			
 			
