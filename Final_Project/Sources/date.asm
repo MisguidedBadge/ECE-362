@@ -41,11 +41,16 @@ Date_Start:
             cmpb #15
             lbeq  F_key  
             bra  DONE
+<<<<<<< HEAD
 
 ;-------------Increase Number Value--------------------------;            
 I_num:      ldx  seloff    ; load selection offset
+=======
+            
+I_num:      ldx  seloff     ; load selection offset
+>>>>>>> 9212617a68f9ab9b9892da0a8101441b7bcf3e14
             ldab  date, x   ; load selection value
-            cmpb #$39        ; if 10 then go back to 0
+            cmpb #$39       ; if 10 then go back to 0
             beq  n_res_high            
             incb            ; increment the value 
             stab date, x    ; store incremented value

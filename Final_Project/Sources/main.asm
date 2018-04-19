@@ -104,11 +104,11 @@ _Startup:
 			CLI
 			
 			
-	        MOVB  #$F0,port_u_ddr   		;init bits 4-7 of hexpad as outputs    
-	        MOVB  #$0F,PER          		;enable pull_enable register for hex
-	        MOVB  #$FF,PSR          		;init hexpad input bits 0-3 as 
+	    MOVB  #$F0,port_u_ddr   		;init bits 4-7 of hexpad as outputs    
+	    MOVB  #$0F,PER          		;enable pull_enable register for hex
+	    MOVB  #$FF,PSR          		;init hexpad input bits 0-3 as 
 			
-			MOVB  #0, start_f				;Make the start flag 0
+			MOVB  #0, start_f				    ;Make the start flag 0
 			MOVB  #$20, port_t_ddr
 			
 ;-----------------Variable Reset----------------------------------------------------------;			
@@ -125,30 +125,36 @@ _Startup:
 			
 			jsr init_LCD            		; call init_LCD
 			
+<<<<<<< HEAD
 
+=======
+			MOVW #0, sound_c				    ; reset sound_c
+			ldx #0
+			stx start_c
+>>>>>>> 9212617a68f9ab9b9892da0a8101441b7bcf3e14
 			
 
 ;---------------------------------------START LCD DISPLAY STUFF---------------------------;
 ;Set the Date variables to the default value of 11/11/1111 per RobCo industry standards
 ;
 ;	
-			ldab #1       					;
-			addb #$30     					;Add value to make it ASCII
-			ldx #0        					;Start with zero and index up to 8
+			ldab #1       					     ;
+			addb #$30     					     ;Add value to make it ASCII
+			ldx #0        					     ;Start with zero and index up to 8
 date_res:	stab date,x
 			inx
-			cpx #8        					; only want the 8th index
+			cpx #8        					     ; only want the 8th index
 			bne date_res
 			
 ;Set the Date variables to the default value of 11:11 EST per RobCo industry standards	
 ;
 ;
-			ldab #1       					;
-			addb #$30     					;Add value to make it ASCII
-			ldx #0        					;Start with zero and index up to 8
+			ldab #1       					     ;
+			addb #$30     					     ;Add value to make it ASCII
+			ldx #0        					     ;Start with zero and index up to 8
 time_res:	stab time, x
 			inx
-			cpx #4        					; only want the 4th index
+			cpx #4        					     ; only want the 4th index
 			bne time_res
 ;Set name variables to default space values
 ;
@@ -160,8 +166,8 @@ name_res:   stab name,x      				;store ascii value into each memory location
             cpx #15          				;check if all locations have been stored
 			bne name_res 		 		
 			
-			Movb	#$10, RTICTL			;Initi RTI to 1ms
-			Movb	#$80, CRGINT			;enable RTI			
+			Movb	#$10, RTICTL			      ;Initi RTI to 1ms
+			Movb	#$80, CRGINT			      ;enable RTI			
 			
 ;---------------------------------------END LCD DISPLAY STUFF---------------------------;
 			
@@ -191,13 +197,18 @@ SRTMSG1:	BRCLR start_f, #1, SRTMSG1
 SRTMSG2:	BRCLR start_f, #1, SRTMSG2
 			
 ;Show default Date and TIme			
-			jsr date_str								;show the default time
-			ldd #disp									;
+			jsr date_str								    ;show the default time
+			ldd #disp									      ;
 			jsr display_string
 			MOVW #0, seloff
 			jsr Date_Change	     					 	;jump to date change subroutine
+<<<<<<< HEAD
 			jsr Time_Change								;jump to time change subroutine
 ;-----------------------MAIN MENU SUBROUTINES---------------------------------;
+=======
+
+			jsr Time_Change								  ;jump to time change subroutine
+>>>>>>> 9212617a68f9ab9b9892da0a8101441b7bcf3e14
 			
 			;Prompt username and password
 			;
@@ -221,29 +232,29 @@ DONE:
 								
 Date_Change:
 
-	    	jsr	scan						 	;keyboard scan inputs
+	    	jsr	scan						 	        ;keyboard scan inputs
             jsr Date_Start			 			;Date changing subroutine
-            jsr date_str			 			;use the date string which includes date and time var
-            ldd #disp				 			;load string
+            jsr date_str			 		  	;use the date string which includes date and time var
+            ldd #disp				 			    ;load string
             jsr display_string
             BRCLR enter_f, #1, Date_Change 		;branch away when done
             ldx #0
             stx enter_f
-		    stx seloff				 			;reset the offset value
+		    stx seloff				 			      ;reset the offset value
             
             rts
             
 ;----------------------------TIME CHANGE--------------------------------;
 
 Time_Change:
-	      jsr scan								;keyboard scan inputs
-	      jsr Time_Start						;time changing subroutine
-	      jsr date_str	     					;use the date string which includes date and time var
-          ldd #disp								;load string
+	      jsr scan								      ;keyboard scan inputs
+	      jsr Time_Start						    ;time changing subroutine
+	      jsr date_str	     					  ;use the date string which includes date and time var
+          ldd #disp								    ;load string
           jsr display_string
           BRCLR enter_f, #1, Time_Change		;branch away when enter is pressed		
           ldx #0
-		  stx seloff				 			;reset the offset value
+		  stx seloff				 			        ;reset the offset value
           stx enter_f
             
           rts
@@ -256,9 +267,9 @@ SONG_TIME_START:
 
       jsr Door_Song_Start 						;Song start sequence
 Song:
-      jsr Door_Song		  						;Song sequence
+      jsr Door_Song		  						  ;Song sequence
       
-      bra Song			  						;loop until done with someting
+      bra Song			  						    ;loop until done with someting
 
 ;----------------------------MAIN MENU--------------------------------;
 ; Use this with the main menu screen
