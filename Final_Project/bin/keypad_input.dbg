@@ -13,13 +13,13 @@ scan:         pshd
               ldaa  #%10000000  ;to read the hexpad rows (bits 4-7)         
               
 rescan:	      staa  port_u  	;store the sequence, tells which row is being read
-              jsr   delay1ms    ;debounce the keypad		
-			  ldab  port_u      ;read user input from hex
+              	jsr   delay1ms    ;debounce the keypad		
+			 ldab  port_u      ;read user input from hex
 			  
 ;*******************************************************
 ;PROMPTS the user to create a user  ID and PW			  
-			  cmpb	#$11		;check if F (select) is pressed
-			  beq	prompt
+			cmpb	#$11		;check if F (select) is pressed
+			beq	prompt
 ;**********************************************************			  
 			  		
 		      cmpb  #$84        ;check if up (2)
@@ -30,8 +30,6 @@ rescan:	      staa  port_u  	;store the sequence, tells which row is being read
 		      beq   down  
 		      cmpb  #$48        ;check if left (4)
 		      beq	left
-		      ;cmpb  #$FF
-		     ; beq   enter_f
 		      lsra              ;right shift scanning sequence
 		      cmpa  #$8         ;leave at end of scanning sequence
 		      beq   NCommand
@@ -40,6 +38,7 @@ rescan:	      staa  port_u  	;store the sequence, tells which row is being read
 ;value that will inc display value
 up:               MOVB  #2,command   ;value that increments LCD display value
                   lsra               ;right shift scanning sequence
+<<<<<<< HEAD
                   ;cmpa  #$8         ;leave at end of scanning sequence
 		              ;beq   leave
                   bra   leave                                                                         
@@ -71,6 +70,35 @@ NCommand:
                   MOVB  #16, command  ;command for no command
                   bset  clearv, #1
                   bra   leave
+=======
+                  cmpa  #$8         ;leave at end of scanning sequence
+		      beq   leave
+                  bra   rescan                                                                         
+;shift LCD cursor right
+right:            MOVB  #6,command   ;value that moves LCD cursor right
+                  lsra               ;right shift scanning sequence
+                  cmpa  #$8         ;leave at end of scanning sequence
+		      beq   leave
+                  bra   rescan
+;value that will dec display value                  
+down:             MOVB  #8,command   ;value that decrements LCD display value
+                  lsra               ;right shift scanning sequence
+                  cmpa  #$8         ;leave at end of scanning sequence
+		      beq   leave
+                  bra   rescan
+;shift LCD cursor left                  
+left:             MOVB  #4,command   ;value that moves LCD cursor left
+                  lsra               ;right shift scanning sequence
+                  cmpa  #$8          ;leave at end of scanning sequence
+		     	beq   leave
+                  bra   rescan
+;move to time input or to homescreen when done with date and time                  
+prompt:	      MOVB  #15,command	;value that will prompt user to enter id and pw
+		      lsra			;right shift scanning sequence
+			cmpa	#$8		;leave at end of scanning sequence
+			beq	leave
+			bra	rescan
+>>>>>>> Austin_Dev_Merge
    
 leave:            puld
                   rts

@@ -87,12 +87,20 @@ F_key:      movb #1,enter_f  ;set zero flag for enter_f
             bra DONE
 
 n_res_high: ldab  #0
+<<<<<<< HEAD
 			addb #$30
+=======
+		addb #$30
+>>>>>>> Austin_Dev_Merge
         	stab  date, x   ;increment value
         	bra DONE
 
 n_res_low:  ldab  #9
+<<<<<<< HEAD
 			addb #$30
+=======
+		addb #$30
+>>>>>>> Austin_Dev_Merge
         	stab  date, x   ;decrement value
         	bra DONE
             
@@ -100,9 +108,16 @@ l_res: 		ldx #7			; reset to the right most value
         	stx seloff
         	bra DONE  
 
+<<<<<<< HEAD
 r_res: 		ldx #0			; reset to the left most value
         	stx seloff
         	bra DONE  
+=======
+r_res: 	ldx #0
+        	stx seloff
+        	bra DONE  
+            
+>>>>>>> Austin_Dev_Merge
             
 ;-------------DONE SEQUENCE------------------------------------;            
 DONE:      
@@ -110,7 +125,14 @@ DONE:
 			MOVB #0, command
 		
 		
+<<<<<<< HEAD
 			puly
 			pulx
 			puld	
         	rts
+=======
+		puly
+		pulx
+		puld	
+            rts
+>>>>>>> Austin_Dev_Merge

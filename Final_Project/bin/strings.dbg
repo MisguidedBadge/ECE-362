@@ -1,7 +1,13 @@
 	
+<<<<<<< HEAD
 	XDEF Startup_1, Startup_2, date_str,admin_u,menu_str,GenSelStr
 	
 	XREF disp, date, time, name, gens1, gens2, gens3
+=======
+	XDEF Startup_1, Startup_2, date_str,admin_u,PW_String,PW_Verify_String
+	XDEF re_enter,accepted		
+	XREF disp, date, time,name, pass, passv
+>>>>>>> Austin_Dev_Merge
 	
 MY_EXTENDED_RAM: SECTION	
 
@@ -119,7 +125,7 @@ date_str   movb date,disp
            movb #' ',disp+30
            movb #' ',disp+31
            movb #0,  disp+32    ;string terminator, acts like '\0'    
-;*********************string Startup Poseidon Ind.*********************
+;*********************Username_Diplay*********************
            rts 
 
 admin_u:   movb #'E',disp
@@ -153,9 +159,10 @@ admin_u:   movb #'E',disp
            movb name+12,disp+28
            movb name+13,disp+29
            movb name+14,disp+30
-           movb #' ',disp+31
+           movb name+15,disp+31
            movb #0,disp+32     
 		   
+<<<<<<< HEAD
 		   
 		   rts
 		   
@@ -190,10 +197,152 @@ menu_str:  movb date,disp
            movb #'0',disp+25
            movb #'M',disp+26
            movb #'W',disp+27
+=======
+	     rts
+;************************PassWord_Display**********************
+PW_String: movb #'E',disp
+           movb #'n',disp+1
+           movb #'t',disp+2
+           movb #'e',disp+3
+           movb #'r',disp+4
+           movb #' ',disp+5
+           movb #'P',disp+6
+           movb #'a',disp+7
+           movb #'s',disp+8
+           movb #'s',disp+9
+           movb #'W',disp+10
+           movb #'o',disp+11
+           movb #'r',disp+12
+           movb #'d',disp+13
+           movb #':',disp+14
+           movb #' ',disp+15
+           movb pass,disp+16
+           movb pass+1,disp+17
+           movb pass+2,disp+18
+           movb pass+3,disp+19
+           movb pass+4,disp+20
+           movb pass+5,disp+21
+           movb pass+6,disp+22
+           movb pass+7,disp+23
+           movb pass+8,disp+24
+           movb pass+9,disp+25
+           movb pass+10,disp+26
+           movb pass+11,disp+27
+           movb pass+12,disp+28
+           movb pass+13,disp+29
+           movb pass+14,disp+30
+           movb pass+15,disp+31
+           movb #0,disp+32
+           
+           rts
+;*************************Verify_Password************************
+PW_Verify_String: movb #'V',disp
+           		movb #'e',disp+1
+           		movb #'r',disp+2
+           		movb #'i',disp+3
+          		movb #'f',disp+4
+           		movb #'y',disp+5
+          	      movb #'P',disp+6
+           		movb #'a',disp+7
+           		movb #'s',disp+8
+           		movb #'s',disp+9
+           		movb #'W',disp+10
+           		movb #'o',disp+11
+           		movb #'r',disp+12
+           		movb #'d',disp+13
+           		movb #':',disp+14
+           		movb #' ',disp+15
+          		movb passv,disp+16
+           		movb passv+1,disp+17
+           		movb passv+2,disp+18
+           		movb passv+3,disp+19
+           		movb passv+4,disp+20
+          		movb passv+5,disp+21
+           		movb passv+6,disp+22
+           		movb passv+7,disp+23
+           		movb passv+8,disp+24
+           		movb passv+9,disp+25
+           		movb passv+10,disp+26
+           		movb passv+11,disp+27
+           		movb passv+12,disp+28
+           		movb passv+13,disp+29
+           		movb passv+14,disp+30
+           		movb passv+15,disp+31
+           		movb #0,disp+32
+           
+           		rts
+;************************Re-Enter Password***************
+re_enter:  movb #'R',disp
+           movb #'e',disp+1
+           movb #'n',disp+2
+           movb #'t',disp+3
+           movb #'e',disp+4
+           movb #'r',disp+5
+           movb #'P',disp+6
+           movb #'a',disp+7
+           movb #'s',disp+8
+           movb #'s',disp+9
+           movb #'W',disp+10
+           movb #'o',disp+11
+           movb #'r',disp+12
+           movb #'d',disp+13
+           movb #':',disp+14
+           movb #' ',disp+15
+           movb pass,disp+16
+           movb pass+1,disp+17
+           movb pass+2,disp+18
+           movb pass+3,disp+19
+           movb pass+4,disp+20
+           movb pass+5,disp+21
+           movb pass+6,disp+22
+           movb pass+7,disp+23
+           movb pass+8,disp+24
+           movb pass+9,disp+25
+           movb pass+10,disp+26
+           movb pass+11,disp+27
+           movb pass+12,disp+28
+           movb pass+13,disp+29
+           movb pass+14,disp+30
+           movb pass+15,disp+31
+           movb #0,disp+32
+           
+           rts
+;-------------------------'You're in' Display (password accepted)------
+accepted:  movb #'Y',disp
+           movb #'o',disp+1
+           movb #'u',disp+2
+           movb #'r',disp+3
+           movb #'e',disp+4
+           movb #' ',disp+5
+           movb #'i',disp+6
+           movb #'n',disp+7
+           movb #' ',disp+8
+           movb #'b',disp+9
+           movb #'r',disp+10
+           movb #'o',disp+11
+           movb #'!',disp+12
+           movb #' ',disp+13
+           movb #' ',disp+14
+           movb #' ',disp+15
+           movb #' ',disp+15
+           movb #' ',disp+16
+           movb #' ',disp+17
+           movb #' ',disp+18
+           movb #' ',disp+19
+           movb #' ',disp+20
+           movb #' ',disp+21
+           movb #' ',disp+22
+           movb #' ',disp+23
+           movb #' ',disp+24
+           movb #' ',disp+25
+           movb #' ',disp+26
+           movb #' ',disp+27
+>>>>>>> Austin_Dev_Merge
            movb #' ',disp+28
            movb #' ',disp+29
            movb #' ',disp+30
            movb #' ',disp+31
+<<<<<<< HEAD
            movb #0,  disp+32    ;string terminator, acts like '\0' 
 		   
 		   rts
@@ -236,3 +385,7 @@ GenSelStr: movb #'G',disp
            movb #0,  disp+32    ;string terminator, acts like '\0' 
 		   
 		   rts
+=======
+           movb #0,disp+32
+           rts       	     
+>>>>>>> Austin_Dev_Merge
