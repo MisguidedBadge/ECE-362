@@ -1,3 +1,4 @@
+
 ;**************************************************************
 ;* This stationery serves as the framework for a              *
 ;* user application. For a more comprehensive program that    *
@@ -7322,6 +7323,7 @@ mPMFDTMC_PMFDTMC11:                      equ        This_symb_has_been_depreciat
             XREF User_name
             XREF Door_Song, Door_Song_Start, sound_rdy,  tone_count, sound_c
             XREF GenSel,Date_Change, Time_Change, SONG_TIME_START, Song, Cont_Men, MENU, clearv
+            XREF User_name_change, PW_Creation, compare_string 
             ; LCD References
 	         
 
@@ -7540,128 +7542,45 @@ SRTMSG2:	     BRCLR start_f, #1, SRTMSG2
 			
 			BRSET	equal_f, #1, yourein
 
-;-----------------------MAIN MENU SUBROUTINES---------------------------------;		
-			;Prompt username and password
-			;
-			;
-			jsr MENU									;jump to main menu subroutine
-      MOVB #0, clearv
-
-			;Prompt username and password
-			;Prompt password
-			jsr Cont_Men			
-			MOVB #0, clearv
+;------------DEFAULT PASSWORD SHOWCASE---------------------------------------------
+Pass_word:	    jsr	    PW_String
+			    ldd	    #disp
+			    jsr	    display_string
 			
-			
-			;jsr SONG_TIME_START 						;test song subroutine
-			;bra User_name
-			
-			bra DONE
+			    rts
+			    
+;------------DEFAULT RE_ENTER PASSWORD SHOWCASE------------------------------------
+re_enter_pw:    jsr     re_enter
+                ldd     #disp
+                jsr     display_string
+                MOVB    #0,start_f              ;to stay in loop in next isntruction
+RSRTMSG:	    BRCLR   start_f, #1, RSRTMSG    ;display try again message for 3 seconds                
+                
+                rts    
 
 
-;----------------------------DONE SEQUENCE-----------------;
-DONE:
-			nop
+;------------DEFAULT VERIFY PASSWORD-----------------------------------------------
+Pass_wordV:	    jsr 	PW_Verify_String    
+			    ldd	    #disp
+			    jsr	    display_string
+			    rts
 
-						
-						
-;--------------------PASSWORD ACCEPTED DEFAULT STRING-----------------
-yourein:		
-      jsr	accepted
-			ldd	#disp
-			jsr	display_string
-			nop
-								
-										
-
-           	      		           	      
-;-----------------------------Username Creation-----------------------------;
-User_name_change: 
-              jsr   scan		    			              ;check keypad input	
-          		jsr   Username_start  			          ;manipulates keypad input and provides an output value
-          		jsr	  admin_u	    			              ;displays user inputs (from Username_start)
-          		ldd	  #disp		    			              ;load string address				    
-          		jsr	  display_string  			          ;display the string	
-              BRCLR enter_f, #1, User_name_change	  ;branch away when f is pressed
-			        movb	#0,enter_f	    			          ;reset f flag	
-			        movw	#0,cursor	    			            ;reset cursor location
-			
-			        rts
-
-
-			
-;---------------------------DEFAULT PASSWORD SHOWCASE------------
-Pass_word:		
-              jsr	PW_String
-			        ldd	#disp
-			        jsr	display_string
-			
-		        	rts
-;---------------------Password Creation---------------
-PW_Creation:      
-              jsr	scan		   		                    ;check keypad input
-			        jsr	Password_start 		                ;manipulates keypad input and provides a PW output
-			        jsr	PW_String			                    ;store input into variables
-			        ldd	#disp
-			        jsr	display_string		                ;display input (password)
-			        BRCLR	enter_f, #1, PW_Creation        ;branch away when f is pressed
-			        movb	#0,enter_f			                ;reset f flag
-			        movw	#0,cursor			                  ;reset cursor location
-			        rts
-;----------------DEFAULT VERIFY PASSWORD----------------------------
-Pass_wordV	      
-              jsr	PW_Verify_String
-			        ldd	#disp
-			        jsr	display_string
-			        rts
-			
-;------------------Re_type password to verify--------------------			
-PW_Verify:		
-            jsr	scan		   		                      ;check keypad input
-			      jsr	Password_verify 		                ;manipulates keypad input and provides a PW output
-			      jsr	PW_Verify_String	                  ;store input into variables
-			      ldd	#disp
-			      jsr	display_string		                  ;display input (password)
-			      BRCLR	enter_f, #1, PW_Verify	          ;branch away when f is pressed
-		        movb	#0,enter_f			                  ;reset f flag
-			      movw	#0,cursor			                    ;reset cursor location
-			      rts			
-;----------------------COMPARE THE STRINGS-------------------------------- 
-compare_string:	ldx	cursor			                    ;load initial cursor location
-compare:		    ldab	pass,x			                  ;load both password inputs
-			      ldaa	passv,x
-			      cba	
-			      bne	notequal			                      ;strings aren't equal
-		
-			      inx
-			      cpx	#16				                          ;check if at end of string
-		      	beq 	equal				                      ;strings must be equal
-			      bra	compare			                        ;continue comparing
-			
-notequal:	      movb	#0,equal_f			              ;denotes not equal
-		        movw	#0,cursor			                    ;reset cursor location		      
-;REINITIALIZES PASSWORD ASCII VALUES TO SPACE ASCII VALUES
-			      ldab	#$20	                            ;ascii space value
-			      ldx	#0	                                ;initialize x
-pass_res2:	      stab	pass,x
-			      inx
-			      cpx   #16
-			      bne	pass_res2                           ;branch until PW initialized to all spaces
-			
-			      ldab	#$20	                            ;ascii space value
-			      ldx	#0	                                ;initialize x
-passv_res2:	      stab	passv,x
-			      inx
-			      cpx   #16
-			      bne	passv_res2                          ;branch until PW reinitialized to all spaces		      	
-		        rts
-
-;EQUAL PASSWORDS		      
-equal:		movb  #1,equal_f			                    ;denotes equal
-	      	nop 					                            ;strings must be equal
-	      	rts
-	      	
-						
+;------------Re_type password to verify--------------------------------------------
+PW_Verify:	    jsr	    scan		   		    ;check keypad input
+			    jsr	    Password_verify 	    ;manipulates keypad input and provides a PW output
+			    jsr	    PW_Verify_String	    ;store input into variables
+			    ldd	    #disp
+			    jsr	    display_string		    ;display input (password)
+			    BRCLR	enter_f, #1, PW_Verify	;branch away when f is pressed
+			    movb	#0,enter_f			    ;reset f flag
+			    movw	#0,cursor			    ;reset cursor location
+			    rts			
+	      	   
+;------------PASSWORD ACCEPTED DEFAULT STRING--------------------------------------
+yourein		    jsr	    accepted
+			    ldd	    #disp
+			    jsr	    display_string
+			    nop	      			
 			
 										
 			
@@ -7674,6 +7593,4 @@ equal:		movb  #1,equal_f			                    ;denotes equal
 			
 			
 			
-			
-				
 			

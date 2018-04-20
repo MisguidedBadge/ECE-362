@@ -1,6 +1,5 @@
  	Xdef    start_c, RTI_ISR,sound_c
-	Xref	SECOND, start_f, date_f, PlayTone, sound_f,sound_rdy
-
+	Xref	SECOND, start_f, date_f, PlayTone, sound_f,sound_rdy,repass
 
 
 MY_EXTENDED_RAM: section
@@ -25,6 +24,7 @@ RTI_ISR:
 		BSET start_f, #1				;if 3 seconds then 
 		Ldx	#0		                  	;reset to 0 if 3 seconds
 		bra exit_start_ISR
+
 		
 
 ;----------------------MIDDLE SEQUENCE------------------------------------;
@@ -66,6 +66,7 @@ done_sound:
 		bra exit_ISR					;Exit ISR
 					
 
+
 ;----------------------END SOUND---------------------------------------;
 		
 
@@ -77,5 +78,5 @@ exit_start_ISR:
 		    rti
 		
 		
-exit_ISR:	bset $37, #$80
+exit_ISR:   bset $37, #$80
 			rti
