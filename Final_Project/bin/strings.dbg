@@ -1,13 +1,8 @@
-	
-<<<<<<< HEAD
-	XDEF Startup_1, Startup_2, date_str,admin_u,menu_str,GenSelStr
-	
-	XREF disp, date, time, name, gens1, gens2, gens3
-=======
-	XDEF Startup_1, Startup_2, date_str,admin_u,PW_String,PW_Verify_String
-	XDEF re_enter,accepted		
-	XREF disp, date, time,name, pass, passv
->>>>>>> Austin_Dev_Merge
+
+	XDEF Startup_1, Startup_2, date_str,admin_u,menu_str,GenSelStr,admin_u,PW_String,PW_Verify_String
+	XDEF re_enter,accepted
+	XREF disp, date, time, name, gens1, gens2, gens3, pass, passv
+
 	
 MY_EXTENDED_RAM: SECTION	
 
@@ -162,7 +157,6 @@ admin_u:   movb #'E',disp
            movb name+15,disp+31
            movb #0,disp+32     
 		   
-<<<<<<< HEAD
 		   
 		   rts
 		   
@@ -197,7 +191,6 @@ menu_str:  movb date,disp
            movb #'0',disp+25
            movb #'M',disp+26
            movb #'W',disp+27
-=======
 	     rts
 ;************************PassWord_Display**********************
 PW_String: movb #'E',disp
@@ -337,12 +330,10 @@ accepted:  movb #'Y',disp
            movb #' ',disp+25
            movb #' ',disp+26
            movb #' ',disp+27
->>>>>>> Austin_Dev_Merge
            movb #' ',disp+28
            movb #' ',disp+29
            movb #' ',disp+30
            movb #' ',disp+31
-<<<<<<< HEAD
            movb #0,  disp+32    ;string terminator, acts like '\0' 
 		   
 		   rts
@@ -385,7 +376,3 @@ GenSelStr: movb #'G',disp
            movb #0,  disp+32    ;string terminator, acts like '\0' 
 		   
 		   rts
-=======
-           movb #0,disp+32
-           rts       	     
->>>>>>> Austin_Dev_Merge
