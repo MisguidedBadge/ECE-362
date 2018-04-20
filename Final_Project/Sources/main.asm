@@ -26,7 +26,7 @@
             XREF Date_Start, Time_Start
             XREF scan,admin_u, SendsChr
             XREF Door_Song, Door_Song_Start, sound_rdy,  tone_count, sound_c
-            XREF GenSel
+            XREF GenSel,Date_Change, Time_Change, SONG_TIME_START, Song, Cont_Men, MENU, clearv
             ; LCD References
 	         
 
@@ -120,18 +120,16 @@ _Startup:
 			MOVB  #$2D, gens1				; Select generator 1 as the default value
 			MOVB  #$20, gens2				; 
 			MOVB  #$20, gens3				;
-			MOVW #0, sound_c				; reset sound_c
-			MOVW #0, start_c
+			MOVW  #0, sound_c				; reset sound_c
+			MOVW  #0, start_c
+			MOVB  #0, clearv
 			
 			jsr init_LCD            		; call init_LCD
 			
-<<<<<<< HEAD
 
-=======
 			MOVW #0, sound_c				    ; reset sound_c
 			ldx #0
 			stx start_c
->>>>>>> 9212617a68f9ab9b9892da0a8101441b7bcf3e14
 			
 
 ;---------------------------------------START LCD DISPLAY STUFF---------------------------;
@@ -201,23 +199,26 @@ SRTMSG2:	BRCLR start_f, #1, SRTMSG2
 			ldd #disp									      ;
 			jsr display_string
 			MOVW #0, seloff
-			jsr Date_Change	     					 	;jump to date change subroutine
-<<<<<<< HEAD
-			jsr Time_Change								;jump to time change subroutine
-;-----------------------MAIN MENU SUBROUTINES---------------------------------;
-=======
-
-			jsr Time_Change								  ;jump to time change subroutine
->>>>>>> 9212617a68f9ab9b9892da0a8101441b7bcf3e14
 			
+			jsr Date_Change	     					 	;jump to date change subroutine
+      MOVB #0, clearv
+
+			jsr Time_Change								;jump to time change subroutine
+      MOVB #0, clearv
+
+
+;-----------------------MAIN MENU SUBROUTINES---------------------------------;		
 			;Prompt username and password
 			;
 			;
 			jsr MENU									;jump to main menu subroutine
+      MOVB #0, clearv
 
 			;Prompt username and password
 			;Prompt password
 			jsr Cont_Men			
+			MOVB #0, clearv
+			
 			
 			;jsr SONG_TIME_START 						;test song subroutine
 			;bra User_name
@@ -228,90 +229,7 @@ SRTMSG2:	BRCLR start_f, #1, SRTMSG2
 ;----------------------------DONE SEQUENCE-----------------;
 DONE:
 			nop
-;----------------------------DATE CHANGE SEQUENCE-----------------;
-								
-Date_Change:
 
-	    	jsr	scan						 	        ;keyboard scan inputs
-            jsr Date_Start			 			;Date changing subroutine
-            jsr date_str			 		  	;use the date string which includes date and time var
-            ldd #disp				 			    ;load string
-            jsr display_string
-            BRCLR enter_f, #1, Date_Change 		;branch away when done
-            ldx #0
-            stx enter_f
-		    stx seloff				 			      ;reset the offset value
-            
-            rts
-            
-;----------------------------TIME CHANGE--------------------------------;
-
-Time_Change:
-	      jsr scan								      ;keyboard scan inputs
-	      jsr Time_Start						    ;time changing subroutine
-	      jsr date_str	     					  ;use the date string which includes date and time var
-          ldd #disp								    ;load string
-          jsr display_string
-          BRCLR enter_f, #1, Time_Change		;branch away when enter is pressed		
-          ldx #0
-		  stx seloff				 			        ;reset the offset value
-          stx enter_f
-            
-          rts
-          
-;----------------------------SONG TIME--------------------------------;               
-; MODIFY THIS WHEN USE WITH OTHER STUFF
-; SONGS DONE
-;
-SONG_TIME_START:
-
-      jsr Door_Song_Start 						;Song start sequence
-Song:
-      jsr Door_Song		  						  ;Song sequence
-      
-      bra Song			  						    ;loop until done with someting
-
-;----------------------------MAIN MENU--------------------------------;
-; Use this with the main menu screen
-; Done
-;
-MENU:
-	jsr scan									;look for the F key (enter key)
-	jsr menu_str    							;display the menu string
-	ldd #disp		
-	jsr display_string							;If enter then exit loop if not then keep looping menu
-	;Check to see if the enter_f command is set
-	ldab command
-	cmpb #15
-	bne MENU2
-	bset enter_f, #1
-	bset prev_val, #15
-	;exit
-MENU2:
-	BRCLR enter_f, #1, MENU
-	ldx #0
-	stx enter_f 								;reset enter flag
-	
-	rts
-;----------------------------
-
-;----------------------------Control Menu--------------------------------;
-; After main menu password
-; WIP
-;
-Cont_Men:
-	jsr scan	   								;keyboard input scan
-	jsr GenSel									;generator selection subroutine
-	jsr GenSelStr								;generator selection String
-	ldd #disp
-	jsr display_string
-	BRCLR enter_f, #1, Cont_Men
-	ldx #0
-	stx seloff									;reset offset value
-	stx enter_f	 								;reset enter flag
-	
-	rts
-	
 
 			
 			

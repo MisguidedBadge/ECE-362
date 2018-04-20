@@ -1,5 +1,13 @@
-      XDEF  scan,rescan,up,right,down,left
+      XDEF  scan,rescan,up,right,down,left, clearv
       XREF  port_u,delay1ms,command
+      
+      
+MY_EXTENDED_RAM: SECTION
+clearv    ds.b  1
+
+
+KEY: Section        
+ 
 
 scan:         pshd                  		
               ldaa  #%10000000  ;to read the hexpad rows (bits 4-7)         
@@ -26,39 +34,43 @@ rescan:	      staa  port_u  	;store the sequence, tells which row is being read
 		     ; beq   enter_f
 		      lsra              ;right shift scanning sequence
 		      cmpa  #$8         ;leave at end of scanning sequence
-		      beq   leave
+		      beq   NCommand
 		      bra   rescan      ;no options above pressed
 
 ;value that will inc display value
 up:               MOVB  #2,command   ;value that increments LCD display value
                   lsra               ;right shift scanning sequence
-                  cmpa  #$8         ;leave at end of scanning sequence
-		          beq   leave
-                  bra   rescan                                                                         
+                  ;cmpa  #$8         ;leave at end of scanning sequence
+		              ;beq   leave
+                  bra   leave                                                                         
 ;shift LCD cursor right
 right:            MOVB  #6,command   ;value that moves LCD cursor right
                   lsra               ;right shift scanning sequence
-                  cmpa  #$8         ;leave at end of scanning sequence
-		          beq   leave
-                  bra   rescan
+                  ;cmpa  #$8         ;leave at end of scanning sequence
+		              ;beq   leave
+                  bra   leave
 ;value that will dec display value                  
 down:             MOVB  #8,command   ;value that decrements LCD display value
                   lsra               ;right shift scanning sequence
-                  cmpa  #$8         ;leave at end of scanning sequence
-		          beq   leave
-                  bra   rescan
+                  ;cmpa  #$8         ;leave at end of scanning sequence
+		              ;beq   leave
+                  bra   leave
 ;shift LCD cursor left                  
 left:             MOVB  #4,command   ;value that moves LCD cursor left
                   lsra               ;right shift scanning sequence
-                  cmpa  #$8          ;leave at end of scanning sequence
-		     	  beq   leave
-                  bra   rescan
+                  ;cmpa  #$8          ;leave at end of scanning sequence
+		     	        ;beq   leave
+                  bra   leave
 ;move to time input or to homescreen when done with date and time                  
-prompt:			  MOVB  #15,command	;value that will prompt user to enter id and pw
-				  lsra				;right shift scanning sequence
-				  cmpa	#$8			;leave at end of scanning sequence
-				  beq	leave
-				  bra	rescan
+prompt:			      MOVB  #15,command	;value that will prompt user to enter id and pw
+				          lsra				;right shift scanning sequence
+				          ;cmpa	#$8			;leave at end of scanning sequence
+				          ;beq	leave
+				          bra	leave
+NCommand:
+                  MOVB  #16, command  ;command for no command
+                  bset  clearv, #1
+                  bra   leave
    
 leave:            puld
                   rts

@@ -1,7 +1,7 @@
 	
 	XDEF GenSel
 	
-	XREF command, seloff, enter_f, prev_val, gens1, gens2, gens3
+	XREF command, seloff, enter_f, prev_val, gens1, gens2, gens3, clearv
 MY_EXTENDED_ROM: SECTION
 numbers:    dc.b    0, 1, 2, 3, 4, 5, 6, 7, 8, 9
 
@@ -33,6 +33,7 @@ GenSel:
             lbeq  R_num
             cmpb #4         ; Left
             lbeq  L_num
+            BRCLR clearv, #1, DONE
             cmpb #15
             lbeq  F_key  
             bra  DONE		; Jump to Done (No change) 

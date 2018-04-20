@@ -1,7 +1,7 @@
 	
 	XDEF Date_Start
 	
-	XREF prev_val, disp, command, date, seloff, enter_f
+	XREF prev_val, disp, command, date, seloff, enter_f, clearv
 MY_EXTENDED_ROM: SECTION
 numbers:    dc.b    0, 1, 2, 3, 4, 5, 6, 7, 8, 9
 
@@ -38,17 +38,15 @@ Date_Start:
             lbeq  R_num
             cmpb #4         ; Left
             lbeq  L_num
+            BRCLR clearv, #1, DONE
             cmpb #15
             lbeq  F_key  
             bra  DONE
-<<<<<<< HEAD
+
 
 ;-------------Increase Number Value--------------------------;            
-I_num:      ldx  seloff    ; load selection offset
-=======
             
-I_num:      ldx  seloff     ; load selection offset
->>>>>>> 9212617a68f9ab9b9892da0a8101441b7bcf3e14
+I_num:      ldx  seloff     ; load selection offset4
             ldab  date, x   ; load selection value
             cmpb #$39       ; if 10 then go back to 0
             beq  n_res_high            
