@@ -195,74 +195,75 @@ PW_String: movb #'E',disp
            rts
 ;*************************Verify_Password************************
 PW_Verify_String: movb #'V',disp
-           		movb #'e',disp+1
-           		movb #'r',disp+2
-           		movb #'i',disp+3
-          		movb #'f',disp+4
-           		movb #'y',disp+5
+           	   	  movb #'e',disp+1
+           		  movb #'r',disp+2
+           		  movb #'i',disp+3
+          	  	  movb #'f',disp+4
+           		  movb #'y',disp+5
           	      movb #'P',disp+6
-           		movb #'a',disp+7
-           		movb #'s',disp+8
-           		movb #'s',disp+9
-           		movb #'W',disp+10
-           		movb #'o',disp+11
-           		movb #'r',disp+12
-           		movb #'d',disp+13
-           		movb #':',disp+14
-           		movb #' ',disp+15
-          		movb passv,disp+16
-           		movb passv+1,disp+17
-           		movb passv+2,disp+18
-           		movb passv+3,disp+19
-           		movb passv+4,disp+20
-          		movb passv+5,disp+21
-           		movb passv+6,disp+22
-           		movb passv+7,disp+23
-           		movb passv+8,disp+24
-           		movb passv+9,disp+25
-           		movb passv+10,disp+26
-           		movb passv+11,disp+27
-           		movb passv+12,disp+28
-           		movb passv+13,disp+29
-           		movb passv+14,disp+30
-           		movb passv+15,disp+31
-           		movb #0,disp+32
+           		  movb #'a',disp+7
+           		  movb #'s',disp+8
+           		  movb #'s',disp+9
+           		  movb #'W',disp+10
+           		  movb #'o',disp+11
+           		  movb #'r',disp+12
+           		  movb #'d',disp+13
+           		  movb #':',disp+14
+           		  movb #' ',disp+15
+          		  movb passv,disp+16
+           		  movb passv+1,disp+17
+           		  movb passv+2,disp+18
+           		  movb passv+3,disp+19
+           		  movb passv+4,disp+20
+          		  movb passv+5,disp+21
+           		  movb passv+6,disp+22
+           		  movb passv+7,disp+23
+           		  movb passv+8,disp+24
+           		  movb passv+9,disp+25
+           		  movb passv+10,disp+26
+           		  movb passv+11,disp+27
+           		  movb passv+12,disp+28
+           		  movb passv+13,disp+29
+           		  movb passv+14,disp+30
+           		  movb passv+15,disp+31
+           		  movb #0,disp+32
            
-           		rts
+           		  rts
 ;************************Re-Enter Password***************
-re_enter:  movb #'R',disp
-           movb #'e',disp+1
-           movb #'n',disp+2
-           movb #'t',disp+3
-           movb #'e',disp+4
-           movb #'r',disp+5
-           movb #'P',disp+6
-           movb #'a',disp+7
+re_enter:  movb #'P',disp
+           movb #'a',disp+1
+           movb #'s',disp+2
+           movb #'s',disp+3
+           movb #'W',disp+4
+           movb #'o',disp+5
+           movb #'r',disp+6
+           movb #'d',disp+7
            movb #'s',disp+8
-           movb #'s',disp+9
-           movb #'W',disp+10
+           movb #' ',disp+9
+           movb #'D',disp+10
            movb #'o',disp+11
-           movb #'r',disp+12
-           movb #'d',disp+13
-           movb #':',disp+14
+           movb #'n',disp+12
+           movb #'t',disp+13
+           movb #' ',disp+14
            movb #' ',disp+15
-           movb pass,disp+16
-           movb pass+1,disp+17
-           movb pass+2,disp+18
-           movb pass+3,disp+19
-           movb pass+4,disp+20
-           movb pass+5,disp+21
-           movb pass+6,disp+22
-           movb pass+7,disp+23
-           movb pass+8,disp+24
-           movb pass+9,disp+25
-           movb pass+10,disp+26
-           movb pass+11,disp+27
-           movb pass+12,disp+28
-           movb pass+13,disp+29
-           movb pass+14,disp+30
-           movb pass+15,disp+31
+           movb #'M',disp+16
+           movb #'a',disp+17
+           movb #'t',disp+18
+           movb #'c',disp+19
+           movb #'h',disp+20
+           movb #' ',disp+21
+           movb #'T',disp+22
+           movb #'r',disp+23
+           movb #'y',disp+24
+           movb #' ',disp+25
+           movb #'A',disp+26
+           movb #'g',disp+27
+           movb #'a',disp+28
+           movb #'i',disp+29
+           movb #'n',disp+30
+           movb #' ',disp+31
            movb #0,disp+32
+
            
            rts
 ;-------------------------'You're in' Display (password accepted)------
