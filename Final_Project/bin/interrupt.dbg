@@ -16,10 +16,10 @@ RTI_ISR:
 ;
 ;	        
         
-    	BRSET start_f, #1, MIDDLE		;branch after 3 seconds
+    BRSET start_f, #1, MIDDLE		;branch after 3 seconds
 		Ldx	start_c						;load count to x
 		inx								;increment count
-		Cpx	#3000		                ;see if equal to 3 seconds 
+		Cpx	#23438		                ;see if equal to 3 seconds 
 		Bne	exit_start_ISR				;
 		BSET start_f, #1				;if 3 seconds then 
 		Ldx	#0		                  	;reset to 0 if 3 seconds

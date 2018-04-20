@@ -1,13 +1,4 @@
-*** EVALUATION ************************************************************************************************
-*********************************************************************************************
-LINKING FAILED
-The linking process failed in some stage.
-Depending on the phase the linker failed, part of the information contained in this map file may be inaccurate or wrong.
-If the linking failed before the allocation phase finished, then the addresses might be inaccurate.
-Also summary information like the code size is likely to be misleading.
----------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------
-
+*** EVALUATION ***
 PROGRAM "C:\Users\Peter\Documents\GitHub\ECE-362\Final_Project\bin\Project.abs"
 
 *********************************************************************************************
@@ -15,7 +6,7 @@ TARGET SECTION
 ---------------------------------------------------------------------------------------------
 Processor   : Freescale HC12
 Memory Model: SMALL
-File Format : ELF (no debug info)
+File Format : ELF\DWARF 2.0
 Linker      : SmartLinker V-5.0.40 Build 10203, Jul 23 2010
 
 *********************************************************************************************
@@ -35,16 +26,25 @@ sound.asm.o                             Model: SMALL,         Lang: Assembler
 Control_Menu.asm.o                      Model: SMALL,         Lang: Assembler
 Functions.asm.o                         Model: SMALL,         Lang: Assembler
 Default_Username.asm.o                  Model: SMALL,         Lang: Assembler
+PassWord.asm.o                          Model: SMALL,         Lang: Assembler
 PassWordVerify.asm.o                    Model: SMALL,         Lang: Assembler
+User_name.asm.o                         Model: SMALL,         Lang: Assembler
+compare_passwords.asm.o                 Model: SMALL,         Lang: Assembler
+Create_Password.asm.o                   Model: SMALL,         Lang: Assembler
+Create_Username.asm.o                   Model: SMALL,         Lang: Assembler
 
 *********************************************************************************************
 STARTUP SECTION
 ---------------------------------------------------------------------------------------------
+Entry point: 0xC000 (Entry)
 
 *********************************************************************************************
 SECTION-ALLOCATION SECTION
 Section Name                    Size  Type     From       To       Segment
 ---------------------------------------------------------------------------------------------
+.init                            404     R     0xC000     0xC193   ROM_C000
+NON_BANKED                       246     R     0xC194     0xC289   ROM_C000
+.stack                           256   R/W      0x400      0x4FF   RAM
 .abs_section_8                     1   N/I        0x8        0x8   .absSeg0
 .abs_section_9                     1   N/I        0x9        0x9   .absSeg1
 .abs_section_a                     1   N/I        0xA        0xA   .absSeg2
@@ -318,14 +318,38 @@ Section Name                    Size  Type     From       To       Segment
 .abs_section_27a                   2   N/I      0x27A      0x27B   .absSeg270
 .abs_section_27c                   2   N/I      0x27C      0x27D   .absSeg271
 .abs_section_27e                   2   N/I      0x27E      0x27F   .absSeg272
+.bss                               6   R/W      0x500      0x505   RAM
+MY_EXTENDED_ROM                   24     R     0xC28A     0xC2A1   ROM_C000
+MY_EXTENDED_RAM                   82   R/W      0x506      0x557   RAM
+my_LCD                            34   R/W      0x558      0x579   RAM
+StringCode                      1724     R     0xC2A2     0xC95D   ROM_C000
+My_code                           65     R     0xC95E     0xC99E   ROM_C000
+Highlight_section                521     R     0xC99F     0xCBA7   ROM_C000
+debounce.asm._SEC000000            9     R     0xCBA8     0xCBB0   ROM_C000
+KEY                               92     R     0xCBB1     0xCC0C   ROM_C000
+MY_SONG                           51     R     0xCC0D     0xCC3F   ROM_C000
+Functions.asm._SEC000000         133     R     0xCC40     0xCCC4   ROM_C000
+Default_Username.asm._SEC000000         10     R     0xCCC5     0xCCCE   ROM_C000
+PassWord.asm._SEC000000          156     R     0xCCCF     0xCD6A   ROM_C000
+PassWordVerify.asm._SEC000000        156     R     0xCD6B     0xCE06   ROM_C000
+User_name.asm._SEC000000         156     R     0xCE07     0xCEA2   ROM_C000
+compare_passwords.asm._SEC000000         72     R     0xCEA3     0xCEEA   ROM_C000
+Create_Password.asm._SEC000000         32     R     0xCEEB     0xCF0A   ROM_C000
+Create_Username.asm._SEC000000         32     R     0xCF0B     0xCF2A   ROM_C000
+.vectSeg273_vect                   2     R     0xFFF0     0xFFF1   .vectSeg273
+.vectSeg274_vect                   2     R     0xFFFE     0xFFFF   .vectSeg274
 
 Summary of section sizes per section type:
+READ_ONLY (R):         F2F (dec:     3887)
+READ_WRITE (R/W):      17A (dec:      378)
 NO_INIT (N/I):         160 (dec:      352)
 
 *********************************************************************************************
 VECTOR-ALLOCATION SECTION
     Address     InitValue   InitFunction
 ---------------------------------------------------------------------------------------------
+     0xFFF0        0xC95E   RTI_ISR
+     0xFFFE        0xC000   _Startup
 
 *********************************************************************************************
 OBJECT-ALLOCATION SECTION
@@ -333,45 +357,58 @@ OBJECT-ALLOCATION SECTION
 ---------------------------------------------------------------------------------------------
 MODULE:                 -- main.asm.o --
 - PROCEDURES:
-     Entry                                        0'Error      75     117       0   MyCode      
-     _Startup                                     0'Error       0       0       0   MyCode      
-     Pass_word                                    0'Error      18      24       0   MyCode      
-     Pass_wordV                                   0'Error       A      10       0   MyCode      
-     PW_Verify                                    0'Error      20      32       0   MyCode      
+     Entry                                     C000      75     117       0   .init       
+     _Startup                                  C000       0       0       0   .init       
+     date_res                                  C075      11      17       0   .init       
+     time_res                                  C086       F      15       0   .init       
+     name_res                                  C095      15      21       0   .init       
+     pass_res                                  C0AA       F      15       0   .init       
+     passv_res                                 C0B9      1D      29       0   .init       
+     SRTMSG1                                   C0D6      13      19       0   .init       
+     SRTMSG2                                   C0E9      2F      47       0   .init       
+     no_match                                  C118       3       3       0   .init       
+     skip                                      C11B      1D      29       0   .init       
+     Pass_word                                 C138       A      10       1   .init       
+     re_enter_pw                               C142       E      14       1   .init       
+     RSRTMSG                                   C150       6       6       0   .init       
+     Pass_wordV                                C156       A      10       1   .init       
+     PW_Verify                                 C160      20      32       1   .init       
+     yourein                                   C180       E      14       1   .init       
+     RSRTMSG2                                  C18E       6       6       0   .init       
 - VARIABLES:
-     delay                                        0'Error       2       2       0   MY_EXTENDED_ROM
-     keys                                         0'Error       4       4       0   MY_EXTENDED_ROM
-     user_input                                   0'Error       1       1       0   MY_EXTENDED_RAM
-     disp                                         0'Error      21      33       0   MY_EXTENDED_RAM
-     start_f                                      0'Error       1       1       0   MY_EXTENDED_RAM
-     enter_f                                      0'Error       1       1       0   MY_EXTENDED_RAM
-     date_f                                       0'Error       1       1       0   MY_EXTENDED_RAM
-     equal_f                                      0'Error       1       1       0   MY_EXTENDED_RAM
-     command                                      0'Error       1       1       0   MY_EXTENDED_RAM
-     prev_val                                     0'Error       1       1       0   MY_EXTENDED_RAM
-     date                                         0'Error       8       8       0   MY_EXTENDED_RAM
-     time                                         0'Error       4       4       0   MY_EXTENDED_RAM
-     name                                         0'Error       F      15       0   MY_EXTENDED_RAM
-     seloff                                       0'Error       2       2       0   MY_EXTENDED_RAM
-     sound_f                                      0'Error       1       1       0   MY_EXTENDED_RAM
-     gens1                                        0'Error       1       1       0   MY_EXTENDED_RAM
-     gens2                                        0'Error       1       1       0   MY_EXTENDED_RAM
-     gens3                                        0'Error       1       1       0   MY_EXTENDED_RAM
-     pass                                         0'Error      10      16       0   my_LCD      
-     passv                                        0'Error      10      16       0   my_LCD      
-     cursor                                       0'Error       2       2       0   my_LCD      
+     delay                                     C28A       2       2       1   MY_EXTENDED_ROM
+     keys                                      C28C       4       4       0   MY_EXTENDED_ROM
+     user_input                                 506       1       1       0   MY_EXTENDED_RAM
+     disp                                       507      21      33     341   MY_EXTENDED_RAM
+     start_f                                    528       1       1      10   MY_EXTENDED_RAM
+     enter_f                                    529       1       1      21   MY_EXTENDED_RAM
+     date_f                                     52A       1       1       0   MY_EXTENDED_RAM
+     equal_f                                    52B       1       1       3   MY_EXTENDED_RAM
+     command                                    52C       1       1      23   MY_EXTENDED_RAM
+     prev_val                                   52D       1       1       4   MY_EXTENDED_RAM
+     date                                       52E       8       8      23   MY_EXTENDED_RAM
+     time                                       536       4       4      16   MY_EXTENDED_RAM
+     name                                       53A       F      15      24   MY_EXTENDED_RAM
+     seloff                                     549       2       2      27   MY_EXTENDED_RAM
+     sound_f                                    54B       1       1       0   MY_EXTENDED_RAM
+     gens1                                      54C       1       1       8   MY_EXTENDED_RAM
+     gens2                                      54D       1       1       8   MY_EXTENDED_RAM
+     gens3                                      54E       1       1       8   MY_EXTENDED_RAM
+     pass                                       558      10      16      26   my_LCD      
+     passv                                      568      10      16      26   my_LCD      
+     cursor                                     578       2       2      36   my_LCD      
 - LABELS:
-     __SEG_END_SSTACK                             0'Error       0       0       0               
-     port_u                                     268       0       0       0   .text       
+     __SEG_END_SSTACK                           500       0       0       1               
+     port_u                                     268       0       0       2   .text       
 MODULE:                 -- lcddisp.c.o --
 - PROCEDURES:
-     delay_ms                                     0'Error      17      23       0   NON_BANKED  
-     init_LCD                                     0'Error      52      82       0   NON_BANKED  
-     display_string                               0'Error      38      56       0   NON_BANKED  
-     epulse                                       0'Error      24      36       0   NON_BANKED  
-     sendCommand                                  0'Error       F      15       0   NON_BANKED  
+     delay_ms                                  C194      17      23       5   NON_BANKED  
+     init_LCD                                  C1AB      52      82       1   NON_BANKED  
+     display_string                            C1FD      38      56      15   NON_BANKED  
+     epulse                                    C235      24      36       3   NON_BANKED  
+     sendCommand                               C259       F      15       7   NON_BANKED  
 - VARIABLES:
-     data                                         0'Error       2       2       0   .bss        
+     data                                       500       2       2       4   .bss        
 MODULE:                 -- mc9s12e128.c.o --
 - PROCEDURES:
 - VARIABLES:
@@ -530,7 +567,7 @@ MODULE:                 -- mc9s12e128.c.o --
      _PMFFQCB                                   229       1       1       0   .abs_section_229
      _PMFENCC                                   230       1       1       0   .abs_section_230
      _PMFFQCC                                   231       1       1       0   .abs_section_231
-     _PTT                                       240       1       1       0   .abs_section_240
+     _PTT                                       240       1       1       2   .abs_section_240
      _PTIT                                      241       1       1       0   .abs_section_241
      _DDRT                                      242       1       1       0   .abs_section_242
      _RDRT                                      243       1       1       0   .abs_section_243
@@ -543,9 +580,9 @@ MODULE:                 -- mc9s12e128.c.o --
      _PERS                                      24C       1       1       0   .abs_section_24c
      _PPSS                                      24D       1       1       0   .abs_section_24d
      _WOMS                                      24E       1       1       0   .abs_section_24e
-     _PTM                                       250       1       1       0   .abs_section_250
+     _PTM                                       250       1       1       5   .abs_section_250
      _PTIM                                      251       1       1       0   .abs_section_251
-     _DDRM                                      252       1       1       0   .abs_section_252
+     _DDRM                                      252       1       1       1   .abs_section_252
      _RDRM                                      253       1       1       0   .abs_section_253
      _PERM                                      254       1       1       0   .abs_section_254
      _PPSM                                      255       1       1       0   .abs_section_255
@@ -640,9 +677,9 @@ MODULE:                 -- mc9s12e128.c.o --
      _PMFCNTC                                   232       2       2       0   .abs_section_232
      _PMFMODC                                   234       2       2       0   .abs_section_234
      _PMFDTMC                                   236       2       2       0   .abs_section_236
-     _PTAD                                      270       2       2       0   .abs_section_270
+     _PTAD                                      270       2       2       4   .abs_section_270
      _PTIAD                                     272       2       2       0   .abs_section_272
-     _DDRAD                                     274       2       2       0   .abs_section_274
+     _DDRAD                                     274       2       2       1   .abs_section_274
      _RDRAD                                     276       2       2       0   .abs_section_276
      _PERAD                                     278       2       2       0   .abs_section_278
      _PPSAD                                     27A       2       2       0   .abs_section_27a
@@ -650,156 +687,1260 @@ MODULE:                 -- mc9s12e128.c.o --
      _PIFAD                                     27E       2       2       0   .abs_section_27e
 MODULE:                 -- SendsChr.c.o --
 - PROCEDURES:
-     SendsChr                                     0'Error       8       8       0   NON_BANKED  
-     PlayTone                                     0'Error      1A      26       0   NON_BANKED  
+     SendsChr                                  C268       8       8       1   NON_BANKED  
+     PlayTone                                  C270      1A      26       1   NON_BANKED  
 - VARIABLES:
-     tone                                         0'Error       2       2       0   .bss        
-     tone_count                                   0'Error       2       2       0   .bss        
+     tone                                       502       2       2       2   .bss        
+     tone_count                                 504       2       2       4   .bss        
 MODULE:                 -- strings.asm.o --
 - PROCEDURES:
-     Startup_1                                    0'Error      A6     166       0   StringCode  
-     Startup_2                                    0'Error      A6     166       0   StringCode  
-     date_str                                     0'Error      B2     178       0   StringCode  
-     admin_u                                      0'Error      B6     182       0   StringCode  
-     menu_str                                     0'Error      99     153       0   StringCode  
-     PW_String                                    0'Error      B6     182       0   StringCode  
-     PW_Verify_String                             0'Error      B6     182       0   StringCode  
-     re_enter                                     0'Error      A6     166       0   StringCode  
-     accepted                                     0'Error      AB     171       0   StringCode  
-     GenSelStr                                    0'Error      B2     178       0   StringCode  
+     Startup_1                                 C2A2      A6     166       1   StringCode  
+     Startup_2                                 C348      A6     166       1   StringCode  
+     date_str                                  C3EE      B2     178       3   StringCode  
+     admin_u                                   C4A0      B6     182       2   StringCode  
+     menu_str                                  C556      99     153       1   StringCode  
+     PW_String                                 C5EF      B6     182       2   StringCode  
+     PW_Verify_String                          C6A5      B6     182       2   StringCode  
+     re_enter                                  C75B      A6     166       1   StringCode  
+     accepted                                  C801      AB     171       1   StringCode  
+     GenSelStr                                 C8AC      B2     178       1   StringCode  
 - VARIABLES:
 MODULE:                 -- interrupt.asm.o --
 - PROCEDURES:
-     RTI_ISR                                      0'Error      17      23       0   My_code     
-     MIDDLE                                       0'Error       7       7       0   My_code     
-     SOUND_RT                                     0'Error      11      17       0   My_code     
-     done_sound                                   0'Error       7       7       0   My_code     
-     exit_start_ISR                               0'Error       7       7       0   My_code     
-     exit_ISR                                     0'Error       4       4       0   My_code     
+     RTI_ISR                                   C95E      17      23       0   My_code     
+     MIDDLE                                    C975       7       7       0   My_code     
+     SOUND_RT                                  C97C      11      17       0   My_code     
+     done_sound                                C98D       7       7       0   My_code     
+     exit_start_ISR                            C994       7       7       0   My_code     
+     exit_ISR                                  C99B       4       4       0   My_code     
 - VARIABLES:
-     start_c                                      0'Error       2       2       0   MY_EXTENDED_RAM
-     sound_c                                      0'Error       2       2       0   MY_EXTENDED_RAM
+     start_c                                    54F       2       2       5   MY_EXTENDED_RAM
+     sound_c                                    551       2       2       5   MY_EXTENDED_RAM
 MODULE:                 -- date.asm.o --
 - PROCEDURES:
-     Date_Start                                   0'Error      32      50       0   Highlight_section
-     I_num                                        0'Error      12      18       0   Highlight_section
-     D_num                                        0'Error      12      18       0   Highlight_section
-     R_num                                        0'Error       E      14       0   Highlight_section
-     L_num                                        0'Error       E      14       0   Highlight_section
-     F_key                                        0'Error       7       7       0   Highlight_section
-     n_res_high                                   0'Error       A      10       0   Highlight_section
-     n_res_low                                    0'Error       A      10       0   Highlight_section
-     l_res                                        0'Error       8       8       0   Highlight_section
-     r_res                                        0'Error       8       8       0   Highlight_section
-     DONE                                         0'Error       F      15       0   Highlight_section
+     Date_Start                                C99F      32      50       1   Highlight_section
+     I_num                                     C9D1      12      18       0   Highlight_section
+     D_num                                     C9E3      12      18       0   Highlight_section
+     R_num                                     C9F5       E      14       0   Highlight_section
+     L_num                                     CA03       E      14       0   Highlight_section
+     F_key                                     CA11       7       7       0   Highlight_section
+     n_res_high                                CA18       A      10       0   Highlight_section
+     n_res_low                                 CA22       A      10       0   Highlight_section
+     l_res                                     CA2C       8       8       0   Highlight_section
+     r_res                                     CA34       8       8       0   Highlight_section
+     DONE                                      CA3C       F      15       0   Highlight_section
 - VARIABLES:
 MODULE:                 -- time.asm.o --
 - PROCEDURES:
-     Time_Start                                   0'Error      27      39       0   Highlight_section
-     I_num                                        0'Error      1C      28       0   Highlight_section
-     T_Comp                                       0'Error       B      11       0   Highlight_section
-     D_num                                        0'Error      12      18       0   Highlight_section
-     R_num                                        0'Error       E      14       0   Highlight_section
-     L_num                                        0'Error       E      14       0   Highlight_section
-     F_key                                        0'Error       7       7       0   Highlight_section
-     n_res_high                                   0'Error       A      10       0   Highlight_section
-     n_res_low                                    0'Error       A      10       0   Highlight_section
-     l_res                                        0'Error       8       8       0   Highlight_section
-     r_res                                        0'Error       8       8       0   Highlight_section
-     DONE                                         0'Error       F      15       0   Highlight_section
+     Time_Start                                CA4B      27      39       1   Highlight_section
+     I_num                                     CA72      1C      28       0   Highlight_section
+     T_Comp                                    CA8E       B      11       0   Highlight_section
+     D_num                                     CA99      12      18       0   Highlight_section
+     R_num                                     CAAB       E      14       0   Highlight_section
+     L_num                                     CAB9       E      14       0   Highlight_section
+     F_key                                     CAC7       7       7       0   Highlight_section
+     n_res_high                                CACE       A      10       0   Highlight_section
+     n_res_low                                 CAD8       A      10       0   Highlight_section
+     l_res                                     CAE2       8       8       0   Highlight_section
+     r_res                                     CAEA       8       8       0   Highlight_section
+     DONE                                      CAF2       F      15       0   Highlight_section
 - VARIABLES:
-     prev_val                                     0'Error       1       1       0   MY_EXTENDED_RAM
+     prev_val                                   553       1       1       2   MY_EXTENDED_RAM
 MODULE:                 -- debounce.asm.o --
 - PROCEDURES:
-     delay1ms                                     0'Error       4       4       0   debounce.asm._SEC000000
-     loop                                         0'Error       5       5       0   debounce.asm._SEC000000
+     delay1ms                                  CBA8       4       4       1   debounce.asm._SEC000000
+     loop                                      CBAC       5       5       0   debounce.asm._SEC000000
 - VARIABLES:
 MODULE:                 -- keypad_input.asm.o --
 - PROCEDURES:
-     scan                                         0'Error       3       3       0   KEY         
-     rescan                                       0'Error      24      36       0   KEY         
-     up                                           0'Error       8       8       0   KEY         
-     right                                        0'Error       8       8       0   KEY         
-     down                                         0'Error       8       8       0   KEY         
-     left                                         0'Error       8       8       0   KEY         
-     prompt                                       0'Error       8       8       0   KEY         
-     NCommand                                     0'Error       B      11       0   KEY         
-     leave                                        0'Error       2       2       0   KEY         
+     scan                                      CBB1       3       3       7   KEY         
+     rescan                                    CBB4      24      36       0   KEY         
+     up                                        CBD8       8       8       0   KEY         
+     right                                     CBE0       8       8       0   KEY         
+     down                                      CBE8       8       8       0   KEY         
+     left                                      CBF0       8       8       0   KEY         
+     prompt                                    CBF8       8       8       0   KEY         
+     NCommand                                  CC00       B      11       0   KEY         
+     leave                                     CC0B       2       2       0   KEY         
 - VARIABLES:
-     clearv                                       0'Error       1       1       0   MY_EXTENDED_RAM
+     clearv                                     554       1       1       7   MY_EXTENDED_RAM
 MODULE:                 -- sound.asm.o --
 - PROCEDURES:
-     Door_Song_Start                              0'Error       7       7       0   MY_SONG     
-     Door_Song                                    0'Error      2B      43       0   MY_SONG     
-     DONE                                         0'Error       1       1       0   MY_SONG     
+     Door_Song_Start                           CC0D       7       7       1   MY_SONG     
+     Door_Song                                 CC14      2B      43       1   MY_SONG     
+     DONE                                      CC3F       1       1       0   MY_SONG     
 - VARIABLES:
-     song1                                        0'Error       F      15       0   MY_EXTENDED_ROM
-     song2                                        0'Error       3       3       0   MY_EXTENDED_ROM
-     place                                        0'Error       2       2       0   MY_EXTENDED_RAM
-     sound_rdy                                    0'Error       1       1       0   MY_EXTENDED_RAM
+     song1                                     C290       F      15       0   MY_EXTENDED_ROM
+     song2                                     C29F       3       3       1   MY_EXTENDED_ROM
+     place                                      555       2       2       3   MY_EXTENDED_RAM
+     sound_rdy                                  557       1       1       5   MY_EXTENDED_RAM
 MODULE:                 -- Control_Menu.asm.o --
 - PROCEDURES:
-     GenSel                                       0'Error      26      38       0   Highlight_section
-     R_num                                        0'Error       E      14       0   Highlight_section
-     L_num                                        0'Error       E      14       0   Highlight_section
-     F_key                                        0'Error       7       7       0   Highlight_section
-     l_res                                        0'Error       8       8       0   Highlight_section
-     r_res                                        0'Error       8       8       0   Highlight_section
-     SEL                                          0'Error       C      12       0   Highlight_section
-     Sel0                                         0'Error      11      17       0   Highlight_section
-     Sel1                                         0'Error      11      17       0   Highlight_section
-     Sel2                                         0'Error      11      17       0   Highlight_section
-     DONE                                         0'Error       F      15       0   Highlight_section
+     GenSel                                    CB01      26      38       1   Highlight_section
+     R_num                                     CB27       E      14       0   Highlight_section
+     L_num                                     CB35       E      14       0   Highlight_section
+     F_key                                     CB43       7       7       0   Highlight_section
+     l_res                                     CB4A       8       8       0   Highlight_section
+     r_res                                     CB52       8       8       0   Highlight_section
+     SEL                                       CB5A       C      12       0   Highlight_section
+     Sel0                                      CB66      11      17       0   Highlight_section
+     Sel1                                      CB77      11      17       0   Highlight_section
+     Sel2                                      CB88      11      17       0   Highlight_section
+     DONE                                      CB99       F      15       0   Highlight_section
 - VARIABLES:
 MODULE:                 -- Functions.asm.o --
 - PROCEDURES:
-     Date_Change                                  0'Error      1E      30       0   Functions.asm._SEC000000
-     Time_Change                                  0'Error      1E      30       0   Functions.asm._SEC000000
-     SONG_TIME_START                              0'Error       3       3       0   Functions.asm._SEC000000
-     Song                                         0'Error       5       5       0   Functions.asm._SEC000000
-     MENU                                         0'Error      23      35       0   Functions.asm._SEC000000
-     Cont_Men                                     0'Error      1E      30       0   Functions.asm._SEC000000
+     Date_Change                               CC40      1E      30       1   Functions.asm._SEC000000
+     Time_Change                               CC5E      1E      30       1   Functions.asm._SEC000000
+     SONG_TIME_START                           CC7C       3       3       1   Functions.asm._SEC000000
+     Song                                      CC7F       5       5       0   Functions.asm._SEC000000
+     MENU                                      CC84      23      35       1   Functions.asm._SEC000000
+     Cont_Men                                  CCA7      1E      30       1   Functions.asm._SEC000000
 - VARIABLES:
 MODULE:                 -- Default_Username.asm.o --
 - PROCEDURES:
-     User_name                                    0'Error       A      10       0   Default_Username.asm._SEC000000
+     User_name                                 CCC5       A      10       1   Default_Username.asm._SEC000000
+- VARIABLES:
+MODULE:                 -- PassWord.asm.o --
+- PROCEDURES:
+     Password_start                            CCCF      1C      28       1   PassWord.asm._SEC000000
+     inc_alph                                  CCEB       F      15       0   PassWord.asm._SEC000000
+     skip                                      CCFA      10      16       0   PassWord.asm._SEC000000
+     R_curs                                    CD0A      11      17       0   PassWord.asm._SEC000000
+     boundary1                                 CD1B       8       8       0   PassWord.asm._SEC000000
+     dec_alph                                  CD23       F      15       0   PassWord.asm._SEC000000
+     skip2                                     CD32      10      16       0   PassWord.asm._SEC000000
+     L_curs                                    CD42      11      17       0   PassWord.asm._SEC000000
+     boundary2                                 CD53       8       8       0   PassWord.asm._SEC000000
+     F_key                                     CD5B       5       5       0   PassWord.asm._SEC000000
+     leave                                     CD60       B      11       0   PassWord.asm._SEC000000
 - VARIABLES:
 MODULE:                 -- PassWordVerify.asm.o --
 - PROCEDURES:
-     Password_verify                              0'Error      1C      28       0   PassWordVerify.asm._SEC000000
-     inc_alph                                     0'Error       F      15       0   PassWordVerify.asm._SEC000000
-     skip                                         0'Error      10      16       0   PassWordVerify.asm._SEC000000
-     R_curs                                       0'Error      11      17       0   PassWordVerify.asm._SEC000000
-     boundary1                                    0'Error       8       8       0   PassWordVerify.asm._SEC000000
-     dec_alph                                     0'Error       F      15       0   PassWordVerify.asm._SEC000000
-     skip2                                        0'Error      10      16       0   PassWordVerify.asm._SEC000000
-     L_curs                                       0'Error      11      17       0   PassWordVerify.asm._SEC000000
-     boundary2                                    0'Error       8       8       0   PassWordVerify.asm._SEC000000
-     F_key                                        0'Error       5       5       0   PassWordVerify.asm._SEC000000
-     leave                                        0'Error       B      11       0   PassWordVerify.asm._SEC000000
+     Password_verify                           CD6B      1C      28       1   PassWordVerify.asm._SEC000000
+     inc_alph                                  CD87       F      15       0   PassWordVerify.asm._SEC000000
+     skip                                      CD96      10      16       0   PassWordVerify.asm._SEC000000
+     R_curs                                    CDA6      11      17       0   PassWordVerify.asm._SEC000000
+     boundary1                                 CDB7       8       8       0   PassWordVerify.asm._SEC000000
+     dec_alph                                  CDBF       F      15       0   PassWordVerify.asm._SEC000000
+     skip2                                     CDCE      10      16       0   PassWordVerify.asm._SEC000000
+     L_curs                                    CDDE      11      17       0   PassWordVerify.asm._SEC000000
+     boundary2                                 CDEF       8       8       0   PassWordVerify.asm._SEC000000
+     F_key                                     CDF7       5       5       0   PassWordVerify.asm._SEC000000
+     leave                                     CDFC       B      11       0   PassWordVerify.asm._SEC000000
+- VARIABLES:
+MODULE:                 -- User_name.asm.o --
+- PROCEDURES:
+     Username_start                            CE07      1C      28       1   User_name.asm._SEC000000
+     inc_alph                                  CE23       F      15       0   User_name.asm._SEC000000
+     skip                                      CE32      10      16       0   User_name.asm._SEC000000
+     R_curs                                    CE42      11      17       0   User_name.asm._SEC000000
+     boundary1                                 CE53       8       8       0   User_name.asm._SEC000000
+     dec_alph                                  CE5B       F      15       0   User_name.asm._SEC000000
+     skip2                                     CE6A      10      16       0   User_name.asm._SEC000000
+     L_curs                                    CE7A      11      17       0   User_name.asm._SEC000000
+     boundary2                                 CE8B       8       8       0   User_name.asm._SEC000000
+     F_key                                     CE93       5       5       0   User_name.asm._SEC000000
+     leave                                     CE98       B      11       0   User_name.asm._SEC000000
+- VARIABLES:
+MODULE:                 -- compare_passwords.asm.o --
+- PROCEDURES:
+     compare_string                            CEA3       3       3       1   compare_passwords.asm._SEC000000
+     compare                                   CEA6      14      20       0   compare_passwords.asm._SEC000000
+     notequal                                  CEBA      10      16       0   compare_passwords.asm._SEC000000
+     pass_res2                                 CECA       F      15       0   compare_passwords.asm._SEC000000
+     passv_res2                                CED9       B      11       0   compare_passwords.asm._SEC000000
+     equal                                     CEE4       7       7       0   compare_passwords.asm._SEC000000
+- VARIABLES:
+MODULE:                 -- Create_Password.asm.o --
+- PROCEDURES:
+     PW_Creation                               CEEB      20      32       1   Create_Password.asm._SEC000000
+- VARIABLES:
+MODULE:                 -- Create_Username.asm.o --
+- PROCEDURES:
+     user_chng                                 CF0B      20      32       1   Create_Username.asm._SEC000000
 - VARIABLES:
 
 *********************************************************************************************
 MODULE STATISTIC
   Name                                      Data   Code  Const
 ---------------------------------------------------------------------------------------------
+  main.asm.o                                 107    404      6
+  lcddisp.c.o                                  2    212      0
+  mc9s12e128.c.o                             352      0      0
+  SendsChr.c.o                                 4     34      0
+  strings.asm.o                                0   1724      0
+  interrupt.asm.o                              4     65      0
+  date.asm.o                                   0    172      0
+  time.asm.o                                   1    182      0
+  debounce.asm.o                               0      9      0
+  keypad_input.asm.o                           1     92      0
+  sound.asm.o                                  3     51     18
+  Control_Menu.asm.o                           0    167      0
+  Functions.asm.o                              0    133      0
+  Default_Username.asm.o                       0     10      0
+  PassWord.asm.o                               0    156      0
+  PassWordVerify.asm.o                         0    156      0
+  User_name.asm.o                              0    156      0
+  compare_passwords.asm.o                      0     72      0
+  Create_Password.asm.o                        0     32      0
+  Create_Username.asm.o                        0     32      0
+  other                                      256      4      0
 
 *********************************************************************************************
 SECTION USE IN OBJECT-ALLOCATION SECTION
 ---------------------------------------------------------------------------------------------
+SECTION: ".text"
+  port_u 
+SECTION: ".bss"
+  data tone tone_count 
+SECTION: ".init"
+  _Startup Entry date_res time_res name_res pass_res passv_res SRTMSG1 SRTMSG2 
+  no_match skip Pass_word re_enter_pw RSRTMSG Pass_wordV PW_Verify yourein 
+  RSRTMSG2 
+SECTION: "NON_BANKED"
+  delay_ms init_LCD display_string epulse sendCommand SendsChr PlayTone 
+SECTION: "MY_EXTENDED_ROM"
+  delay keys song1 song2 
+SECTION: "MY_EXTENDED_RAM"
+  user_input disp start_f enter_f date_f equal_f command prev_val date time 
+  name seloff sound_f gens1 gens2 gens3 start_c sound_c prev_val clearv place 
+  sound_rdy 
+SECTION: "my_LCD"
+  pass passv cursor 
+SECTION: ".abs_section_8"
+  _PORTE 
+SECTION: ".abs_section_9"
+  _DDRE 
+SECTION: ".abs_section_a"
+  _PEAR 
+SECTION: ".abs_section_b"
+  _MODE 
+SECTION: ".abs_section_c"
+  _PUCR 
+SECTION: ".abs_section_d"
+  _RDRIV 
+SECTION: ".abs_section_e"
+  _EBICTL 
+SECTION: ".abs_section_10"
+  _INITRM 
+SECTION: ".abs_section_11"
+  _INITRG 
+SECTION: ".abs_section_13"
+  _MISC 
+SECTION: ".abs_section_15"
+  _ITCR 
+SECTION: ".abs_section_16"
+  _ITEST 
+SECTION: ".abs_section_19"
+  _VREGCTRL 
+SECTION: ".abs_section_1c"
+  _MEMSIZ0 
+SECTION: ".abs_section_1d"
+  _MEMSIZ1 
+SECTION: ".abs_section_1e"
+  _INTCR 
+SECTION: ".abs_section_1f"
+  _HPRIO 
+SECTION: ".abs_section_20"
+  _DBGC1 
+SECTION: ".abs_section_21"
+  _DBGSC 
+SECTION: ".abs_section_24"
+  _DBGCNT 
+SECTION: ".abs_section_25"
+  _DBGCCX 
+SECTION: ".abs_section_28"
+  _DBGC2 
+SECTION: ".abs_section_29"
+  _DBGC3 
+SECTION: ".abs_section_2a"
+  _DBGCAX 
+SECTION: ".abs_section_2d"
+  _DBGCBX 
+SECTION: ".abs_section_30"
+  _PPAGE 
+SECTION: ".abs_section_32"
+  _PORTK 
+SECTION: ".abs_section_33"
+  _DDRK 
+SECTION: ".abs_section_34"
+  _SYNR 
+SECTION: ".abs_section_35"
+  _REFDV 
+SECTION: ".abs_section_37"
+  _CRGFLG 
+SECTION: ".abs_section_38"
+  _CRGINT 
+SECTION: ".abs_section_39"
+  _CLKSEL 
+SECTION: ".abs_section_3a"
+  _PLLCTL 
+SECTION: ".abs_section_3b"
+  _RTICTL 
+SECTION: ".abs_section_3c"
+  _COPCTL 
+SECTION: ".abs_section_3f"
+  _ARMCOP 
+SECTION: ".abs_section_40"
+  _TIM0_TIOS 
+SECTION: ".abs_section_41"
+  _TIM0_CFORC 
+SECTION: ".abs_section_42"
+  _TIM0_OC7M 
+SECTION: ".abs_section_43"
+  _TIM0_OC7D 
+SECTION: ".abs_section_46"
+  _TIM0_TSCR1 
+SECTION: ".abs_section_47"
+  _TIM0_TTOV 
+SECTION: ".abs_section_48"
+  _TIM0_TCTL1 
+SECTION: ".abs_section_4a"
+  _TIM0_TCTL3 
+SECTION: ".abs_section_4c"
+  _TIM0_TIE 
+SECTION: ".abs_section_4d"
+  _TIM0_TSCR2 
+SECTION: ".abs_section_4e"
+  _TIM0_TFLG1 
+SECTION: ".abs_section_4f"
+  _TIM0_TFLG2 
+SECTION: ".abs_section_60"
+  _TIM0_PACTL 
+SECTION: ".abs_section_61"
+  _TIM0_PAFLG 
+SECTION: ".abs_section_86"
+  _ATDSTAT0 
+SECTION: ".abs_section_89"
+  _ATDTEST1 
+SECTION: ".abs_section_8a"
+  _ATDSTAT2 
+SECTION: ".abs_section_8b"
+  _ATDSTAT1 
+SECTION: ".abs_section_8e"
+  _PORTAD0 
+SECTION: ".abs_section_8f"
+  _PORTAD1 
+SECTION: ".abs_section_ca"
+  _SCI0CR1 
+SECTION: ".abs_section_cb"
+  _SCI0CR2 
+SECTION: ".abs_section_cc"
+  _SCI0SR1 
+SECTION: ".abs_section_cd"
+  _SCI0SR2 
+SECTION: ".abs_section_ce"
+  _SCI0DRH 
+SECTION: ".abs_section_cf"
+  _SCI0DRL 
+SECTION: ".abs_section_d2"
+  _SCI1CR1 
+SECTION: ".abs_section_d3"
+  _SCI1CR2 
+SECTION: ".abs_section_d4"
+  _SCI1SR1 
+SECTION: ".abs_section_d5"
+  _SCI1SR2 
+SECTION: ".abs_section_d6"
+  _SCI1DRH 
+SECTION: ".abs_section_d7"
+  _SCI1DRL 
+SECTION: ".abs_section_d8"
+  _SPICR1 
+SECTION: ".abs_section_d9"
+  _SPICR2 
+SECTION: ".abs_section_da"
+  _SPIBR 
+SECTION: ".abs_section_db"
+  _SPISR 
+SECTION: ".abs_section_dd"
+  _SPIDR 
+SECTION: ".abs_section_e0"
+  _IBAD 
+SECTION: ".abs_section_e1"
+  _IBFD 
+SECTION: ".abs_section_e2"
+  _IBCR 
+SECTION: ".abs_section_e3"
+  _IBSR 
+SECTION: ".abs_section_e4"
+  _IBDR 
+SECTION: ".abs_section_ea"
+  _SCI2CR1 
+SECTION: ".abs_section_eb"
+  _SCI2CR2 
+SECTION: ".abs_section_ec"
+  _SCI2SR1 
+SECTION: ".abs_section_ed"
+  _SCI2SR2 
+SECTION: ".abs_section_ee"
+  _SCI2DRH 
+SECTION: ".abs_section_ef"
+  _SCI2DRL 
+SECTION: ".abs_section_f0"
+  _DAC0_DACC0 
+SECTION: ".abs_section_f2"
+  _DAC0_DACDLeft 
+SECTION: ".abs_section_f3"
+  _DAC0_DACDRight 
+SECTION: ".abs_section_f4"
+  _DAC1_DACC0 
+SECTION: ".abs_section_f6"
+  _DAC1_DACDLeft 
+SECTION: ".abs_section_f7"
+  _DAC1_DACDRight 
+SECTION: ".abs_section_100"
+  _FCLKDIV 
+SECTION: ".abs_section_101"
+  _FSEC 
+SECTION: ".abs_section_103"
+  _FCNFG 
+SECTION: ".abs_section_104"
+  _FPROT 
+SECTION: ".abs_section_105"
+  _FSTAT 
+SECTION: ".abs_section_106"
+  _FCMD 
+SECTION: ".abs_section_140"
+  _TIM1_TIOS 
+SECTION: ".abs_section_141"
+  _TIM1_CFORC 
+SECTION: ".abs_section_142"
+  _TIM1_OC7M 
+SECTION: ".abs_section_143"
+  _TIM1_OC7D 
+SECTION: ".abs_section_146"
+  _TIM1_TSCR1 
+SECTION: ".abs_section_147"
+  _TIM1_TTOV 
+SECTION: ".abs_section_148"
+  _TIM1_TCTL1 
+SECTION: ".abs_section_14a"
+  _TIM1_TCTL3 
+SECTION: ".abs_section_14c"
+  _TIM1_TIE 
+SECTION: ".abs_section_14d"
+  _TIM1_TSCR2 
+SECTION: ".abs_section_14e"
+  _TIM1_TFLG1 
+SECTION: ".abs_section_14f"
+  _TIM1_TFLG2 
+SECTION: ".abs_section_160"
+  _TIM1_PACTL 
+SECTION: ".abs_section_161"
+  _TIM1_PAFLG 
+SECTION: ".abs_section_180"
+  _TIM2_TIOS 
+SECTION: ".abs_section_181"
+  _TIM2_CFORC 
+SECTION: ".abs_section_182"
+  _TIM2_OC7M 
+SECTION: ".abs_section_183"
+  _TIM2_OC7D 
+SECTION: ".abs_section_186"
+  _TIM2_TSCR1 
+SECTION: ".abs_section_187"
+  _TIM2_TTOV 
+SECTION: ".abs_section_188"
+  _TIM2_TCTL1 
+SECTION: ".abs_section_18a"
+  _TIM2_TCTL3 
+SECTION: ".abs_section_18c"
+  _TIM2_TIE 
+SECTION: ".abs_section_18d"
+  _TIM2_TSCR2 
+SECTION: ".abs_section_18e"
+  _TIM2_TFLG1 
+SECTION: ".abs_section_18f"
+  _TIM2_TFLG2 
+SECTION: ".abs_section_1a0"
+  _TIM2_PACTL 
+SECTION: ".abs_section_1a1"
+  _TIM2_PAFLG 
+SECTION: ".abs_section_1e0"
+  _PWME 
+SECTION: ".abs_section_1e1"
+  _PWMPOL 
+SECTION: ".abs_section_1e2"
+  _PWMCLK 
+SECTION: ".abs_section_1e3"
+  _PWMPRCLK 
+SECTION: ".abs_section_1e4"
+  _PWMCAE 
+SECTION: ".abs_section_1e5"
+  _PWMCTL 
+SECTION: ".abs_section_1e8"
+  _PWMSCLA 
+SECTION: ".abs_section_1e9"
+  _PWMSCLB 
+SECTION: ".abs_section_1fe"
+  _PWMSDN 
+SECTION: ".abs_section_200"
+  _PMFCFG0 
+SECTION: ".abs_section_201"
+  _PMFCFG1 
+SECTION: ".abs_section_202"
+  _PMFCFG2 
+SECTION: ".abs_section_203"
+  _PMFCFG3 
+SECTION: ".abs_section_204"
+  _PMFFCTL 
+SECTION: ".abs_section_205"
+  _PMFFPIN 
+SECTION: ".abs_section_206"
+  _PMFFSTA 
+SECTION: ".abs_section_207"
+  _PMFQSMP 
+SECTION: ".abs_section_208"
+  _PMFDMPA 
+SECTION: ".abs_section_209"
+  _PMFDMPB 
+SECTION: ".abs_section_20a"
+  _PMFDMPC 
+SECTION: ".abs_section_20c"
+  _PMFOUTC 
+SECTION: ".abs_section_20d"
+  _PMFOUTB 
+SECTION: ".abs_section_20e"
+  _PMFDTMS 
+SECTION: ".abs_section_20f"
+  _PMFCCTL 
+SECTION: ".abs_section_220"
+  _PMFENCA 
+SECTION: ".abs_section_221"
+  _PMFFQCA 
+SECTION: ".abs_section_228"
+  _PMFENCB 
+SECTION: ".abs_section_229"
+  _PMFFQCB 
+SECTION: ".abs_section_230"
+  _PMFENCC 
+SECTION: ".abs_section_231"
+  _PMFFQCC 
+SECTION: ".abs_section_240"
+  _PTT 
+SECTION: ".abs_section_241"
+  _PTIT 
+SECTION: ".abs_section_242"
+  _DDRT 
+SECTION: ".abs_section_243"
+  _RDRT 
+SECTION: ".abs_section_244"
+  _PERT 
+SECTION: ".abs_section_245"
+  _PPST 
+SECTION: ".abs_section_248"
+  _PTS 
+SECTION: ".abs_section_249"
+  _PTIS 
+SECTION: ".abs_section_24a"
+  _DDRS 
+SECTION: ".abs_section_24b"
+  _RDRS 
+SECTION: ".abs_section_24c"
+  _PERS 
+SECTION: ".abs_section_24d"
+  _PPSS 
+SECTION: ".abs_section_24e"
+  _WOMS 
+SECTION: ".abs_section_250"
+  _PTM 
+SECTION: ".abs_section_251"
+  _PTIM 
+SECTION: ".abs_section_252"
+  _DDRM 
+SECTION: ".abs_section_253"
+  _RDRM 
+SECTION: ".abs_section_254"
+  _PERM 
+SECTION: ".abs_section_255"
+  _PPSM 
+SECTION: ".abs_section_256"
+  _WOMM 
+SECTION: ".abs_section_258"
+  _PTP 
+SECTION: ".abs_section_259"
+  _PTIP 
+SECTION: ".abs_section_25a"
+  _DDRP 
+SECTION: ".abs_section_25b"
+  _RDRP 
+SECTION: ".abs_section_25c"
+  _PERP 
+SECTION: ".abs_section_25d"
+  _PPSP 
+SECTION: ".abs_section_260"
+  _PTQ 
+SECTION: ".abs_section_261"
+  _PTIQ 
+SECTION: ".abs_section_262"
+  _DDRQ 
+SECTION: ".abs_section_263"
+  _RDRQ 
+SECTION: ".abs_section_264"
+  _PERQ 
+SECTION: ".abs_section_265"
+  _PPSQ 
+SECTION: ".abs_section_268"
+  _PTU 
+SECTION: ".abs_section_269"
+  _PTIU 
+SECTION: ".abs_section_26a"
+  _DDRU 
+SECTION: ".abs_section_26b"
+  _RDRU 
+SECTION: ".abs_section_26c"
+  _PERU 
+SECTION: ".abs_section_26d"
+  _PPSU 
+SECTION: ".abs_section_26e"
+  _MODRR 
+SECTION: ".abs_section_0"
+  _PORTAB 
+SECTION: ".abs_section_2"
+  _DDRAB 
+SECTION: ".abs_section_1a"
+  _PARTID 
+SECTION: ".abs_section_22"
+  _DBGTB 
+SECTION: ".abs_section_26"
+  _DBGCC 
+SECTION: ".abs_section_2b"
+  _DBGCA 
+SECTION: ".abs_section_2e"
+  _DBGCB 
+SECTION: ".abs_section_44"
+  _TIM0_TCNT 
+SECTION: ".abs_section_58"
+  _TIM0_TC4 
+SECTION: ".abs_section_5a"
+  _TIM0_TC5 
+SECTION: ".abs_section_5c"
+  _TIM0_TC6 
+SECTION: ".abs_section_5e"
+  _TIM0_TC7 
+SECTION: ".abs_section_62"
+  _TIM0_PACNT 
+SECTION: ".abs_section_82"
+  _ATDCTL23 
+SECTION: ".abs_section_84"
+  _ATDCTL45 
+SECTION: ".abs_section_8c"
+  _ATDDIEN 
+SECTION: ".abs_section_90"
+  _ATDDR0 
+SECTION: ".abs_section_92"
+  _ATDDR1 
+SECTION: ".abs_section_94"
+  _ATDDR2 
+SECTION: ".abs_section_96"
+  _ATDDR3 
+SECTION: ".abs_section_98"
+  _ATDDR4 
+SECTION: ".abs_section_9a"
+  _ATDDR5 
+SECTION: ".abs_section_9c"
+  _ATDDR6 
+SECTION: ".abs_section_9e"
+  _ATDDR7 
+SECTION: ".abs_section_a0"
+  _ATDDR8 
+SECTION: ".abs_section_a2"
+  _ATDDR9 
+SECTION: ".abs_section_a4"
+  _ATDDR10 
+SECTION: ".abs_section_a6"
+  _ATDDR11 
+SECTION: ".abs_section_a8"
+  _ATDDR12 
+SECTION: ".abs_section_aa"
+  _ATDDR13 
+SECTION: ".abs_section_ac"
+  _ATDDR14 
+SECTION: ".abs_section_ae"
+  _ATDDR15 
+SECTION: ".abs_section_c8"
+  _SCI0BD 
+SECTION: ".abs_section_d0"
+  _SCI1BD 
+SECTION: ".abs_section_e8"
+  _SCI2BD 
+SECTION: ".abs_section_144"
+  _TIM1_TCNT 
+SECTION: ".abs_section_158"
+  _TIM1_TC4 
+SECTION: ".abs_section_15a"
+  _TIM1_TC5 
+SECTION: ".abs_section_15c"
+  _TIM1_TC6 
+SECTION: ".abs_section_15e"
+  _TIM1_TC7 
+SECTION: ".abs_section_162"
+  _TIM1_PACNT 
+SECTION: ".abs_section_184"
+  _TIM2_TCNT 
+SECTION: ".abs_section_198"
+  _TIM2_TC4 
+SECTION: ".abs_section_19a"
+  _TIM2_TC5 
+SECTION: ".abs_section_19c"
+  _TIM2_TC6 
+SECTION: ".abs_section_19e"
+  _TIM2_TC7 
+SECTION: ".abs_section_1a2"
+  _TIM2_PACNT 
+SECTION: ".abs_section_1ec"
+  _PWMCNT01 
+SECTION: ".abs_section_1ee"
+  _PWMCNT23 
+SECTION: ".abs_section_1f0"
+  _PWMCNT45 
+SECTION: ".abs_section_1f2"
+  _PWMPER01 
+SECTION: ".abs_section_1f4"
+  _PWMPER23 
+SECTION: ".abs_section_1f6"
+  _PWMPER45 
+SECTION: ".abs_section_1f8"
+  _PWMDTY01 
+SECTION: ".abs_section_1fa"
+  _PWMDTY23 
+SECTION: ".abs_section_1fc"
+  _PWMDTY45 
+SECTION: ".abs_section_210"
+  _PMFVAL0 
+SECTION: ".abs_section_212"
+  _PMFVAL1 
+SECTION: ".abs_section_214"
+  _PMFVAL2 
+SECTION: ".abs_section_216"
+  _PMFVAL3 
+SECTION: ".abs_section_218"
+  _PMFVAL4 
+SECTION: ".abs_section_21a"
+  _PMFVAL5 
+SECTION: ".abs_section_222"
+  _PMFCNTA 
+SECTION: ".abs_section_224"
+  _PMFMODA 
+SECTION: ".abs_section_226"
+  _PMFDTMA 
+SECTION: ".abs_section_22a"
+  _PMFCNTB 
+SECTION: ".abs_section_22c"
+  _PMFMODB 
+SECTION: ".abs_section_22e"
+  _PMFDTMB 
+SECTION: ".abs_section_232"
+  _PMFCNTC 
+SECTION: ".abs_section_234"
+  _PMFMODC 
+SECTION: ".abs_section_236"
+  _PMFDTMC 
+SECTION: ".abs_section_270"
+  _PTAD 
+SECTION: ".abs_section_272"
+  _PTIAD 
+SECTION: ".abs_section_274"
+  _DDRAD 
+SECTION: ".abs_section_276"
+  _RDRAD 
+SECTION: ".abs_section_278"
+  _PERAD 
+SECTION: ".abs_section_27a"
+  _PPSAD 
+SECTION: ".abs_section_27c"
+  _PIEAD 
+SECTION: ".abs_section_27e"
+  _PIFAD 
+SECTION: "StringCode"
+  Startup_1 Startup_2 date_str admin_u menu_str PW_String PW_Verify_String 
+  re_enter accepted GenSelStr 
+SECTION: "My_code"
+  RTI_ISR MIDDLE SOUND_RT done_sound exit_start_ISR exit_ISR 
+SECTION: "Highlight_section"
+  Date_Start I_num D_num R_num L_num F_key n_res_high n_res_low l_res r_res 
+  DONE Time_Start I_num T_Comp D_num R_num L_num F_key n_res_high n_res_low 
+  l_res r_res DONE GenSel R_num L_num F_key l_res r_res SEL Sel0 Sel1 Sel2 DONE 
+SECTION: "debounce.asm._SEC000000"
+  delay1ms loop 
+SECTION: "KEY"
+  scan rescan up right down left prompt NCommand leave 
+SECTION: "MY_SONG"
+  Door_Song_Start Door_Song DONE 
+SECTION: "Functions.asm._SEC000000"
+  Date_Change Time_Change SONG_TIME_START Song MENU Cont_Men 
+SECTION: "Default_Username.asm._SEC000000"
+  User_name 
+SECTION: "PassWord.asm._SEC000000"
+  Password_start inc_alph skip R_curs boundary1 dec_alph skip2 L_curs 
+  boundary2 F_key leave 
+SECTION: "PassWordVerify.asm._SEC000000"
+  Password_verify inc_alph skip R_curs boundary1 dec_alph skip2 L_curs 
+  boundary2 F_key leave 
+SECTION: "User_name.asm._SEC000000"
+  Username_start inc_alph skip R_curs boundary1 dec_alph skip2 L_curs 
+  boundary2 F_key leave 
+SECTION: "compare_passwords.asm._SEC000000"
+  compare_string compare notequal pass_res2 passv_res2 equal 
+SECTION: "Create_Password.asm._SEC000000"
+  PW_Creation 
+SECTION: "Create_Username.asm._SEC000000"
+  user_chng 
 
 *********************************************************************************************
 OBJECT LIST SORTED BY ADDRESS
      Name                                      Addr   hSize   dSize     Ref    Section   RLIB
 ---------------------------------------------------------------------------------------------
+     _PORTAB                                      0       2       2       0   .abs_section_0
+     _DDRAB                                       2       2       2       0   .abs_section_2
+     _PORTE                                       8       1       1       0   .abs_section_8
+     _DDRE                                        9       1       1       0   .abs_section_9
+     _PEAR                                        A       1       1       0   .abs_section_a
+     _MODE                                        B       1       1       0   .abs_section_b
+     _PUCR                                        C       1       1       0   .abs_section_c
+     _RDRIV                                       D       1       1       0   .abs_section_d
+     _EBICTL                                      E       1       1       0   .abs_section_e
+     _INITRM                                     10       1       1       0   .abs_section_10
+     _INITRG                                     11       1       1       0   .abs_section_11
+     _MISC                                       13       1       1       0   .abs_section_13
+     _ITCR                                       15       1       1       0   .abs_section_15
+     _ITEST                                      16       1       1       0   .abs_section_16
+     _VREGCTRL                                   19       1       1       0   .abs_section_19
+     _PARTID                                     1A       2       2       0   .abs_section_1a
+     _MEMSIZ0                                    1C       1       1       0   .abs_section_1c
+     _MEMSIZ1                                    1D       1       1       0   .abs_section_1d
+     _INTCR                                      1E       1       1       0   .abs_section_1e
+     _HPRIO                                      1F       1       1       0   .abs_section_1f
+     _DBGC1                                      20       1       1       0   .abs_section_20
+     _DBGSC                                      21       1       1       0   .abs_section_21
+     _DBGTB                                      22       2       2       0   .abs_section_22
+     _DBGCNT                                     24       1       1       0   .abs_section_24
+     _DBGCCX                                     25       1       1       0   .abs_section_25
+     _DBGCC                                      26       2       2       0   .abs_section_26
+     _DBGC2                                      28       1       1       0   .abs_section_28
+     _DBGC3                                      29       1       1       0   .abs_section_29
+     _DBGCAX                                     2A       1       1       0   .abs_section_2a
+     _DBGCA                                      2B       2       2       0   .abs_section_2b
+     _DBGCBX                                     2D       1       1       0   .abs_section_2d
+     _DBGCB                                      2E       2       2       0   .abs_section_2e
+     _PPAGE                                      30       1       1       0   .abs_section_30
+     _PORTK                                      32       1       1       0   .abs_section_32
+     _DDRK                                       33       1       1       0   .abs_section_33
+     _SYNR                                       34       1       1       0   .abs_section_34
+     _REFDV                                      35       1       1       0   .abs_section_35
+     _CRGFLG                                     37       1       1       0   .abs_section_37
+     _CRGINT                                     38       1       1       0   .abs_section_38
+     _CLKSEL                                     39       1       1       0   .abs_section_39
+     _PLLCTL                                     3A       1       1       0   .abs_section_3a
+     _RTICTL                                     3B       1       1       0   .abs_section_3b
+     _COPCTL                                     3C       1       1       0   .abs_section_3c
+     _ARMCOP                                     3F       1       1       0   .abs_section_3f
+     _TIM0_TIOS                                  40       1       1       0   .abs_section_40
+     _TIM0_CFORC                                 41       1       1       0   .abs_section_41
+     _TIM0_OC7M                                  42       1       1       0   .abs_section_42
+     _TIM0_OC7D                                  43       1       1       0   .abs_section_43
+     _TIM0_TCNT                                  44       2       2       0   .abs_section_44
+     _TIM0_TSCR1                                 46       1       1       0   .abs_section_46
+     _TIM0_TTOV                                  47       1       1       0   .abs_section_47
+     _TIM0_TCTL1                                 48       1       1       0   .abs_section_48
+     _TIM0_TCTL3                                 4A       1       1       0   .abs_section_4a
+     _TIM0_TIE                                   4C       1       1       0   .abs_section_4c
+     _TIM0_TSCR2                                 4D       1       1       0   .abs_section_4d
+     _TIM0_TFLG1                                 4E       1       1       0   .abs_section_4e
+     _TIM0_TFLG2                                 4F       1       1       0   .abs_section_4f
+     _TIM0_TC4                                   58       2       2       0   .abs_section_58
+     _TIM0_TC5                                   5A       2       2       0   .abs_section_5a
+     _TIM0_TC6                                   5C       2       2       0   .abs_section_5c
+     _TIM0_TC7                                   5E       2       2       0   .abs_section_5e
+     _TIM0_PACTL                                 60       1       1       0   .abs_section_60
+     _TIM0_PAFLG                                 61       1       1       0   .abs_section_61
+     _TIM0_PACNT                                 62       2       2       0   .abs_section_62
+     _ATDCTL23                                   82       2       2       0   .abs_section_82
+     _ATDCTL45                                   84       2       2       0   .abs_section_84
+     _ATDSTAT0                                   86       1       1       0   .abs_section_86
+     _ATDTEST1                                   89       1       1       0   .abs_section_89
+     _ATDSTAT2                                   8A       1       1       0   .abs_section_8a
+     _ATDSTAT1                                   8B       1       1       0   .abs_section_8b
+     _ATDDIEN                                    8C       2       2       0   .abs_section_8c
+     _PORTAD0                                    8E       1       1       0   .abs_section_8e
+     _PORTAD1                                    8F       1       1       0   .abs_section_8f
+     _ATDDR0                                     90       2       2       0   .abs_section_90
+     _ATDDR1                                     92       2       2       0   .abs_section_92
+     _ATDDR2                                     94       2       2       0   .abs_section_94
+     _ATDDR3                                     96       2       2       0   .abs_section_96
+     _ATDDR4                                     98       2       2       0   .abs_section_98
+     _ATDDR5                                     9A       2       2       0   .abs_section_9a
+     _ATDDR6                                     9C       2       2       0   .abs_section_9c
+     _ATDDR7                                     9E       2       2       0   .abs_section_9e
+     _ATDDR8                                     A0       2       2       0   .abs_section_a0
+     _ATDDR9                                     A2       2       2       0   .abs_section_a2
+     _ATDDR10                                    A4       2       2       0   .abs_section_a4
+     _ATDDR11                                    A6       2       2       0   .abs_section_a6
+     _ATDDR12                                    A8       2       2       0   .abs_section_a8
+     _ATDDR13                                    AA       2       2       0   .abs_section_aa
+     _ATDDR14                                    AC       2       2       0   .abs_section_ac
+     _ATDDR15                                    AE       2       2       0   .abs_section_ae
+     _SCI0BD                                     C8       2       2       0   .abs_section_c8
+     _SCI0CR1                                    CA       1       1       0   .abs_section_ca
+     _SCI0CR2                                    CB       1       1       0   .abs_section_cb
+     _SCI0SR1                                    CC       1       1       0   .abs_section_cc
+     _SCI0SR2                                    CD       1       1       0   .abs_section_cd
+     _SCI0DRH                                    CE       1       1       0   .abs_section_ce
+     _SCI0DRL                                    CF       1       1       0   .abs_section_cf
+     _SCI1BD                                     D0       2       2       0   .abs_section_d0
+     _SCI1CR1                                    D2       1       1       0   .abs_section_d2
+     _SCI1CR2                                    D3       1       1       0   .abs_section_d3
+     _SCI1SR1                                    D4       1       1       0   .abs_section_d4
+     _SCI1SR2                                    D5       1       1       0   .abs_section_d5
+     _SCI1DRH                                    D6       1       1       0   .abs_section_d6
+     _SCI1DRL                                    D7       1       1       0   .abs_section_d7
+     _SPICR1                                     D8       1       1       0   .abs_section_d8
+     _SPICR2                                     D9       1       1       0   .abs_section_d9
+     _SPIBR                                      DA       1       1       0   .abs_section_da
+     _SPISR                                      DB       1       1       0   .abs_section_db
+     _SPIDR                                      DD       1       1       0   .abs_section_dd
+     _IBAD                                       E0       1       1       0   .abs_section_e0
+     _IBFD                                       E1       1       1       0   .abs_section_e1
+     _IBCR                                       E2       1       1       0   .abs_section_e2
+     _IBSR                                       E3       1       1       0   .abs_section_e3
+     _IBDR                                       E4       1       1       0   .abs_section_e4
+     _SCI2BD                                     E8       2       2       0   .abs_section_e8
+     _SCI2CR1                                    EA       1       1       0   .abs_section_ea
+     _SCI2CR2                                    EB       1       1       0   .abs_section_eb
+     _SCI2SR1                                    EC       1       1       0   .abs_section_ec
+     _SCI2SR2                                    ED       1       1       0   .abs_section_ed
+     _SCI2DRH                                    EE       1       1       0   .abs_section_ee
+     _SCI2DRL                                    EF       1       1       0   .abs_section_ef
+     _DAC0_DACC0                                 F0       1       1       0   .abs_section_f0
+     _DAC0_DACDLeft                              F2       1       1       0   .abs_section_f2
+     _DAC0_DACDRight                             F3       1       1       0   .abs_section_f3
+     _DAC1_DACC0                                 F4       1       1       0   .abs_section_f4
+     _DAC1_DACDLeft                              F6       1       1       0   .abs_section_f6
+     _DAC1_DACDRight                             F7       1       1       0   .abs_section_f7
+     _FCLKDIV                                   100       1       1       0   .abs_section_100
+     _FSEC                                      101       1       1       0   .abs_section_101
+     _FCNFG                                     103       1       1       0   .abs_section_103
+     _FPROT                                     104       1       1       0   .abs_section_104
+     _FSTAT                                     105       1       1       0   .abs_section_105
+     _FCMD                                      106       1       1       0   .abs_section_106
+     _TIM1_TIOS                                 140       1       1       0   .abs_section_140
+     _TIM1_CFORC                                141       1       1       0   .abs_section_141
+     _TIM1_OC7M                                 142       1       1       0   .abs_section_142
+     _TIM1_OC7D                                 143       1       1       0   .abs_section_143
+     _TIM1_TCNT                                 144       2       2       0   .abs_section_144
+     _TIM1_TSCR1                                146       1       1       0   .abs_section_146
+     _TIM1_TTOV                                 147       1       1       0   .abs_section_147
+     _TIM1_TCTL1                                148       1       1       0   .abs_section_148
+     _TIM1_TCTL3                                14A       1       1       0   .abs_section_14a
+     _TIM1_TIE                                  14C       1       1       0   .abs_section_14c
+     _TIM1_TSCR2                                14D       1       1       0   .abs_section_14d
+     _TIM1_TFLG1                                14E       1       1       0   .abs_section_14e
+     _TIM1_TFLG2                                14F       1       1       0   .abs_section_14f
+     _TIM1_TC4                                  158       2       2       0   .abs_section_158
+     _TIM1_TC5                                  15A       2       2       0   .abs_section_15a
+     _TIM1_TC6                                  15C       2       2       0   .abs_section_15c
+     _TIM1_TC7                                  15E       2       2       0   .abs_section_15e
+     _TIM1_PACTL                                160       1       1       0   .abs_section_160
+     _TIM1_PAFLG                                161       1       1       0   .abs_section_161
+     _TIM1_PACNT                                162       2       2       0   .abs_section_162
+     _TIM2_TIOS                                 180       1       1       0   .abs_section_180
+     _TIM2_CFORC                                181       1       1       0   .abs_section_181
+     _TIM2_OC7M                                 182       1       1       0   .abs_section_182
+     _TIM2_OC7D                                 183       1       1       0   .abs_section_183
+     _TIM2_TCNT                                 184       2       2       0   .abs_section_184
+     _TIM2_TSCR1                                186       1       1       0   .abs_section_186
+     _TIM2_TTOV                                 187       1       1       0   .abs_section_187
+     _TIM2_TCTL1                                188       1       1       0   .abs_section_188
+     _TIM2_TCTL3                                18A       1       1       0   .abs_section_18a
+     _TIM2_TIE                                  18C       1       1       0   .abs_section_18c
+     _TIM2_TSCR2                                18D       1       1       0   .abs_section_18d
+     _TIM2_TFLG1                                18E       1       1       0   .abs_section_18e
+     _TIM2_TFLG2                                18F       1       1       0   .abs_section_18f
+     _TIM2_TC4                                  198       2       2       0   .abs_section_198
+     _TIM2_TC5                                  19A       2       2       0   .abs_section_19a
+     _TIM2_TC6                                  19C       2       2       0   .abs_section_19c
+     _TIM2_TC7                                  19E       2       2       0   .abs_section_19e
+     _TIM2_PACTL                                1A0       1       1       0   .abs_section_1a0
+     _TIM2_PAFLG                                1A1       1       1       0   .abs_section_1a1
+     _TIM2_PACNT                                1A2       2       2       0   .abs_section_1a2
+     _PWME                                      1E0       1       1       0   .abs_section_1e0
+     _PWMPOL                                    1E1       1       1       0   .abs_section_1e1
+     _PWMCLK                                    1E2       1       1       0   .abs_section_1e2
+     _PWMPRCLK                                  1E3       1       1       0   .abs_section_1e3
+     _PWMCAE                                    1E4       1       1       0   .abs_section_1e4
+     _PWMCTL                                    1E5       1       1       0   .abs_section_1e5
+     _PWMSCLA                                   1E8       1       1       0   .abs_section_1e8
+     _PWMSCLB                                   1E9       1       1       0   .abs_section_1e9
+     _PWMCNT01                                  1EC       2       2       0   .abs_section_1ec
+     _PWMCNT23                                  1EE       2       2       0   .abs_section_1ee
+     _PWMCNT45                                  1F0       2       2       0   .abs_section_1f0
+     _PWMPER01                                  1F2       2       2       0   .abs_section_1f2
+     _PWMPER23                                  1F4       2       2       0   .abs_section_1f4
+     _PWMPER45                                  1F6       2       2       0   .abs_section_1f6
+     _PWMDTY01                                  1F8       2       2       0   .abs_section_1f8
+     _PWMDTY23                                  1FA       2       2       0   .abs_section_1fa
+     _PWMDTY45                                  1FC       2       2       0   .abs_section_1fc
+     _PWMSDN                                    1FE       1       1       0   .abs_section_1fe
+     _PMFCFG0                                   200       1       1       0   .abs_section_200
+     _PMFCFG1                                   201       1       1       0   .abs_section_201
+     _PMFCFG2                                   202       1       1       0   .abs_section_202
+     _PMFCFG3                                   203       1       1       0   .abs_section_203
+     _PMFFCTL                                   204       1       1       0   .abs_section_204
+     _PMFFPIN                                   205       1       1       0   .abs_section_205
+     _PMFFSTA                                   206       1       1       0   .abs_section_206
+     _PMFQSMP                                   207       1       1       0   .abs_section_207
+     _PMFDMPA                                   208       1       1       0   .abs_section_208
+     _PMFDMPB                                   209       1       1       0   .abs_section_209
+     _PMFDMPC                                   20A       1       1       0   .abs_section_20a
+     _PMFOUTC                                   20C       1       1       0   .abs_section_20c
+     _PMFOUTB                                   20D       1       1       0   .abs_section_20d
+     _PMFDTMS                                   20E       1       1       0   .abs_section_20e
+     _PMFCCTL                                   20F       1       1       0   .abs_section_20f
+     _PMFVAL0                                   210       2       2       0   .abs_section_210
+     _PMFVAL1                                   212       2       2       0   .abs_section_212
+     _PMFVAL2                                   214       2       2       0   .abs_section_214
+     _PMFVAL3                                   216       2       2       0   .abs_section_216
+     _PMFVAL4                                   218       2       2       0   .abs_section_218
+     _PMFVAL5                                   21A       2       2       0   .abs_section_21a
+     _PMFENCA                                   220       1       1       0   .abs_section_220
+     _PMFFQCA                                   221       1       1       0   .abs_section_221
+     _PMFCNTA                                   222       2       2       0   .abs_section_222
+     _PMFMODA                                   224       2       2       0   .abs_section_224
+     _PMFDTMA                                   226       2       2       0   .abs_section_226
+     _PMFENCB                                   228       1       1       0   .abs_section_228
+     _PMFFQCB                                   229       1       1       0   .abs_section_229
+     _PMFCNTB                                   22A       2       2       0   .abs_section_22a
+     _PMFMODB                                   22C       2       2       0   .abs_section_22c
+     _PMFDTMB                                   22E       2       2       0   .abs_section_22e
+     _PMFENCC                                   230       1       1       0   .abs_section_230
+     _PMFFQCC                                   231       1       1       0   .abs_section_231
+     _PMFCNTC                                   232       2       2       0   .abs_section_232
+     _PMFMODC                                   234       2       2       0   .abs_section_234
+     _PMFDTMC                                   236       2       2       0   .abs_section_236
+     _PTT                                       240       1       1       2   .abs_section_240
+     _PTIT                                      241       1       1       0   .abs_section_241
+     _DDRT                                      242       1       1       0   .abs_section_242
+     _RDRT                                      243       1       1       0   .abs_section_243
+     _PERT                                      244       1       1       0   .abs_section_244
+     _PPST                                      245       1       1       0   .abs_section_245
+     _PTS                                       248       1       1       0   .abs_section_248
+     _PTIS                                      249       1       1       0   .abs_section_249
+     _DDRS                                      24A       1       1       0   .abs_section_24a
+     _RDRS                                      24B       1       1       0   .abs_section_24b
+     _PERS                                      24C       1       1       0   .abs_section_24c
+     _PPSS                                      24D       1       1       0   .abs_section_24d
+     _WOMS                                      24E       1       1       0   .abs_section_24e
+     _PTM                                       250       1       1       5   .abs_section_250
+     _PTIM                                      251       1       1       0   .abs_section_251
+     _DDRM                                      252       1       1       1   .abs_section_252
+     _RDRM                                      253       1       1       0   .abs_section_253
+     _PERM                                      254       1       1       0   .abs_section_254
+     _PPSM                                      255       1       1       0   .abs_section_255
+     _WOMM                                      256       1       1       0   .abs_section_256
+     _PTP                                       258       1       1       0   .abs_section_258
+     _PTIP                                      259       1       1       0   .abs_section_259
+     _DDRP                                      25A       1       1       0   .abs_section_25a
+     _RDRP                                      25B       1       1       0   .abs_section_25b
+     _PERP                                      25C       1       1       0   .abs_section_25c
+     _PPSP                                      25D       1       1       0   .abs_section_25d
+     _PTQ                                       260       1       1       0   .abs_section_260
+     _PTIQ                                      261       1       1       0   .abs_section_261
+     _DDRQ                                      262       1       1       0   .abs_section_262
+     _RDRQ                                      263       1       1       0   .abs_section_263
+     _PERQ                                      264       1       1       0   .abs_section_264
+     _PPSQ                                      265       1       1       0   .abs_section_265
+     _PTU                                       268       1       1       0   .abs_section_268
+     port_u                                     268       0       0       2   .text       
+     _PTIU                                      269       1       1       0   .abs_section_269
+     _DDRU                                      26A       1       1       0   .abs_section_26a
+     _RDRU                                      26B       1       1       0   .abs_section_26b
+     _PERU                                      26C       1       1       0   .abs_section_26c
+     _PPSU                                      26D       1       1       0   .abs_section_26d
+     _MODRR                                     26E       1       1       0   .abs_section_26e
+     _PTAD                                      270       2       2       4   .abs_section_270
+     _PTIAD                                     272       2       2       0   .abs_section_272
+     _DDRAD                                     274       2       2       1   .abs_section_274
+     _RDRAD                                     276       2       2       0   .abs_section_276
+     _PERAD                                     278       2       2       0   .abs_section_278
+     _PPSAD                                     27A       2       2       0   .abs_section_27a
+     _PIEAD                                     27C       2       2       0   .abs_section_27c
+     _PIFAD                                     27E       2       2       0   .abs_section_27e
+     data                                       500       2       2       4   .bss        
+     tone                                       502       2       2       2   .bss        
+     tone_count                                 504       2       2       4   .bss        
+     user_input                                 506       1       1       0   MY_EXTENDED_RAM
+     disp                                       507      21      33     341   MY_EXTENDED_RAM
+     start_f                                    528       1       1      10   MY_EXTENDED_RAM
+     enter_f                                    529       1       1      21   MY_EXTENDED_RAM
+     date_f                                     52A       1       1       0   MY_EXTENDED_RAM
+     equal_f                                    52B       1       1       3   MY_EXTENDED_RAM
+     command                                    52C       1       1      23   MY_EXTENDED_RAM
+     prev_val                                   52D       1       1       4   MY_EXTENDED_RAM
+     date                                       52E       8       8      23   MY_EXTENDED_RAM
+     time                                       536       4       4      16   MY_EXTENDED_RAM
+     name                                       53A       F      15      24   MY_EXTENDED_RAM
+     seloff                                     549       2       2      27   MY_EXTENDED_RAM
+     sound_f                                    54B       1       1       0   MY_EXTENDED_RAM
+     gens1                                      54C       1       1       8   MY_EXTENDED_RAM
+     gens2                                      54D       1       1       8   MY_EXTENDED_RAM
+     gens3                                      54E       1       1       8   MY_EXTENDED_RAM
+     start_c                                    54F       2       2       5   MY_EXTENDED_RAM
+     sound_c                                    551       2       2       5   MY_EXTENDED_RAM
+     prev_val                                   553       1       1       2   MY_EXTENDED_RAM
+     clearv                                     554       1       1       7   MY_EXTENDED_RAM
+     place                                      555       2       2       3   MY_EXTENDED_RAM
+     sound_rdy                                  557       1       1       5   MY_EXTENDED_RAM
+     pass                                       558      10      16      26   my_LCD      
+     passv                                      568      10      16      26   my_LCD      
+     cursor                                     578       2       2      36   my_LCD      
+     _Startup                                  C000       0       0       0   .init       
+     Entry                                     C000      75     117       0   .init       
+     date_res                                  C075      11      17       0   .init       
+     time_res                                  C086       F      15       0   .init       
+     name_res                                  C095      15      21       0   .init       
+     pass_res                                  C0AA       F      15       0   .init       
+     passv_res                                 C0B9      1D      29       0   .init       
+     SRTMSG1                                   C0D6      13      19       0   .init       
+     SRTMSG2                                   C0E9      2F      47       0   .init       
+     no_match                                  C118       3       3       0   .init       
+     skip                                      C11B      1D      29       0   .init       
+     Pass_word                                 C138       A      10       1   .init       
+     re_enter_pw                               C142       E      14       1   .init       
+     RSRTMSG                                   C150       6       6       0   .init       
+     Pass_wordV                                C156       A      10       1   .init       
+     PW_Verify                                 C160      20      32       1   .init       
+     yourein                                   C180       E      14       1   .init       
+     RSRTMSG2                                  C18E       6       6       0   .init       
+     delay_ms                                  C194      17      23       5   NON_BANKED  
+     init_LCD                                  C1AB      52      82       1   NON_BANKED  
+     display_string                            C1FD      38      56      15   NON_BANKED  
+     epulse                                    C235      24      36       3   NON_BANKED  
+     sendCommand                               C259       F      15       7   NON_BANKED  
+     SendsChr                                  C268       8       8       1   NON_BANKED  
+     PlayTone                                  C270      1A      26       1   NON_BANKED  
+     delay                                     C28A       2       2       1   MY_EXTENDED_ROM
+     keys                                      C28C       4       4       0   MY_EXTENDED_ROM
+     song1                                     C290       F      15       0   MY_EXTENDED_ROM
+     song2                                     C29F       3       3       1   MY_EXTENDED_ROM
+     Startup_1                                 C2A2      A6     166       1   StringCode  
+     Startup_2                                 C348      A6     166       1   StringCode  
+     date_str                                  C3EE      B2     178       3   StringCode  
+     admin_u                                   C4A0      B6     182       2   StringCode  
+     menu_str                                  C556      99     153       1   StringCode  
+     PW_String                                 C5EF      B6     182       2   StringCode  
+     PW_Verify_String                          C6A5      B6     182       2   StringCode  
+     re_enter                                  C75B      A6     166       1   StringCode  
+     accepted                                  C801      AB     171       1   StringCode  
+     GenSelStr                                 C8AC      B2     178       1   StringCode  
+     RTI_ISR                                   C95E      17      23       0   My_code     
+     MIDDLE                                    C975       7       7       0   My_code     
+     SOUND_RT                                  C97C      11      17       0   My_code     
+     done_sound                                C98D       7       7       0   My_code     
+     exit_start_ISR                            C994       7       7       0   My_code     
+     exit_ISR                                  C99B       4       4       0   My_code     
+     Date_Start                                C99F      32      50       1   Highlight_section
+     I_num                                     C9D1      12      18       0   Highlight_section
+     D_num                                     C9E3      12      18       0   Highlight_section
+     R_num                                     C9F5       E      14       0   Highlight_section
+     L_num                                     CA03       E      14       0   Highlight_section
+     F_key                                     CA11       7       7       0   Highlight_section
+     n_res_high                                CA18       A      10       0   Highlight_section
+     n_res_low                                 CA22       A      10       0   Highlight_section
+     l_res                                     CA2C       8       8       0   Highlight_section
+     r_res                                     CA34       8       8       0   Highlight_section
+     DONE                                      CA3C       F      15       0   Highlight_section
+     Time_Start                                CA4B      27      39       1   Highlight_section
+     I_num                                     CA72      1C      28       0   Highlight_section
+     T_Comp                                    CA8E       B      11       0   Highlight_section
+     D_num                                     CA99      12      18       0   Highlight_section
+     R_num                                     CAAB       E      14       0   Highlight_section
+     L_num                                     CAB9       E      14       0   Highlight_section
+     F_key                                     CAC7       7       7       0   Highlight_section
+     n_res_high                                CACE       A      10       0   Highlight_section
+     n_res_low                                 CAD8       A      10       0   Highlight_section
+     l_res                                     CAE2       8       8       0   Highlight_section
+     r_res                                     CAEA       8       8       0   Highlight_section
+     DONE                                      CAF2       F      15       0   Highlight_section
+     GenSel                                    CB01      26      38       1   Highlight_section
+     R_num                                     CB27       E      14       0   Highlight_section
+     L_num                                     CB35       E      14       0   Highlight_section
+     F_key                                     CB43       7       7       0   Highlight_section
+     l_res                                     CB4A       8       8       0   Highlight_section
+     r_res                                     CB52       8       8       0   Highlight_section
+     SEL                                       CB5A       C      12       0   Highlight_section
+     Sel0                                      CB66      11      17       0   Highlight_section
+     Sel1                                      CB77      11      17       0   Highlight_section
+     Sel2                                      CB88      11      17       0   Highlight_section
+     DONE                                      CB99       F      15       0   Highlight_section
+     delay1ms                                  CBA8       4       4       1   debounce.asm._SEC000000
+     loop                                      CBAC       5       5       0   debounce.asm._SEC000000
+     scan                                      CBB1       3       3       7   KEY         
+     rescan                                    CBB4      24      36       0   KEY         
+     up                                        CBD8       8       8       0   KEY         
+     right                                     CBE0       8       8       0   KEY         
+     down                                      CBE8       8       8       0   KEY         
+     left                                      CBF0       8       8       0   KEY         
+     prompt                                    CBF8       8       8       0   KEY         
+     NCommand                                  CC00       B      11       0   KEY         
+     leave                                     CC0B       2       2       0   KEY         
+     Door_Song_Start                           CC0D       7       7       1   MY_SONG     
+     Door_Song                                 CC14      2B      43       1   MY_SONG     
+     DONE                                      CC3F       1       1       0   MY_SONG     
+     Date_Change                               CC40      1E      30       1   Functions.asm._SEC000000
+     Time_Change                               CC5E      1E      30       1   Functions.asm._SEC000000
+     SONG_TIME_START                           CC7C       3       3       1   Functions.asm._SEC000000
+     Song                                      CC7F       5       5       0   Functions.asm._SEC000000
+     MENU                                      CC84      23      35       1   Functions.asm._SEC000000
+     Cont_Men                                  CCA7      1E      30       1   Functions.asm._SEC000000
+     User_name                                 CCC5       A      10       1   Default_Username.asm._SEC000000
+     Password_start                            CCCF      1C      28       1   PassWord.asm._SEC000000
+     inc_alph                                  CCEB       F      15       0   PassWord.asm._SEC000000
+     skip                                      CCFA      10      16       0   PassWord.asm._SEC000000
+     R_curs                                    CD0A      11      17       0   PassWord.asm._SEC000000
+     boundary1                                 CD1B       8       8       0   PassWord.asm._SEC000000
+     dec_alph                                  CD23       F      15       0   PassWord.asm._SEC000000
+     skip2                                     CD32      10      16       0   PassWord.asm._SEC000000
+     L_curs                                    CD42      11      17       0   PassWord.asm._SEC000000
+     boundary2                                 CD53       8       8       0   PassWord.asm._SEC000000
+     F_key                                     CD5B       5       5       0   PassWord.asm._SEC000000
+     leave                                     CD60       B      11       0   PassWord.asm._SEC000000
+     Password_verify                           CD6B      1C      28       1   PassWordVerify.asm._SEC000000
+     inc_alph                                  CD87       F      15       0   PassWordVerify.asm._SEC000000
+     skip                                      CD96      10      16       0   PassWordVerify.asm._SEC000000
+     R_curs                                    CDA6      11      17       0   PassWordVerify.asm._SEC000000
+     boundary1                                 CDB7       8       8       0   PassWordVerify.asm._SEC000000
+     dec_alph                                  CDBF       F      15       0   PassWordVerify.asm._SEC000000
+     skip2                                     CDCE      10      16       0   PassWordVerify.asm._SEC000000
+     L_curs                                    CDDE      11      17       0   PassWordVerify.asm._SEC000000
+     boundary2                                 CDEF       8       8       0   PassWordVerify.asm._SEC000000
+     F_key                                     CDF7       5       5       0   PassWordVerify.asm._SEC000000
+     leave                                     CDFC       B      11       0   PassWordVerify.asm._SEC000000
+     Username_start                            CE07      1C      28       1   User_name.asm._SEC000000
+     inc_alph                                  CE23       F      15       0   User_name.asm._SEC000000
+     skip                                      CE32      10      16       0   User_name.asm._SEC000000
+     R_curs                                    CE42      11      17       0   User_name.asm._SEC000000
+     boundary1                                 CE53       8       8       0   User_name.asm._SEC000000
+     dec_alph                                  CE5B       F      15       0   User_name.asm._SEC000000
+     skip2                                     CE6A      10      16       0   User_name.asm._SEC000000
+     L_curs                                    CE7A      11      17       0   User_name.asm._SEC000000
+     boundary2                                 CE8B       8       8       0   User_name.asm._SEC000000
+     F_key                                     CE93       5       5       0   User_name.asm._SEC000000
+     leave                                     CE98       B      11       0   User_name.asm._SEC000000
+     compare_string                            CEA3       3       3       1   compare_passwords.asm._SEC000000
+     compare                                   CEA6      14      20       0   compare_passwords.asm._SEC000000
+     notequal                                  CEBA      10      16       0   compare_passwords.asm._SEC000000
+     pass_res2                                 CECA       F      15       0   compare_passwords.asm._SEC000000
+     passv_res2                                CED9       B      11       0   compare_passwords.asm._SEC000000
+     equal                                     CEE4       7       7       0   compare_passwords.asm._SEC000000
+     PW_Creation                               CEEB      20      32       1   Create_Password.asm._SEC000000
+     user_chng                                 CF0B      20      32       1   Create_Username.asm._SEC000000
 
 *********************************************************************************************
 UNUSED-OBJECTS SECTION
 ---------------------------------------------------------------------------------------------
 NOT USED PROCEDURES
-main.asm.o:
-  date_res time_res name_res pass_res passv_res SRTMSG1 SRTMSG2 RSRTMSG 
-  yourein 
 lcddisp.c.o:
   Delay 
 NOT USED VARIABLES
@@ -819,13 +1960,174 @@ COPYDOWN SECTION
 *********************************************************************************************
 OBJECT-DEPENDENCIES SECTION
 ---------------------------------------------------------------------------------------------
+Entry                     USES __SEG_END_SSTACK start_f sound_rdy enter_f 
+                                command seloff tone_count gens1 gens2 gens3 sound_c 
+                                start_c clearv cursor init_LCD 
+date_res                  USES date 
+time_res                  USES time 
+name_res                  USES name start_c 
+pass_res                  USES pass 
+passv_res                 USES passv Startup_1 disp display_string 
+SRTMSG1                   USES start_f Startup_2 disp display_string 
+SRTMSG2                   USES start_f date_str disp display_string seloff 
+                                Date_Change clearv Time_Change User_name user_chng 
+                                Pass_word 
+no_match                  USES re_enter_pw 
+skip                      USES PW_Creation Pass_wordV PW_Verify compare_string 
+                                equal_f yourein MENU Cont_Men SONG_TIME_START 
+Pass_word                 USES PW_String disp display_string 
+re_enter_pw               USES re_enter disp display_string start_f 
+RSRTMSG                   USES start_f 
+Pass_wordV                USES PW_Verify_String disp display_string 
+PW_Verify                 USES scan Password_verify PW_Verify_String disp 
+                                display_string enter_f cursor 
+yourein                   USES accepted disp display_string start_f 
+RSRTMSG2                  USES start_f 
+init_LCD                  USES _DDRAD _PTAD _DDRM delay_ms _PTM data 
+                                sendCommand epulse 
+display_string            USES sendCommand data _PTAD epulse 
+epulse                    USES data _PTM delay_ms 
+sendCommand               USES data _PTAD epulse 
+SendsChr                  USES tone 
+PlayTone                  USES tone_count tone _PTT 
+Startup_1                 USES disp 
+Startup_2                 USES disp 
+date_str                  USES date disp time 
+admin_u                   USES disp name 
+menu_str                  USES date disp time 
+PW_String                 USES disp pass 
+PW_Verify_String          USES disp passv 
+re_enter                  USES disp 
+accepted                  USES disp 
+GenSelStr                 USES disp gens1 gens2 gens3 
+RTI_ISR                   USES start_f start_c 
+MIDDLE                    USES sound_rdy 
+SOUND_RT                  USES sound_c PlayTone 
+done_sound                USES sound_rdy 
+exit_start_ISR            USES start_c 
+Date_Start                USES command prev_val clearv 
+I_num                     USES seloff date 
+D_num                     USES seloff date 
+R_num                     USES seloff 
+L_num                     USES seloff 
+F_key                     USES enter_f 
+n_res_high                USES date 
+n_res_low                 USES date 
+l_res                     USES seloff 
+r_res                     USES seloff 
+DONE                      USES command prev_val 
+Time_Start                USES command prev_val 
+I_num                     USES seloff time 
+T_Comp                    USES time 
+D_num                     USES seloff time 
+R_num                     USES seloff 
+L_num                     USES seloff 
+F_key                     USES enter_f 
+n_res_high                USES time 
+n_res_low                 USES time 
+l_res                     USES seloff 
+r_res                     USES seloff 
+DONE                      USES command prev_val 
+GenSel                    USES command prev_val clearv 
+R_num                     USES seloff 
+L_num                     USES seloff 
+F_key                     USES enter_f 
+l_res                     USES seloff 
+r_res                     USES seloff 
+Sel0                      USES gens1 gens2 gens3 
+Sel1                      USES gens2 gens1 gens3 
+Sel2                      USES gens3 gens1 gens2 
+DONE                      USES command prev_val 
+delay1ms                  USES delay 
+rescan                    USES port_u delay1ms 
+up                        USES command 
+right                     USES command 
+down                      USES command 
+left                      USES command 
+prompt                    USES command 
+NCommand                  USES command clearv 
+Door_Song_Start           USES place 
+Door_Song                 USES sound_rdy place song2 sound_c SendsChr 
+Date_Change               USES scan Date_Start date_str disp display_string 
+                                enter_f seloff 
+Time_Change               USES scan Time_Start date_str disp display_string 
+                                enter_f seloff 
+SONG_TIME_START           USES Door_Song_Start 
+Song                      USES Door_Song 
+MENU                      USES scan menu_str disp display_string clearv 
+                                command enter_f 
+Cont_Men                  USES scan GenSel GenSelStr disp display_string 
+                                enter_f seloff 
+User_name                 USES admin_u disp display_string 
+Password_start            USES command 
+inc_alph                  USES cursor pass 
+skip                      USES pass 
+R_curs                    USES cursor 
+boundary1                 USES cursor 
+dec_alph                  USES cursor pass 
+skip2                     USES pass 
+L_curs                    USES cursor 
+boundary2                 USES cursor 
+F_key                     USES enter_f 
+leave                     USES pass command 
+Password_verify           USES command 
+inc_alph                  USES cursor passv 
+skip                      USES passv 
+R_curs                    USES cursor 
+boundary1                 USES cursor 
+dec_alph                  USES cursor passv 
+skip2                     USES passv 
+L_curs                    USES cursor 
+boundary2                 USES cursor 
+F_key                     USES enter_f 
+leave                     USES passv command 
+Username_start            USES command 
+inc_alph                  USES cursor name 
+skip                      USES name 
+R_curs                    USES cursor 
+boundary1                 USES cursor 
+dec_alph                  USES cursor name 
+skip2                     USES name 
+L_curs                    USES cursor 
+boundary2                 USES cursor 
+F_key                     USES enter_f 
+leave                     USES name command 
+compare_string            USES cursor 
+compare                   USES pass passv 
+notequal                  USES equal_f cursor 
+pass_res2                 USES pass 
+passv_res2                USES passv 
+equal                     USES equal_f 
+PW_Creation               USES scan Password_start PW_String disp 
+                                display_string enter_f cursor 
+user_chng                 USES scan Username_start admin_u disp display_string 
+                                enter_f cursor 
 
+*********************************************************************************************
+DEPENDENCY TREE
+*********************************************************************************************
+ Entry               
+ | 
+ +- init_LCD            
+    | 
+    +- delay_ms            
+    |    
+    +- sendCommand         
+    |  | 
+    |  +- epulse              
+    |     | 
+    |     +- delay_ms             (see above)
+    |        
+    +- epulse               (see above)
+       
+ RTI_ISR             
+   
 *********************************************************************************************
 STATISTIC SECTION
 ---------------------------------------------------------------------------------------------
 
 ExeFile:
 --------
-Number of blocks to be downloaded: 0
-Total size of all blocks to be downloaded: 0
+Number of blocks to be downloaded: 10
+Total size of all blocks to be downloaded: 3887
 

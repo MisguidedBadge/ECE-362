@@ -88,7 +88,7 @@ Door_Song:
             
             ldx place   		 	;load current element used
             ldaa #0
-            ldab song1, x	 		; increment to next element
+            ldab song2, x	 		; increment to next element
             cmpb 0
             beq  Door_Song_Start  	; loop song if at the end (value is 0)
             

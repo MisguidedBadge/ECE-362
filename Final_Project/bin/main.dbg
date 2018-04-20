@@ -7310,7 +7310,7 @@ mPMFDTMC_PMFDTMC11:                      equ        This_symb_has_been_depreciat
             XDEF sound_f
             XDEF gens1, gens2, gens3			; generator selection
             XDEF pass, passv
-            XDEF User_name,name,cursor 
+            XDEF User_name,name,cursor, equal_f 
             
             ; we use export 'Entry' as symbol. This allows us to
             ; reference 'Entry' either in the linker .prm file
@@ -7323,7 +7323,7 @@ mPMFDTMC_PMFDTMC11:                      equ        This_symb_has_been_depreciat
             XREF User_name
             XREF Door_Song, Door_Song_Start, sound_rdy,  tone_count, sound_c
             XREF GenSel,Date_Change, Time_Change, SONG_TIME_START, Song, Cont_Men, MENU, clearv
-            XREF User_name_change, PW_Creation, compare_string 
+            XREF User_name_change, PW_Creation, compare_string , user_chng
             ; LCD References
 	         
 
@@ -7357,7 +7357,7 @@ disp:	      ds.b 33
 start_f:    ds.b 1	    ;start flag
 enter_f:    ds.b 1	    ;enter flag
 date_f:     ds.b 1          ;date change flag
-equal_f	ds.b 1	    ;equal flag		
+equal_f	    ds.b 1	    ;equal flag		
 
 
 ;temporary variables
@@ -7480,8 +7480,8 @@ passv_res:	      stab	passv,x
 			cpx   #16
 			bne	passv_res     ;branch until PW initialized to all spaces	
 			
-			
-			Movb	#$10, RTICTL			        ;Initi RTI to 1ms
+;---------------------------------------INTERUPT SHIP--------------------------;			
+			Movb	#$10, RTICTL			        ;Initi RTI to .128 ms
 			Movb	#$80, CRGINT			        ;enable RTI				
 
 ;---------------------------------------END LCD DISPLAY STUFF---------------------------;
@@ -7528,11 +7528,14 @@ SRTMSG2:	     BRCLR start_f, #1, SRTMSG2
 
       jsr User_name		;show default username screen	
 			
-			jsr User_name_change	;Display users name inputs
+			jsr user_chng	;Display users name inputs
 			
-			jsr Pass_word		;show default password screen	
+			jsr Pass_word		;show default password screen
+			bra skip        ;skip the re_enter password subroutine
+				
+no_match:			jsr re_enter_pw
 			
-			jsr PW_Creation	      ;Display users password inputs
+skip:			jsr PW_Creation	      ;Display users password inputs
 			
 			jsr Pass_wordV
 			
@@ -7540,12 +7543,22 @@ SRTMSG2:	     BRCLR start_f, #1, SRTMSG2
 			
 			jsr compare_string
 			
-			BRSET	equal_f, #1, yourein
+			brclr equal_f,#1, no_match
+			
+			jsr yourein               ;make a delay for this
+			
+			jsr MENU
+			
+			jsr Cont_Men
+			
+			jsr SONG_TIME_START
 
 ;------------DEFAULT PASSWORD SHOWCASE---------------------------------------------
-Pass_word:	    jsr	    PW_String
-			    ldd	    #disp
-			    jsr	    display_string
+Pass_word:	    
+
+      jsr	    PW_String
+			ldd	    #disp
+			jsr	    display_string
 			
 			    rts
 			    
@@ -7580,8 +7593,11 @@ PW_Verify:	    jsr	    scan		   		    ;check keypad input
 yourein		    jsr	    accepted
 			    ldd	    #disp
 			    jsr	    display_string
-			    nop	      			
-			
+          MOVB    #0,start_f              ;to stay in loop in next isntruction
+RSRTMSG2:	BRCLR   start_f, #1, RSRTMSG2    ;display try again message for 3 seconds				    
+			    rts	      			
+
+	       
 										
 			
 			
