@@ -56,7 +56,7 @@ Song:
 ;
 MENU:
 	          ;bset command, #0
-	          jsr scan									      ;look for the F key (enter key)
+	          jsr scan									  ;look for the F key (enter key)
 	          jsr menu_str    							  ;display the menu string
 	          ldd #disp		
 	          jsr display_string						  ;If enter then exit loop if not then keep looping menu

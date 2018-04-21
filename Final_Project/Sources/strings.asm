@@ -1,7 +1,8 @@
 
 	XDEF Startup_1, Startup_2, date_str,admin_u,menu_str,GenSelStr,admin_u,PW_String,PW_Verify_String
-	XDEF re_enter,accepted
-	XREF disp, date, time, name, gens1, gens2, gens3, pass, passv
+	XDEF re_enter,accepted,re_admin_u
+	
+	XREF disp, date, time, name, namev, gens1, gens2, gens3, pass, passv
 
 	
 MY_EXTENDED_RAM: SECTION	
@@ -301,37 +302,36 @@ re_enter:  movb #'P',disp
 
            
            rts
-;-------------------------'You're in' Display (password accepted)------
-accepted:  movb #'Y',disp
-           movb #'o',disp+1
-           movb #'u',disp+2
-           movb #'r',disp+3
-           movb #'e',disp+4
-           movb #' ',disp+5
-           movb #'i',disp+6
-           movb #'n',disp+7
-           movb #' ',disp+8
-           movb #'b',disp+9
+;---------Turn on all 3 generators and set power output to max------
+accepted:  movb #'T',disp
+           movb #'u',disp+1
+           movb #'r',disp+2
+           movb #'n',disp+3
+           movb #'O',disp+4
+           movb #'n',disp+5
+           movb #'G',disp+6
+           movb #'e',disp+7
+           movb #'n',disp+8
+           movb #'e',disp+9
            movb #'r',disp+10
-           movb #'o',disp+11
-           movb #'!',disp+12
-           movb #' ',disp+13
-           movb #' ',disp+14
-           movb #' ',disp+15
-           movb #' ',disp+15
-           movb #' ',disp+16
-           movb #' ',disp+17
-           movb #' ',disp+18
-           movb #' ',disp+19
-           movb #' ',disp+20
-           movb #' ',disp+21
-           movb #' ',disp+22
-           movb #' ',disp+23
-           movb #' ',disp+24
-           movb #' ',disp+25
-           movb #' ',disp+26
-           movb #' ',disp+27
-           movb #' ',disp+28
+           movb #'a',disp+11
+           movb #'t',disp+12
+           movb #'o',disp+13
+           movb #'r',disp+14
+           movb #'s',disp+15
+           movb #'S',disp+16
+           movb #'e',disp+17
+           movb #'t',disp+18
+           movb #'T',disp+19
+           movb #'o',disp+20
+           movb #'M',disp+21
+           movb #'a',disp+22
+           movb #'x',disp+23
+           movb #'P',disp+24
+           movb #'o',disp+25
+           movb #'w',disp+26
+           movb #'e',disp+27
+           movb #'r',disp+28
            movb #' ',disp+29
            movb #' ',disp+30
            movb #' ',disp+31
@@ -377,3 +377,77 @@ GenSelStr: movb #'G',disp
            movb #0,  disp+32    ;string terminator, acts like '\0' 
 		   
 		   rts
+;**********************Re_enter_Username******************
+re_admin_u: movb #'R',disp
+           	movb #'e',disp+1
+           	movb #'E',disp+2
+           	movb #'n',disp+3
+           	movb #'t',disp+4
+           	movb #'e',disp+5
+           	movb #'r',disp+6
+           	movb #'U',disp+7
+           	movb #'s',disp+8
+           	movb #'e',disp+9
+           	movb #'r',disp+10
+           	movb #'n',disp+11
+           	movb #'a',disp+12
+           	movb #'m',disp+13
+           	movb #'e',disp+14
+           	movb #':',disp+15
+           	movb namev,disp+16
+           	movb namev+1,disp+17
+           	movb namev+2,disp+18
+           	movb namev+3,disp+19
+           	movb namev+4,disp+20
+           	movb namev+5,disp+21
+           	movb namev+6,disp+22
+           	movb namev+7,disp+23
+           	movb namev+8,disp+24
+           	movb namev+9,disp+25
+           	movb namev+10,disp+26
+           	movb namev+11,disp+27
+           	movb namev+12,disp+28
+           	movb namev+13,disp+29
+           	movb namev+14,disp+30
+           	movb namev+15,disp+31
+           	movb #0,disp+32     
+		   		   
+		   	rts
+
+;-------------------------Usernames match-----------------------------
+match_a:   movb #'U',disp
+           movb #'s',disp+1
+           movb #'e',disp+2
+           movb #'r',disp+3
+           movb #'n',disp+4
+           movb #'a',disp+5
+           movb #'m',disp+6
+           movb #'e',disp+7
+           movb #'s',disp+8
+           movb #' ',disp+9
+           movb #'M',disp+10
+           movb #'a',disp+11
+           movb #'t',disp+12
+           movb #'c',disp+13
+           movb #'h',disp+14
+           movb #' ',disp+15
+           movb #' ',disp+15
+           movb #' ',disp+16
+           movb #' ',disp+17
+           movb #' ',disp+18
+           movb #' ',disp+19
+           movb #' ',disp+20
+           movb #' ',disp+21
+           movb #' ',disp+22
+           movb #' ',disp+23
+           movb #' ',disp+24
+           movb #' ',disp+25
+           movb #' ',disp+26
+           movb #' ',disp+27
+           movb #' ',disp+28
+           movb #' ',disp+29
+           movb #' ',disp+30
+           movb #' ',disp+31
+           movb #0,  disp+32    ;string terminator, acts like '\0' 
+		   
+		   rts		   	
