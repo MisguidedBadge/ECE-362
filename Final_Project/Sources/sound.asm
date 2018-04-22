@@ -1,4 +1,4 @@
-    XDEF Door_Song, Door_Song_Start, sound_rdy         
+    XDEF Door_Song, Song_Start, sound_rdy,EM_Song         
 
     XREF SendsChr, PlayTone, sound_c
 
@@ -72,14 +72,18 @@ song2	 dc.b	 G5,A3, 0  															; emergency song
 MY_EXTENDED_RAM: SECTION
 place:    	ds.w    1
 sound_rdy: 	ds.b	1
+;song_start:	ds.b	1
 
 MY_SONG:	SECTION
 
-Door_Song_Start:      
+Song_Start:      
 
             ldx #0  				;Start at 0 place
             stx place				;
+           ; MOVB #1, song_start
             rts 					;
+
+;------------------------------------Door Song-----------------------------------------------;
 Door_Song:  
 
             ldaa sound_rdy  		;load the ready signal (ISR finished note)
@@ -88,9 +92,9 @@ Door_Song:
             
             ldx place   		 	;load current element used
             ldaa #0
-            ldab song2, x	 		; increment to next element
+            ldab song1, x	 		; increment to next element
             cmpb 0
-            beq  Door_Song_Start  	; loop song if at the end (value is 0)
+            beq  Song_Start  	; loop song if at the end (value is 0)
             
             inx						; increment place variable
             stx  place				; store place
@@ -109,7 +113,37 @@ Door_Song:
             MOVB #1, sound_rdy		; ready sound for ISR
             
             bra DONE
+
+;------------------------------------Emergency Song-------------------------------------------;
+EM_Song:  
+
+            ldaa sound_rdy  		;load the ready signal (ISR finished note)
+            cmpa #1		   			;if ready then coninue
+            beq DONE
             
+            ldx place   		 	;load current element used
+            ldaa #0
+            ldab song2, x	 		; increment to next element
+            cmpb 0
+            beq  Song_Start  		; loop song if at the end (value is 0)
+            
+            inx						; increment place variable
+            stx  place				; store place
+            
+            ldy #$0AFF				; load a "delay" plays notes this many times to get a stable sound
+            sty sound_c				; store for use in ISR
+            
+            
+            pshb  					; note
+                    
+            jsr SendsChr			; use send chrs to update the note
+
+            leas +1, sp 			;compensate for the stack
+ 
+
+            MOVB #1, sound_rdy		; ready sound for ISR
+            
+            bra DONE            
 
 
 

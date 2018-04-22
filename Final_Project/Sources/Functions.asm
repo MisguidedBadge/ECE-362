@@ -1,9 +1,9 @@
-    XDEF Date_Change, Time_Change, SONG_TIME_START, Song, Cont_Men, MENU
+    XDEF Date_Change, Time_Change, SONG_TIME_START, Song, Cont_Men, MENU, CoalFiller
     
     
     XREF scan, Date_Start, date_str, disp, display_string, enter_f, seloff
-    XREF Door_Song, Door_Song_Start,menu_str, command, prev_val, GenSelStr
-    XREF GenSel, Time_Start,clearv
+    XREF Door_Song, Song_Start,menu_str, command, prev_val, GenSelStr, Fill_Coal
+    XREF GenSel, Time_Start,clearv,stepper_r
                                               
     
     
@@ -44,7 +44,7 @@ Time_Change:
 ;
 SONG_TIME_START:
 
-            jsr Door_Song_Start 						;Song start sequence
+            jsr Song_Start 						;Song start sequence
 Song:
             jsr Door_Song		  						  ;Song sequence
       
@@ -88,4 +88,11 @@ Cont_Men:
 	          stx   enter_f	 								;reset enter flag
 	
 	          rts
+	          
+
+	          
+CoalFiller:		brclr	stepper_r, #1, CoalFiller2			;Branches away from filling for 30ms delay 
+				jsr		Fill_Coal							;Fill coal subroutine
+CoalFiller2:	jsr		Door_Song							;Play the door song
+				rts		
 	

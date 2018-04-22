@@ -19,6 +19,7 @@
             XDEF gens1, gens2, gens3			; generator selection
             XDEF pass, passv
             XDEF User_name,name,namev,cursor, equal_f,check,switch_f 
+            XDEF PW_Verify, port_p, stepper_r, stepper_s
             
             ; we use export 'Entry' as symbol. This allows us to
             ; reference 'Entry' either in the linker .prm file
@@ -29,9 +30,9 @@
             XREF Date_Start, Time_Start, Password_start, Password_verify
             XREF scan,admin_u, SendsChr,Username_start,PW_String,PW_Verify_String
             XREF User_name,Default_PW,Default_RE_PW,Pass_wordV,compare_PW 
-            XREF Door_Song, Door_Song_Start, sound_rdy,  tone_count, sound_c
+            XREF Door_Song, Song_Start, sound_rdy,  tone_count, sound_c
             XREF GenSel,Date_Change, Time_Change, SONG_TIME_START, Song, Cont_Men, MENU, clearv
-            XREF PW_Creation, compare_string , user_chng,Re_Username,re_admin_u
+            XREF PW_Creation, compare_string , user_chng,Re_Username,re_admin_u, em_v,Fill_Coal,Coal_S, stepper_c, CoalFiller
             ; LCD References
 	         
 
@@ -52,6 +53,8 @@ PER         equ   $26C                   		;pull_enable register
 PSR         equ   $26D                    		;polarity_select
 port_t_ddr	equ	  $242
 port_t		equ	  $240
+port_p_ddr	equ	  $25A 							;port_p_ddr
+port_p		equ	  $258							;port_p
                   
 
 ; variable/data section
@@ -100,8 +103,9 @@ pass:		ds.b	16
 passv:		ds.b	16
 ;date variables stored in mem array
 cursor:     ds.w  1								;gives cursor location on LCD			   
-
-
+;Stepper Motor
+stepper_r:	ds.b	1							;stepper ready
+stepper_s:	ds.b	1
 
 
 
@@ -138,6 +142,12 @@ _Startup:
 				MOVW  	#0, cursor
 				MOVB	#0, check				;initialize previous switch value to 0
 				movb	#1, flag	
+				movb	#0, em_v
+				movb	#$1E,port_p_ddr
+				movb	#0, stepper_r
+				movw	#0, stepper_c
+				movb	#0, stepper_s
+				
 				jsr	  	init_LCD            	;call init_LCD
 			
 
@@ -201,7 +211,9 @@ name_resv:  	stab 	namev,x      			;store ascii value into each memory location
 			
 ;---------------------------------------INTERUPT SHIP--------------------------;			
 				Movb	#$10, RTICTL			;Initi RTI to .128 ms
-				Movb	#$80, CRGINT			;enable RTI				
+				Movb	#$80, CRGINT			;enable RTI
+				Movb    #$80, INTCR 			;sets edge trigger
+				Movb    #$40, INTCR 			;enable IRQ				
 
 ;---------------------------------------END LCD DISPLAY STUFF---------------------------;
 
@@ -255,9 +267,22 @@ skip:			jsr 	PW_Creation	    		;Display users password inputs
 				jsr 	prompt					;Tell user to turn on each generator and set power output to max         		
 				
 							
-				jsr 	MENU			
-				jsr 	Cont_Men			
-				jsr 	SONG_TIME_START	    				 
+				jsr 	MENU					; Shows MW output and time		
+				jsr 	Cont_Men			    ; Control Menu that shows generators
+				
+
+				
+			    ;- Reset Stepper Values -;
+				jsr		Coal_S
+				jsr		Song_Start
+
+				;-Testing Fill Process -;
+FILL:
+				jsr		CoalFiller
+			    bra FILL
+				
+				
+
 
 ;------------Re_type password to verify--------------------------------------------
 PW_Verify:	    jsr	    scan		   		    ;check keypad input

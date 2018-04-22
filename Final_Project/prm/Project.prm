@@ -61,3 +61,4 @@ VECTOR 0 _Startup /* reset vector: this is the default entry point for a C/C++ a
 //VECTOR 0 Entry  /* reset vector: this is the default entry point for an Assembly application. */
 INIT Entry      /* for assembly applications: that this is as well the initialization entry point */
 VECTOR 7 RTI_ISR
+VECTOR 6 Emergency
