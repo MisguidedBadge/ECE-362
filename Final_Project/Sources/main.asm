@@ -16,7 +16,7 @@
             XDEF port_u, delay
             XDEF date,date_f, time,enter_f, prev_val, seloff;, User_name
             XDEF sound_f,on_off,choose
-            XDEF gens1, gens2, gens3			;generator selection
+            XDEF gens1, gens2, gens3,num			;generator selection
             XDEF pass, passv,passflag
             XDEF User_name,name,namev,cursor, equal_f,check,switch_f 
             XDEF PW_Verify, port_p, stepper_r, stepper_s
@@ -97,6 +97,7 @@ gens1:		ds.b  	1
 gens2:		ds.b  	1
 gens3:		ds.b  	1
 on_off:		ds.b  	1							;Determines which generators are on or off (values 0-7) 
+num			ds.b	3							;Stores which generators are turned on
 
 ;LCD Variables
 my_LCD: SECTION
@@ -152,6 +153,7 @@ _Startup:
 				movb	#0, choose				;initialize choose to any value
 				movb	#0,passflag
 				movb	#0,homeflag
+				movb	#0,num					;initialize num
 				jsr	  	init_LCD            	;call init_LCD
 			
 
@@ -210,7 +212,14 @@ passv_res:		stab	passv,x
 name_resv:  	stab 	namev,x      			;store ascii value into each memory location            
       			inx
       			cpx 	#16         			;check if all locations have been stored
-				bne 	name_resv 		 		
+				bne 	name_resv
+;initialize generator on and off values with space values
+      			ldab 	#$20        			;ascii space value
+      			ldx 	#0          			;initialize x
+gen_res:  		stab 	num,x      				;store ascii value into each memory location            
+      			inx
+      			cpx 	#3	         			;check if all locations have been stored
+				bne 	gen_res  		 		
 				
 			
 ;---------------------------------------INTERUPT SHIP--------------------------;			

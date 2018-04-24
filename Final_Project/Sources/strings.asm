@@ -1,8 +1,8 @@
 
 	XDEF Startup_1, Startup_2, date_str,admin_u,menu_str,GenSelStr,admin_u,PW_String,PW_Verify_String
-	XDEF re_enter,accepted,re_admin_u,match_a,admin_u2,match_p
+	XDEF re_enter,accepted,re_admin_u,match_a,admin_u2,match_p,generator,generators3,gens_off,generators2
 	
-	XREF disp, date, time, name, namev, gens1, gens2, gens3, pass, passv,
+	XREF disp, date, time, name, namev, gens1, gens2, gens3, pass, passv,num
 
 	
 MY_EXTENDED_RAM: SECTION	
@@ -522,4 +522,147 @@ match_p:   movb #'L',disp
            movb #' ',disp+31
            movb #0,  disp+32    ;string terminator, acts like '\0' 
 		   
-		   rts		   			   	
+		   rts
+;------------------------Generator on-----------------------------		   	
+generator: movb #'G',disp
+           movb #'e',disp+1
+           movb #'n',disp+2
+           movb #'e',disp+3
+           movb #'r',disp+4
+           movb #'a',disp+5
+           movb #'t',disp+6
+           movb #'o',disp+7
+           movb #'r',disp+8
+           movb #' ',disp+9
+           movb num,disp+10
+           movb #' ',disp+11
+           movb #'O',disp+12
+           movb #'n',disp+13
+           movb #' ',disp+14
+           movb #' ',disp+15
+           movb #' ',disp+16
+           movb #' ',disp+17
+           movb #' ',disp+18
+           movb #' ',disp+19
+           movb #' ',disp+20
+           movb #' ',disp+21
+           movb #' ',disp+22
+           movb #' ',disp+23
+           movb #' ',disp+24
+           movb #' ',disp+25
+           movb #' ',disp+26
+           movb #' ',disp+27
+           movb #' ',disp+28
+           movb #' ',disp+29
+           movb #' ',disp+30
+           movb #' ',disp+31
+           movb #0,  disp+32    ;string terminator, acts like '\0' 
+		   
+		   rts
+;------------------------3 Generator on-----------------------------		   	
+generators3: movb #'G',disp
+             movb #'e',disp+1
+             movb #'n',disp+2
+             movb #'e',disp+3
+             movb #'r',disp+4
+             movb #'a',disp+5
+             movb #'t',disp+6
+             movb #'o',disp+7
+             movb #'r',disp+8
+             movb #'s',disp+9
+             movb #' ',disp+10
+             movb num,disp+11
+             movb #',',disp+12
+             movb num+1,disp+13
+             movb #',',disp+14
+             movb #' ',disp+15
+             movb #'a',disp+16
+             movb #'n',disp+17
+             movb #'d',disp+18
+             movb #' ',disp+19
+             movb num+2,disp+20
+             movb #' ',disp+21
+             movb #'o',disp+22
+             movb #'n',disp+23
+             movb #' ',disp+24
+             movb #' ',disp+25
+             movb #' ',disp+26
+             movb #' ',disp+27
+             movb #' ',disp+28
+             movb #' ',disp+29
+             movb #' ',disp+30
+             movb #' ',disp+31
+             movb #0,  disp+32    ;string terminator, acts like '\0' 
+		      
+		     rts
+;---------------------Generators all off---------------------------------	
+gens_off: 	movb #'G',disp
+            movb #'e',disp+1
+            movb #'n',disp+2
+            movb #'e',disp+3
+            movb #'r',disp+4
+            movb #'a',disp+5
+            movb #'t',disp+6
+            movb #'o',disp+7
+            movb #'r',disp+8
+            movb #'s',disp+9
+            movb #' ',disp+10
+            movb #'A',disp+11
+            movb #'r',disp+12
+            movb #'e',disp+13
+            movb #' ',disp+14
+            movb #' ',disp+15
+            movb #'A',disp+16
+            movb #'l',disp+17
+            movb #'l',disp+18
+            movb #' ',disp+19
+            movb #'O',disp+20
+            movb #'f',disp+21
+            movb #'f',disp+22
+            movb #' ',disp+23
+            movb #' ',disp+24
+            movb #' ',disp+25
+            movb #' ',disp+26
+            movb #' ',disp+27
+            movb #' ',disp+28
+            movb #' ',disp+29
+            movb #' ',disp+30
+            movb #' ',disp+31
+            movb #0,  disp+32    ;string terminator, acts like '\0' 
+		    
+		    rts
+;------------------------2 Generators on-----------------------------		   	
+generators2: movb #'G',disp
+             movb #'e',disp+1
+             movb #'n',disp+2
+             movb #'e',disp+3
+             movb #'r',disp+4
+             movb #'a',disp+5
+             movb #'t',disp+6
+             movb #'o',disp+7
+             movb #'r',disp+8
+             movb #'s',disp+9
+             movb #' ',disp+10
+             movb num,disp+11
+             movb #'&',disp+12
+             movb num+1,disp+13
+             movb #' ',disp+14
+             movb #' ',disp+15
+             movb #'A',disp+16
+             movb #'r',disp+17
+             movb #'e',disp+18
+             movb #' ',disp+19
+             movb #'o',disp+20
+             movb #'n',disp+21
+             movb #' ',disp+22
+             movb #' ',disp+23
+             movb #' ',disp+24
+             movb #' ',disp+25
+             movb #' ',disp+26
+             movb #' ',disp+27
+             movb #' ',disp+28
+             movb #' ',disp+29
+             movb #' ',disp+30
+             movb #' ',disp+31
+             movb #0,  disp+32    ;string terminator, acts like '\0'
+             rts			    	   			   	
