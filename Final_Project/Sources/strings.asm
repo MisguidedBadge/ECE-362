@@ -523,3 +523,114 @@ match_p:   movb #'L',disp
            movb #0,  disp+32    ;string terminator, acts like '\0' 
 		   
 		   rts		   			   	
+;------------------------Generator Warning-----------------------------		   	
+Fill_Error1:   
+		   movb #'T',disp
+           movb #'u',disp+1
+           movb #'r',disp+2
+           movb #'n',disp+3
+           movb #' ',disp+4
+           movb #'S',disp+5
+           movb #'w',disp+6
+           movb #'i',disp+7
+           movb #'t',disp+8
+           movb #'c',disp+9
+           movb #'h',disp+10
+           movb #' ',disp+11
+           movb #'1',disp+12
+           movb #' ',disp+13
+           movb #' ',disp+14
+           movb #' ',disp+15
+           movb #' ',disp+16
+           movb #' ',disp+17
+           movb #'O',disp+18
+           movb #'f',disp+19
+           movb #'f',disp+20
+           movb #' ',disp+21
+           movb #'F',disp+22
+           movb #'o',disp+23
+           movb #'r',disp+24
+           movb #' ',disp+25
+           movb #'F',disp+26
+           movb #'i',disp+27
+           movb #'l',disp+28
+           movb #'l',disp+29
+           movb #' ',disp+30
+           movb #' ',disp+31
+           movb #0,  disp+32    ;string terminator, acts like '\0' 
+		   
+		   rts
+	
+Fill_Error2:   
+		   movb #'T',disp
+           movb #'u',disp+1
+           movb #'r',disp+2
+           movb #'n',disp+3
+           movb #' ',disp+4
+           movb #'S',disp+5
+           movb #'w',disp+6
+           movb #'i',disp+7
+           movb #'t',disp+8
+           movb #'c',disp+9
+           movb #'h',disp+10
+           movb #' ',disp+11
+           movb #'2',disp+12
+           movb #' ',disp+13
+           movb #' ',disp+14
+           movb #' ',disp+15
+           movb #' ',disp+16
+           movb #' ',disp+17
+           movb #'O',disp+18
+           movb #'f',disp+19
+           movb #'f',disp+20
+           movb #' ',disp+21
+           movb #'F',disp+22
+           movb #'o',disp+23
+           movb #'r',disp+24
+           movb #' ',disp+25
+           movb #'F',disp+26
+           movb #'i',disp+27
+           movb #'l',disp+28
+           movb #'l',disp+29
+           movb #' ',disp+30
+           movb #' ',disp+31
+           movb #0,  disp+32    ;string terminator, acts like '\0' 
+		   
+		   rts		   			   	
+
+Fill_Error3:   
+		   movb #'T',disp
+           movb #'u',disp+1
+           movb #'r',disp+2
+           movb #'n',disp+3
+           movb #' ',disp+4
+           movb #'S',disp+5
+           movb #'w',disp+6
+           movb #'i',disp+7
+           movb #'t',disp+8
+           movb #'c',disp+9
+           movb #'h',disp+10
+           movb #' ',disp+11
+           movb #'3',disp+12
+           movb #' ',disp+13
+           movb #' ',disp+14
+           movb #' ',disp+15
+           movb #' ',disp+16
+           movb #' ',disp+17
+           movb #'O',disp+18
+           movb #'f',disp+19
+           movb #'f',disp+20
+           movb #' ',disp+21
+           movb #'F',disp+22
+           movb #'o',disp+23
+           movb #'r',disp+24
+           movb #' ',disp+25
+           movb #'F',disp+26
+           movb #'i',disp+27
+           movb #'l',disp+28
+           movb #'l',disp+29
+           movb #' ',disp+30
+           movb #' ',disp+31
+           movb #0,  disp+32    ;string terminator, acts like '\0' 
+		   
+		   rts		   			   			   			   	

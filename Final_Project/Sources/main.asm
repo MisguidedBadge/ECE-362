@@ -96,6 +96,9 @@ sound_f:	ds.b  	1
 gens1:		ds.b  	1	
 gens2:		ds.b  	1
 gens3:		ds.b  	1
+gens1_coal: ds.b  1 							;generator coal percent value
+gens2_coal: ds.b  1
+gens3_coal:	ds.b  1
 on_off:		ds.b  	1							;Determines which generators are on or off (values 0-7) 
 
 ;LCD Variables
