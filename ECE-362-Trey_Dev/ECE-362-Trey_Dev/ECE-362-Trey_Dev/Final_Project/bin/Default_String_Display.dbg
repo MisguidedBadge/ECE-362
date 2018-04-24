@@ -1,7 +1,6 @@
-		XDEF	Default_PW,Default_RE_PW,Pass_wordV,User_name,Default_RE_Ad,User_name2
-		XDEF	loading 
+		XDEF	Default_PW,Default_RE_PW,Pass_wordV,User_name,Default_RE_Ad
 		XREF	PW_String,PW_Verify_String,re_enter,start_f,admin_u,display_string
-		XREF	re_admin_u,disp,admin_u2,match_p
+		XREF	re_admin_u,disp
 
 ;-------------Display Default Password String--------------		
 Default_PW:	    
@@ -27,28 +26,12 @@ Pass_wordV:	    jsr 	PW_Verify_String
 
 ;-----------Display Default Username String----------------
 User_name:
-            	jsr  	admin_u         ;Display default admin username   
-            	ldd  	#disp           ;store effective address of admin display
-           	    jsr   	display_string  ;display admin display
+            	jsr   admin_u         ;Display default admin username   
+            	ldd   #disp           ;store effective address of admin display
+           	    jsr   display_string  ;display admin display
            	    rts
 ;-----------Display Default Re_enter username String------------
 Default_RE_Ad:	jsr	  	re_admin_u
 				ldd		#disp
 				jsr		display_string
-				movb	#0,start_f
-RSRTMSG2:		BRCLR	start_f, #1, RSRTMSG2				
-				rts
-;-----------Display Enter username message again--------------
-User_name2:
-				jsr		admin_u2
-				ldd		#disp
-				jsr		display_string
-				rts
-;----------Display Loading Home Screen message--------------
-loading:	
-				jsr		match_p
-				ldd		#disp
-				jsr		display_string
-				movb	#0,start_f
-RSRTMSG3:		BRCLR	start_f, #1, RSRTMSG3
-				rts				  		
+				rts	  		

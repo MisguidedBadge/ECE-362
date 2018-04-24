@@ -33,7 +33,7 @@ rescan:	      staa  port_u  	;store the sequence, tells which row is being read
 		      lsra              ;right shift scanning sequence
 		      cmpa  #$8         ;leave at end of scanning sequence
 		      beq   NCommand
-		      	  bra   rescan      ;no options above pressed
+		      bra   rescan      ;no options above pressed
 
 ;value that will inc display value
 up:               MOVB  #2,command   ;value that increments LCD display value

@@ -6,6 +6,8 @@ MY_EXTENDED_RAM: section
 start_c	ds.w	1
 sound_c	ds.w	1
 stepper_c ds.w	1
+stepper_it	ds.b	1	;stepper iteration... this is to make the stepper slowly go up in value
+stepper_num	ds.b	1	;stepper delay
 
 My_code:	section
 
@@ -23,10 +25,10 @@ RTI_ISR:
 		Ldx	start_c						;load count to x
 		inx								;increment count
 		Cpx	#23438		                ;see if equal to 3 seconds 
-		Bne	exit_start_ISR				;
+		lBne	exit_start_ISR				;
 		BSET start_f, #1				;if 3 seconds then 
 		Ldx	#0		                  	;reset to 0 if 3 seconds
-		bra exit_start_ISR
+		lbra exit_start_ISR
 
 		
 
@@ -54,7 +56,7 @@ DONE_STEPPER:
 		
 		
  
-		bra exit_ISR
+		lbra exit_ISR
  ;----------------------END MIDDLE SEQUENCE-------------------------------;
  
 
@@ -93,17 +95,49 @@ done_sound:
 
 ;----------------------Stepper Motor--------------------------------;
 Stepper:
+		
+;-----------------------------Stepper Coal filling Start------------------------;		
+		BRCLR stepper_it, #8, StepperS1	;8 iterations before going up in value
+		ldx stepper_num
+		cpx #234
+		beq StepperS2
+		inx
+		stx stepper_num
+		bra DONE_STEPPER
+;----------------------------Stepper Coal Filling Finish------------------------;
+		BRCLR stepper_it, #8, StepperS1
+	;	ldx 		
+		
+		
+StepperS1:
+		BRSET stepper_r, #1, DONE_STEPPER
+		Ldx	stepper_c						;load count to x
+		inx									;increment count
+		stx stepper_c 
+		Cpx	stepper_num		                	;see if equal to 30ms
+		Bne	DONE_STEPPER					;
+		Ldx	#0		                  		;reset to 0 if 30ms
+		ldy stepper_it
+		iny
+		sty stepper_it
+		MOVB #1, stepper_r
+		MOVW #0, stepper_c
+		
+		lbra	 DONE_STEPPER
+		
+
+StepperS2:
 		BRSET stepper_r, #1, DONE_STEPPER 
 		Ldx	stepper_c						;load count to x
 		inx									;increment count
 		stx stepper_c 
-		Cpx	#0234		                	;see if equal to 3 seconds
+		Cpx	#0234		                	;see if equal to 30ms
 		Bne	DONE_STEPPER					;
-		Ldx	#0		                  		;reset to 0 if 3 seconds
+		Ldx	#0		                  		;reset to 0 if 30ms
 		MOVB #1, stepper_r
 		MOVW #0, stepper_c
 		
-		bra	 DONE_STEPPER
+		lbra	 DONE_STEPPER
 
 
 ;--------------------EXIT Interrupt---------------------------------------;		

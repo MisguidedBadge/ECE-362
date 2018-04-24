@@ -1,5 +1,5 @@
 *** EVALUATION ***
-PROGRAM "C:\Users\parkesa\Downloads\ECE-362-Trey_Dev\ECE-362-Trey_Dev\Final_Project\bin\Project.abs"
+PROGRAM "C:\Users\mitpeter.ADS\Documents\GitHub\ECE-362\Final_Project\bin\Project.abs"
 
 *********************************************************************************************
 TARGET SECTION
@@ -32,11 +32,8 @@ Create_Password.asm.o                   Model: SMALL,         Lang: Assembler
 Create_Username.asm.o                   Model: SMALL,         Lang: Assembler
 Default_String_Display.asm.o            Model: SMALL,         Lang: Assembler
 Compare_Strings.asm.o                   Model: SMALL,         Lang: Assembler
-Re_enter_Username.asm.o                 Model: SMALL,         Lang: Assembler
-switch_input.asm.o                      Model: SMALL,         Lang: Assembler
 Emergency_Shutoff.asm.o                 Model: SMALL,         Lang: Assembler
 CoalFill.asm.o                          Model: SMALL,         Lang: Assembler
-Create_Username2.asm.o                  Model: SMALL,         Lang: Assembler
 
 *********************************************************************************************
 STARTUP SECTION
@@ -47,8 +44,8 @@ Entry point: 0xC000 (Entry)
 SECTION-ALLOCATION SECTION
 Section Name                    Size  Type     From       To       Segment
 ---------------------------------------------------------------------------------------------
-.init                            448     R     0xC000     0xC1BF   ROM_C000
-NON_BANKED                       246     R     0xC1C0     0xC2B5   ROM_C000
+.init                            433     R     0xC000     0xC1B0   ROM_C000
+NON_BANKED                       246     R     0xC1B1     0xC2A6   ROM_C000
 .stack                           256   R/W      0x400      0x4FF   RAM
 .abs_section_8                     1   N/I        0x8        0x8   .absSeg0
 .abs_section_9                     1   N/I        0x9        0x9   .absSeg1
@@ -324,33 +321,30 @@ NON_BANKED                       246     R     0xC1C0     0xC2B5   ROM_C000
 .abs_section_27c                   2   N/I      0x27C      0x27D   .absSeg271
 .abs_section_27e                   2   N/I      0x27E      0x27F   .absSeg272
 .bss                               6   R/W      0x500      0x505   RAM
-MY_EXTENDED_ROM                   29     R     0xC2B6     0xC2D2   ROM_C000
+MY_EXTENDED_ROM                   29     R     0xC2A7     0xC2C3   ROM_C000
 MY_EXTENDED_RAM                  111   R/W      0x506      0x574   RAM
 my_LCD                            36   R/W      0x575      0x598   RAM
-StringCode                      2404     R     0xC2D3     0xCC36   ROM_C000
-My_code                          113     R     0xCC37     0xCCA7   ROM_C000
-Highlight_section                521     R     0xCCA8     0xCEB0   ROM_C000
-debounce.asm._SEC000000            9     R     0xCEB1     0xCEB9   ROM_C000
-KEY                               92     R     0xCEBA     0xCF15   ROM_C000
-MY_SONG                           94     R     0xCF16     0xCF73   ROM_C000
-Functions.asm._SEC000000         148     R     0xCF74     0xD007   ROM_C000
-PassWord.asm._SEC000000          156     R     0xD008     0xD0A3   ROM_C000
-PassWordVerify.asm._SEC000000        156     R     0xD0A4     0xD13F   ROM_C000
-User_name.asm._SEC000000         156     R     0xD140     0xD1DB   ROM_C000
-Create_Password.asm._SEC000000         32     R     0xD1DC     0xD1FB   ROM_C000
-Create_Username.asm._SEC000000         32     R     0xD1FC     0xD21B   ROM_C000
-Default_String_Display.asm._SEC000000        100     R     0xD21C     0xD27F   ROM_C000
-Compare_Strings.asm._SEC000000        192     R     0xD280     0xD33F   ROM_C000
-Re_enter_Username.asm._SEC000000        156     R     0xD340     0xD3DB   ROM_C000
-switch_input.asm._SEC000000        317     R     0xD3DC     0xD518   ROM_C000
-EmergShut                          9     R     0xD519     0xD521   ROM_C000
-Coal                              57     R     0xD522     0xD55A   ROM_C000
-Create_Username2.asm._SEC000000         32     R     0xD55B     0xD57A   ROM_C000
+StringCode                      2072     R     0xC2C4     0xCADB   ROM_C000
+My_code                          187     R     0xCADC     0xCB96   ROM_C000
+Highlight_section                521     R     0xCB97     0xCD9F   ROM_C000
+debounce.asm._SEC000000            9     R     0xCDA0     0xCDA8   ROM_C000
+KEY                               92     R     0xCDA9     0xCE04   ROM_C000
+MY_SONG                           94     R     0xCE05     0xCE62   ROM_C000
+Functions.asm._SEC000000         145     R     0xCE63     0xCEF3   ROM_C000
+PassWord.asm._SEC000000          156     R     0xCEF4     0xCF8F   ROM_C000
+PassWordVerify.asm._SEC000000        156     R     0xCF90     0xD02B   ROM_C000
+User_name.asm._SEC000000         156     R     0xD02C     0xD0C7   ROM_C000
+Create_Password.asm._SEC000000         32     R     0xD0C8     0xD0E7   ROM_C000
+Create_Username.asm._SEC000000         32     R     0xD0E8     0xD107   ROM_C000
+Default_String_Display.asm._SEC000000         60     R     0xD108     0xD143   ROM_C000
+Compare_Strings.asm._SEC000000        144     R     0xD144     0xD1D3   ROM_C000
+EmergShut                          9     R     0xD1D4     0xD1DC   ROM_C000
+Coal                              57     R     0xD1DD     0xD215   ROM_C000
 .vectSeg273_vect                   4     R     0xFFF0     0xFFF3   .vectSeg273
 .vectSeg274_vect                   2     R     0xFFFE     0xFFFF   .vectSeg274
 
 Summary of section sizes per section type:
-READ_ONLY (R):        1581 (dec:     5505)
+READ_ONLY (R):        121C (dec:     4636)
 READ_WRITE (R/W):      199 (dec:      409)
 NO_INIT (N/I):         160 (dec:      352)
 
@@ -358,8 +352,8 @@ NO_INIT (N/I):         160 (dec:      352)
 VECTOR-ALLOCATION SECTION
     Address     InitValue   InitFunction
 ---------------------------------------------------------------------------------------------
-     0xFFF0        0xCC37   RTI_ISR
-     0xFFF2        0xD519   Emergency
+     0xFFF0        0xCADC   RTI_ISR
+     0xFFF2        0xD1D4   Emergency
      0xFFFE        0xC000   _Startup
 
 *********************************************************************************************
@@ -368,66 +362,65 @@ OBJECT-ALLOCATION SECTION
 ---------------------------------------------------------------------------------------------
 MODULE:                 -- main.asm.o --
 - PROCEDURES:
-     Entry                                     C000      A8     168       0   .init       
+     Entry                                     C000      99     153       0   .init       
      _Startup                                  C000       0       0       0   .init       
-     date_res                                  C0A8      11      17       0   .init       
-     time_res                                  C0B9       F      15       0   .init       
-     name_res                                  C0C8      15      21       0   .init       
-     pass_res                                  C0DD       F      15       0   .init       
-     passv_res                                 C0EC       F      15       0   .init       
-     name_resv                                 C0FB      27      39       0   .init       
-     SRTMSG1                                   C122      13      19       0   .init       
-     SRTMSG2                                   C135      2F      47       0   .init       
-     no_match                                  C164       3       3       0   .init       
-     skip                                      C167      20      32       0   .init       
-     FILL                                      C187       5       5       0   .init       
-     PW_Verify                                 C18C      20      32       1   .init       
-     prompt                                    C1AC       E      14       1   .init       
-     RSRTMSG2                                  C1BA       6       6       0   .init       
+     date_res                                  C099      11      17       0   .init       
+     time_res                                  C0AA       F      15       0   .init       
+     name_res                                  C0B9      15      21       0   .init       
+     pass_res                                  C0CE       F      15       0   .init       
+     passv_res                                 C0DD       F      15       0   .init       
+     name_resv                                 C0EC      27      39       0   .init       
+     SRTMSG1                                   C113      13      19       0   .init       
+     SRTMSG2                                   C126      2F      47       0   .init       
+     no_match                                  C155       3       3       0   .init       
+     skip                                      C158      20      32       0   .init       
+     FILL                                      C178       5       5       0   .init       
+     PW_Verify                                 C17D      20      32       1   .init       
+     prompt                                    C19D       E      14       1   .init       
+     RSRTMSG2                                  C1AB       6       6       0   .init       
 - VARIABLES:
-     delay                                     C2B6       2       2       1   MY_EXTENDED_ROM
-     keys                                      C2B8       4       4       0   MY_EXTENDED_ROM
+     delay                                     C2A7       2       2       1   MY_EXTENDED_ROM
+     keys                                      C2A9       4       4       0   MY_EXTENDED_ROM
      user_input                                 506       1       1       0   MY_EXTENDED_RAM
-     disp                                       507      21      33     478   MY_EXTENDED_RAM
-     start_f                                    528       1       1      17   MY_EXTENDED_RAM
-     enter_f                                    529       1       1      24   MY_EXTENDED_RAM
+     disp                                       507      21      33     408   MY_EXTENDED_RAM
+     start_f                                    528       1       1      10   MY_EXTENDED_RAM
+     enter_f                                    529       1       1      21   MY_EXTENDED_RAM
      date_f                                     52A       1       1       0   MY_EXTENDED_RAM
-     equal_f                                    52B       1       1       7   MY_EXTENDED_RAM
-     check                                      52C       1       1       4   MY_EXTENDED_RAM
-     switch_f                                   52D       1       1       1   MY_EXTENDED_RAM
-     flag                                       52E       1       1       3   MY_EXTENDED_RAM
-     choose                                     52F       1       1       3   MY_EXTENDED_RAM
-     passflag                                   530       1       1       3   MY_EXTENDED_RAM
-     homeflag                                   531       1       1       1   MY_EXTENDED_RAM
-     command                                    532       1       1      25   MY_EXTENDED_RAM
-     prev_val                                   533       1       1       4   MY_EXTENDED_RAM
-     date                                       534       8       8      23   MY_EXTENDED_RAM
-     time                                       53C       4       4      16   MY_EXTENDED_RAM
-     name                                       540      10      16      25   MY_EXTENDED_RAM
-     namev                                      550      10      16      27   MY_EXTENDED_RAM
-     seloff                                     560       2       2      27   MY_EXTENDED_RAM
-     sound_f                                    562       1       1       0   MY_EXTENDED_RAM
-     gens1                                      563       1       1       8   MY_EXTENDED_RAM
-     gens2                                      564       1       1       8   MY_EXTENDED_RAM
-     gens3                                      565       1       1       8   MY_EXTENDED_RAM
-     on_off                                     566       1       1       8   MY_EXTENDED_RAM
-     pass                                       575      10      16      27   my_LCD      
+     equal_f                                    52B       1       1       5   MY_EXTENDED_RAM
+     check                                      52C       1       1       1   MY_EXTENDED_RAM
+     switch_f                                   52D       1       1       0   MY_EXTENDED_RAM
+     flag                                       52E       1       1       1   MY_EXTENDED_RAM
+     command                                    52F       1       1      23   MY_EXTENDED_RAM
+     prev_val                                   530       1       1       4   MY_EXTENDED_RAM
+     date                                       531       8       8      23   MY_EXTENDED_RAM
+     time                                       539       4       4      16   MY_EXTENDED_RAM
+     name                                       53D       F      15      26   MY_EXTENDED_RAM
+     namev                                      54C       F      15      19   MY_EXTENDED_RAM
+     seloff                                     55B       2       2      27   MY_EXTENDED_RAM
+     sound_f                                    55D       1       1       0   MY_EXTENDED_RAM
+     gens1                                      55E       1       1       8   MY_EXTENDED_RAM
+     gens2                                      55F       1       1       8   MY_EXTENDED_RAM
+     gens3                                      560       1       1       8   MY_EXTENDED_RAM
+     gens1_coal                                 561       1       1       0   MY_EXTENDED_RAM
+     gens2_coal                                 562       1       1       0   MY_EXTENDED_RAM
+     gens3_coal                                 563       1       1       0   MY_EXTENDED_RAM
+     on_off                                     564       1       1       0   MY_EXTENDED_RAM
+     pass                                       575      10      16      26   my_LCD      
      passv                                      585      10      16      26   my_LCD      
-     cursor                                     595       2       2      51   my_LCD      
-     stepper_r                                  597       1       1       7   my_LCD      
+     cursor                                     595       2       2      38   my_LCD      
+     stepper_r                                  597       1       1       9   my_LCD      
      stepper_s                                  598       1       1       4   my_LCD      
 - LABELS:
      __SEG_END_SSTACK                           500       0       0       1               
-     port_t                                     240       0       0      15   .text       
      port_p                                     258       0       0       1   .text       
      port_u                                     268       0       0       2   .text       
 MODULE:                 -- lcddisp.c.o --
 - PROCEDURES:
-     delay_ms                                  C1C0      17      23       5   NON_BANKED  
-     init_LCD                                  C1D7      52      82       1   NON_BANKED  
-     display_string                            C229      38      56      20   NON_BANKED  
-     epulse                                    C261      24      36       3   NON_BANKED  
-     sendCommand                               C285       F      15       7   NON_BANKED  
+     delay_ms                                  C1B1      17      23       5   NON_BANKED  
+     init_LCD                                  C1C8      52      82       1   NON_BANKED  
+     display_string                            C21A      38      56      16   NON_BANKED  
+     epulse                                    C252      24      36       3   NON_BANKED  
+     sendCommand                               C276       F      15       7   NON_BANKED  
 - VARIABLES:
      data                                       500       2       2       4   .bss        
 MODULE:                 -- mc9s12e128.c.o --
@@ -708,310 +701,251 @@ MODULE:                 -- mc9s12e128.c.o --
      _PIFAD                                     27E       2       2       0   .abs_section_27e
 MODULE:                 -- SendsChr.c.o --
 - PROCEDURES:
-     SendsChr                                  C294       8       8       2   NON_BANKED  
-     PlayTone                                  C29C      1A      26       1   NON_BANKED  
+     SendsChr                                  C285       8       8       2   NON_BANKED  
+     PlayTone                                  C28D      1A      26       1   NON_BANKED  
 - VARIABLES:
      tone                                       502       2       2       2   .bss        
      tone_count                                 504       2       2       4   .bss        
 MODULE:                 -- strings.asm.o --
 - PROCEDURES:
-     Startup_1                                 C2D3      A6     166       1   StringCode  
-     Startup_2                                 C379      A6     166       1   StringCode  
-     date_str                                  C41F      B2     178       3   StringCode  
-     admin_u                                   C4D1      B6     182       2   StringCode  
-     menu_str                                  C587      99     153       1   StringCode  
-     PW_String                                 C620      B6     182       2   StringCode  
-     PW_Verify_String                          C6D6      B6     182       2   StringCode  
-     re_enter                                  C78C      A6     166       1   StringCode  
-     accepted                                  C832      A6     166       1   StringCode  
-     GenSelStr                                 C8D8      B2     178       1   StringCode  
-     re_admin_u                                C98A      A6     166       1   StringCode  
-     match_a                                   CA30      AB     171       1   StringCode  
-     admin_u2                                  CADB      B6     182       1   StringCode  
-     match_p                                   CB91      A6     166       1   StringCode  
+     Startup_1                                 C2C4      A6     166       1   StringCode  
+     Startup_2                                 C36A      A6     166       1   StringCode  
+     date_str                                  C410      B2     178       3   StringCode  
+     admin_u                                   C4C2      B6     182       2   StringCode  
+     menu_str                                  C578      99     153       1   StringCode  
+     PW_String                                 C611      B6     182       2   StringCode  
+     PW_Verify_String                          C6C7      B6     182       2   StringCode  
+     re_enter                                  C77D      A6     166       1   StringCode  
+     accepted                                  C823      A6     166       1   StringCode  
+     GenSelStr                                 C8C9      B2     178       1   StringCode  
+     re_admin_u                                C97B     161     353       1   StringCode  
 - VARIABLES:
 MODULE:                 -- interrupt.asm.o --
 - PROCEDURES:
-     RTI_ISR                                   CC37      1C      28       0   My_code     
-     MIDDLE                                    CC53       5       5       0   My_code     
-     DONE_SOUND                                CC58       5       5       0   My_code     
-     DONE_STEPPER                              CC5D       2       2       0   My_code     
-     EM_SOUND                                  CC5F       5       5       0   My_code     
-     SOUND_RT                                  CC64      11      17       0   My_code     
-     done_sound                                CC75       7       7       0   My_code     
-     Stepper                                   CC7C      21      33       0   My_code     
-     exit_start_ISR                            CC9D       7       7       0   My_code     
-     exit_ISR                                  CCA4       4       4       0   My_code     
+     RTI_ISR                                   CADC      20      32       0   My_code     
+     MIDDLE                                    CAFC       5       5       0   My_code     
+     DONE_SOUND                                CB01       5       5       0   My_code     
+     DONE_STEPPER                              CB06       4       4       0   My_code     
+     EM_SOUND                                  CB0A       5       5       0   My_code     
+     SOUND_RT                                  CB0F      11      17       0   My_code     
+     done_sound                                CB20       7       7       0   My_code     
+     Stepper                                   CB27      18      24       0   My_code     
+     StepperS1                                 CB3F      2A      42       0   My_code     
+     StepperS2                                 CB69      23      35       0   My_code     
+     exit_start_ISR                            CB8C       7       7       0   My_code     
+     exit_ISR                                  CB93       4       4       0   My_code     
 - VARIABLES:
-     start_c                                    567       2       2       5   MY_EXTENDED_RAM
-     sound_c                                    569       2       2       6   MY_EXTENDED_RAM
-     stepper_c                                  56B       2       2       5   MY_EXTENDED_RAM
+     start_c                                    565       2       2       5   MY_EXTENDED_RAM
+     sound_c                                    567       2       2       6   MY_EXTENDED_RAM
+     stepper_c                                  569       2       2       8   MY_EXTENDED_RAM
+     stepper_it                                 56B       1       1       4   MY_EXTENDED_RAM
+     stepper_num                                56C       1       1       3   MY_EXTENDED_RAM
 MODULE:                 -- date.asm.o --
 - PROCEDURES:
-     Date_Start                                CCA8      32      50       1   Highlight_section
-     I_num                                     CCDA      12      18       0   Highlight_section
-     D_num                                     CCEC      12      18       0   Highlight_section
-     R_num                                     CCFE       E      14       0   Highlight_section
-     L_num                                     CD0C       E      14       0   Highlight_section
-     F_key                                     CD1A       7       7       0   Highlight_section
-     n_res_high                                CD21       A      10       0   Highlight_section
-     n_res_low                                 CD2B       A      10       0   Highlight_section
-     l_res                                     CD35       8       8       0   Highlight_section
-     r_res                                     CD3D       8       8       0   Highlight_section
-     DONE                                      CD45       F      15       0   Highlight_section
+     Date_Start                                CB97      32      50       1   Highlight_section
+     I_num                                     CBC9      12      18       0   Highlight_section
+     D_num                                     CBDB      12      18       0   Highlight_section
+     R_num                                     CBED       E      14       0   Highlight_section
+     L_num                                     CBFB       E      14       0   Highlight_section
+     F_key                                     CC09       7       7       0   Highlight_section
+     n_res_high                                CC10       A      10       0   Highlight_section
+     n_res_low                                 CC1A       A      10       0   Highlight_section
+     l_res                                     CC24       8       8       0   Highlight_section
+     r_res                                     CC2C       8       8       0   Highlight_section
+     DONE                                      CC34       F      15       0   Highlight_section
 - VARIABLES:
 MODULE:                 -- time.asm.o --
 - PROCEDURES:
-     Time_Start                                CD54      27      39       1   Highlight_section
-     I_num                                     CD7B      1C      28       0   Highlight_section
-     T_Comp                                    CD97       B      11       0   Highlight_section
-     D_num                                     CDA2      12      18       0   Highlight_section
-     R_num                                     CDB4       E      14       0   Highlight_section
-     L_num                                     CDC2       E      14       0   Highlight_section
-     F_key                                     CDD0       7       7       0   Highlight_section
-     n_res_high                                CDD7       A      10       0   Highlight_section
-     n_res_low                                 CDE1       A      10       0   Highlight_section
-     l_res                                     CDEB       8       8       0   Highlight_section
-     r_res                                     CDF3       8       8       0   Highlight_section
-     DONE                                      CDFB       F      15       0   Highlight_section
+     Time_Start                                CC43      27      39       1   Highlight_section
+     I_num                                     CC6A      1C      28       0   Highlight_section
+     T_Comp                                    CC86       B      11       0   Highlight_section
+     D_num                                     CC91      12      18       0   Highlight_section
+     R_num                                     CCA3       E      14       0   Highlight_section
+     L_num                                     CCB1       E      14       0   Highlight_section
+     F_key                                     CCBF       7       7       0   Highlight_section
+     n_res_high                                CCC6       A      10       0   Highlight_section
+     n_res_low                                 CCD0       A      10       0   Highlight_section
+     l_res                                     CCDA       8       8       0   Highlight_section
+     r_res                                     CCE2       8       8       0   Highlight_section
+     DONE                                      CCEA       F      15       0   Highlight_section
 - VARIABLES:
      prev_val                                   56D       1       1       2   MY_EXTENDED_RAM
 MODULE:                 -- debounce.asm.o --
 - PROCEDURES:
-     delay1ms                                  CEB1       4       4       1   debounce.asm._SEC000000
-     loop                                      CEB5       5       5       0   debounce.asm._SEC000000
+     delay1ms                                  CDA0       4       4       1   debounce.asm._SEC000000
+     loop                                      CDA4       5       5       0   debounce.asm._SEC000000
 - VARIABLES:
 MODULE:                 -- keypad_input.asm.o --
 - PROCEDURES:
-     scan                                      CEBA       3       3       8   KEY         
-     rescan                                    CEBD      24      36       0   KEY         
-     up                                        CEE1       8       8       0   KEY         
-     right                                     CEE9       8       8       0   KEY         
-     down                                      CEF1       8       8       0   KEY         
-     left                                      CEF9       8       8       0   KEY         
-     prompt                                    CF01       8       8       0   KEY         
-     NCommand                                  CF09       B      11       0   KEY         
-     leave                                     CF14       2       2       0   KEY         
+     scan                                      CDA9       3       3       7   KEY         
+     rescan                                    CDAC      24      36       0   KEY         
+     up                                        CDD0       8       8       0   KEY         
+     right                                     CDD8       8       8       0   KEY         
+     down                                      CDE0       8       8       0   KEY         
+     left                                      CDE8       8       8       0   KEY         
+     prompt                                    CDF0       8       8       0   KEY         
+     NCommand                                  CDF8       B      11       0   KEY         
+     leave                                     CE03       2       2       0   KEY         
 - VARIABLES:
      clearv                                     56E       1       1       7   MY_EXTENDED_RAM
 MODULE:                 -- sound.asm.o --
 - PROCEDURES:
-     Song_Start                                CF16       7       7       3   MY_SONG     
-     Door_Song                                 CF1D      2B      43       2   MY_SONG     
-     EM_Song                                   CF48      2B      43       1   MY_SONG     
-     DONE                                      CF73       1       1       0   MY_SONG     
+     Song_Start                                CE05       7       7       3   MY_SONG     
+     Door_Song                                 CE0C      2B      43       2   MY_SONG     
+     EM_Song                                   CE37      2B      43       1   MY_SONG     
+     DONE                                      CE62       1       1       0   MY_SONG     
 - VARIABLES:
-     song1                                     C2BC       F      15       1   MY_EXTENDED_ROM
-     song2                                     C2CB       3       3       1   MY_EXTENDED_ROM
+     song1                                     C2AD       F      15       1   MY_EXTENDED_ROM
+     song2                                     C2BC       3       3       1   MY_EXTENDED_ROM
      place                                      56F       2       2       5   MY_EXTENDED_RAM
      sound_rdy                                  571       1       1       7   MY_EXTENDED_RAM
 MODULE:                 -- Control_Menu.asm.o --
 - PROCEDURES:
-     GenSel                                    CE0A      26      38       1   Highlight_section
-     R_num                                     CE30       E      14       0   Highlight_section
-     L_num                                     CE3E       E      14       0   Highlight_section
-     F_key                                     CE4C       7       7       0   Highlight_section
-     l_res                                     CE53       8       8       0   Highlight_section
-     r_res                                     CE5B       8       8       0   Highlight_section
-     SEL                                       CE63       C      12       0   Highlight_section
-     Sel0                                      CE6F      11      17       0   Highlight_section
-     Sel1                                      CE80      11      17       0   Highlight_section
-     Sel2                                      CE91      11      17       0   Highlight_section
-     DONE                                      CEA2       F      15       0   Highlight_section
+     GenSel                                    CCF9      26      38       1   Highlight_section
+     R_num                                     CD1F       E      14       0   Highlight_section
+     L_num                                     CD2D       E      14       0   Highlight_section
+     F_key                                     CD3B       7       7       0   Highlight_section
+     l_res                                     CD42       8       8       0   Highlight_section
+     r_res                                     CD4A       8       8       0   Highlight_section
+     SEL                                       CD52       C      12       0   Highlight_section
+     Sel0                                      CD5E      11      17       0   Highlight_section
+     Sel1                                      CD6F      11      17       0   Highlight_section
+     Sel2                                      CD80      11      17       0   Highlight_section
+     DONE                                      CD91       F      15       0   Highlight_section
 - VARIABLES:
 MODULE:                 -- Functions.asm.o --
 - PROCEDURES:
-     Date_Change                               CF74      1E      30       1   Functions.asm._SEC000000
-     Time_Change                               CF92      1E      30       1   Functions.asm._SEC000000
-     SONG_TIME_START                           CFB0       3       3       0   Functions.asm._SEC000000
-     Song                                      CFB3       5       5       0   Functions.asm._SEC000000
-     MENU                                      CFB8      26      38       1   Functions.asm._SEC000000
-     Cont_Men                                  CFDE      1E      30       1   Functions.asm._SEC000000
-     CoalFiller                                CFFC       8       8       1   Functions.asm._SEC000000
-     CoalFiller2                               D004       4       4       0   Functions.asm._SEC000000
+     Date_Change                               CE63      1E      30       1   Functions.asm._SEC000000
+     Time_Change                               CE81      1E      30       1   Functions.asm._SEC000000
+     SONG_TIME_START                           CE9F       3       3       0   Functions.asm._SEC000000
+     Song                                      CEA2       5       5       0   Functions.asm._SEC000000
+     MENU                                      CEA7      23      35       1   Functions.asm._SEC000000
+     Cont_Men                                  CECA      1E      30       1   Functions.asm._SEC000000
+     CoalFiller                                CEE8       8       8       1   Functions.asm._SEC000000
+     CoalFiller2                               CEF0       4       4       0   Functions.asm._SEC000000
 - VARIABLES:
 MODULE:                 -- PassWord.asm.o --
 - PROCEDURES:
-     Password_start                            D008      1C      28       1   PassWord.asm._SEC000000
-     inc_alph                                  D024       F      15       0   PassWord.asm._SEC000000
-     skip                                      D033      10      16       0   PassWord.asm._SEC000000
-     R_curs                                    D043      11      17       0   PassWord.asm._SEC000000
-     boundary1                                 D054       8       8       0   PassWord.asm._SEC000000
-     dec_alph                                  D05C       F      15       0   PassWord.asm._SEC000000
-     skip2                                     D06B      10      16       0   PassWord.asm._SEC000000
-     L_curs                                    D07B      11      17       0   PassWord.asm._SEC000000
-     boundary2                                 D08C       8       8       0   PassWord.asm._SEC000000
-     F_key                                     D094       5       5       0   PassWord.asm._SEC000000
-     leave                                     D099       B      11       0   PassWord.asm._SEC000000
+     Password_start                            CEF4      1C      28       1   PassWord.asm._SEC000000
+     inc_alph                                  CF10       F      15       0   PassWord.asm._SEC000000
+     skip                                      CF1F      10      16       0   PassWord.asm._SEC000000
+     R_curs                                    CF2F      11      17       0   PassWord.asm._SEC000000
+     boundary1                                 CF40       8       8       0   PassWord.asm._SEC000000
+     dec_alph                                  CF48       F      15       0   PassWord.asm._SEC000000
+     skip2                                     CF57      10      16       0   PassWord.asm._SEC000000
+     L_curs                                    CF67      11      17       0   PassWord.asm._SEC000000
+     boundary2                                 CF78       8       8       0   PassWord.asm._SEC000000
+     F_key                                     CF80       5       5       0   PassWord.asm._SEC000000
+     leave                                     CF85       B      11       0   PassWord.asm._SEC000000
 - VARIABLES:
 MODULE:                 -- PassWordVerify.asm.o --
 - PROCEDURES:
-     Password_verify                           D0A4      1C      28       1   PassWordVerify.asm._SEC000000
-     inc_alph                                  D0C0       F      15       0   PassWordVerify.asm._SEC000000
-     skip                                      D0CF      10      16       0   PassWordVerify.asm._SEC000000
-     R_curs                                    D0DF      11      17       0   PassWordVerify.asm._SEC000000
-     boundary1                                 D0F0       8       8       0   PassWordVerify.asm._SEC000000
-     dec_alph                                  D0F8       F      15       0   PassWordVerify.asm._SEC000000
-     skip2                                     D107      10      16       0   PassWordVerify.asm._SEC000000
-     L_curs                                    D117      11      17       0   PassWordVerify.asm._SEC000000
-     boundary2                                 D128       8       8       0   PassWordVerify.asm._SEC000000
-     F_key                                     D130       5       5       0   PassWordVerify.asm._SEC000000
-     leave                                     D135       B      11       0   PassWordVerify.asm._SEC000000
+     Password_verify                           CF90      1C      28       1   PassWordVerify.asm._SEC000000
+     inc_alph                                  CFAC       F      15       0   PassWordVerify.asm._SEC000000
+     skip                                      CFBB      10      16       0   PassWordVerify.asm._SEC000000
+     R_curs                                    CFCB      11      17       0   PassWordVerify.asm._SEC000000
+     boundary1                                 CFDC       8       8       0   PassWordVerify.asm._SEC000000
+     dec_alph                                  CFE4       F      15       0   PassWordVerify.asm._SEC000000
+     skip2                                     CFF3      10      16       0   PassWordVerify.asm._SEC000000
+     L_curs                                    D003      11      17       0   PassWordVerify.asm._SEC000000
+     boundary2                                 D014       8       8       0   PassWordVerify.asm._SEC000000
+     F_key                                     D01C       5       5       0   PassWordVerify.asm._SEC000000
+     leave                                     D021       B      11       0   PassWordVerify.asm._SEC000000
 - VARIABLES:
 MODULE:                 -- User_name.asm.o --
 - PROCEDURES:
-     Username_start                            D140      1C      28       1   User_name.asm._SEC000000
-     inc_alph                                  D15C       F      15       0   User_name.asm._SEC000000
-     skip                                      D16B      10      16       0   User_name.asm._SEC000000
-     R_curs                                    D17B      11      17       0   User_name.asm._SEC000000
-     boundary1                                 D18C       8       8       0   User_name.asm._SEC000000
-     dec_alph                                  D194       F      15       0   User_name.asm._SEC000000
-     skip2                                     D1A3      10      16       0   User_name.asm._SEC000000
-     L_curs                                    D1B3      11      17       0   User_name.asm._SEC000000
-     boundary2                                 D1C4       8       8       0   User_name.asm._SEC000000
-     F_key                                     D1CC       5       5       0   User_name.asm._SEC000000
-     leave                                     D1D1       B      11       0   User_name.asm._SEC000000
+     Username_start                            D02C      1C      28       1   User_name.asm._SEC000000
+     inc_alph                                  D048       F      15       0   User_name.asm._SEC000000
+     skip                                      D057      10      16       0   User_name.asm._SEC000000
+     R_curs                                    D067      11      17       0   User_name.asm._SEC000000
+     boundary1                                 D078       8       8       0   User_name.asm._SEC000000
+     dec_alph                                  D080       F      15       0   User_name.asm._SEC000000
+     skip2                                     D08F      10      16       0   User_name.asm._SEC000000
+     L_curs                                    D09F      11      17       0   User_name.asm._SEC000000
+     boundary2                                 D0B0       8       8       0   User_name.asm._SEC000000
+     F_key                                     D0B8       5       5       0   User_name.asm._SEC000000
+     leave                                     D0BD       B      11       0   User_name.asm._SEC000000
 - VARIABLES:
 MODULE:                 -- Create_Password.asm.o --
 - PROCEDURES:
-     PW_Creation                               D1DC      20      32       2   Create_Password.asm._SEC000000
+     PW_Creation                               D0C8      20      32       1   Create_Password.asm._SEC000000
 - VARIABLES:
 MODULE:                 -- Create_Username.asm.o --
 - PROCEDURES:
-     user_chng                                 D1FC      20      32       1   Create_Username.asm._SEC000000
+     user_chng                                 D0E8      20      32       1   Create_Username.asm._SEC000000
 - VARIABLES:
 MODULE:                 -- Default_String_Display.asm.o --
 - PROCEDURES:
-     Default_PW                                D21C       A      10       2   Default_String_Display.asm._SEC000000
-     Default_RE_PW                             D226       E      14       2   Default_String_Display.asm._SEC000000
-     RSRTMSG                                   D234       6       6       0   Default_String_Display.asm._SEC000000
-     Pass_wordV                                D23A       A      10       1   Default_String_Display.asm._SEC000000
-     User_name                                 D244       A      10       1   Default_String_Display.asm._SEC000000
-     Default_RE_Ad                             D24E       E      14       1   Default_String_Display.asm._SEC000000
-     RSRTMSG2                                  D25C       6       6       0   Default_String_Display.asm._SEC000000
-     User_name2                                D262       A      10       2   Default_String_Display.asm._SEC000000
-     loading                                   D26C       E      14       1   Default_String_Display.asm._SEC000000
-     RSRTMSG3                                  D27A       6       6       0   Default_String_Display.asm._SEC000000
+     Default_PW                                D108       A      10       1   Default_String_Display.asm._SEC000000
+     Default_RE_PW                             D112       E      14       1   Default_String_Display.asm._SEC000000
+     RSRTMSG                                   D120       6       6       0   Default_String_Display.asm._SEC000000
+     Pass_wordV                                D126       A      10       1   Default_String_Display.asm._SEC000000
+     User_name                                 D130       A      10       1   Default_String_Display.asm._SEC000000
+     Default_RE_Ad                             D13A       A      10       0   Default_String_Display.asm._SEC000000
 - VARIABLES:
 MODULE:                 -- Compare_Strings.asm.o --
 - PROCEDURES:
-     compare_PW                                D280       6       6       2   Compare_Strings.asm._SEC000000
-     compare_p                                 D286      14      20       0   Compare_Strings.asm._SEC000000
-     notequal_p                                D29A      12      18       0   Compare_Strings.asm._SEC000000
-     passv_res2                                D2AC       A      10       0   Compare_Strings.asm._SEC000000
-     skip                                      D2B6       5       5       0   Compare_Strings.asm._SEC000000
-     pass_res2                                 D2BB      11      17       0   Compare_Strings.asm._SEC000000
-     clearpass                                 D2CC       5       5       0   Compare_Strings.asm._SEC000000
-     pass_res3                                 D2D1      11      17       0   Compare_Strings.asm._SEC000000
-     compare_Admin                             D2E2       6       6       1   Compare_Strings.asm._SEC000000
-     compare_a                                 D2E8      14      20       0   Compare_Strings.asm._SEC000000
-     notequal_a                                D2FC       D      13       0   Compare_Strings.asm._SEC000000
-     namev_res2                                D309       E      14       0   Compare_Strings.asm._SEC000000
-     clearnamev                                D317       5       5       0   Compare_Strings.asm._SEC000000
-     name_res3                                 D31C       C      12       0   Compare_Strings.asm._SEC000000
-     equal_p                                   D328       C      12       0   Compare_Strings.asm._SEC000000
-     equal_a                                   D334       C      12       0   Compare_Strings.asm._SEC000000
-- VARIABLES:
-MODULE:                 -- Re_enter_Username.asm.o --
-- PROCEDURES:
-     Re_Username                               D340      1C      28       1   Re_enter_Username.asm._SEC000000
-     inc_alph                                  D35C       F      15       0   Re_enter_Username.asm._SEC000000
-     skip                                      D36B      10      16       0   Re_enter_Username.asm._SEC000000
-     R_curs                                    D37B      11      17       0   Re_enter_Username.asm._SEC000000
-     boundary1                                 D38C       8       8       0   Re_enter_Username.asm._SEC000000
-     dec_alph                                  D394       F      15       0   Re_enter_Username.asm._SEC000000
-     skip2                                     D3A3      10      16       0   Re_enter_Username.asm._SEC000000
-     L_curs                                    D3B3      11      17       0   Re_enter_Username.asm._SEC000000
-     boundary2                                 D3C4       8       8       0   Re_enter_Username.asm._SEC000000
-     F_key                                     D3CC       5       5       0   Re_enter_Username.asm._SEC000000
-     leave                                     D3D1       B      11       0   Re_enter_Username.asm._SEC000000
-- VARIABLES:
-MODULE:                 -- switch_input.asm.o --
-- PROCEDURES:
-     scan_switch                               D3DC       3       3       1   switch_input.asm._SEC000000
-     loop                                      D3DF      60      96       0   switch_input.asm._SEC000000
-     gen0                                      D43F       9       9       0   switch_input.asm._SEC000000
-     cont0                                     D43F       0       0       0   switch_input.asm._SEC000000
-     gen123                                    D448       9       9       0   switch_input.asm._SEC000000
-     cont7                                     D448       0       0       0   switch_input.asm._SEC000000
-     gen12                                     D451       9       9       0   switch_input.asm._SEC000000
-     cont3                                     D451       0       0       0   switch_input.asm._SEC000000
-     gen13                                     D45A       9       9       0   switch_input.asm._SEC000000
-     cont5                                     D45A       0       0       0   switch_input.asm._SEC000000
-     gen23                                     D463       9       9       0   switch_input.asm._SEC000000
-     cont6                                     D463       0       0       0   switch_input.asm._SEC000000
-     gen1                                      D46C       9       9       0   switch_input.asm._SEC000000
-     cont1                                     D46C       0       0       0   switch_input.asm._SEC000000
-     gen2                                      D475       9       9       0   switch_input.asm._SEC000000
-     cont2                                     D475       0       0       0   switch_input.asm._SEC000000
-     gen3                                      D47E       9       9       0   switch_input.asm._SEC000000
-     cont4                                     D47E       0       0       0   switch_input.asm._SEC000000
-     change                                    D487       8       8       0   switch_input.asm._SEC000000
-     back2                                     D48F       5       5       0   switch_input.asm._SEC000000
-     no_match_a                                D494       5       5       0   switch_input.asm._SEC000000
-     skip2                                     D499      19      25       0   switch_input.asm._SEC000000
-     RSRTMSG3                                  D4B2       5       5       0   switch_input.asm._SEC000000
-     back                                      D4B7       5       5       0   switch_input.asm._SEC000000
-     no_match_p                                D4BC       3       3       0   switch_input.asm._SEC000000
-     RSRTMSG4                                  D4BF       7       7       0   switch_input.asm._SEC000000
-     skip                                      D4C6      47      71       0   switch_input.asm._SEC000000
-     leave                                     D50D       C      12       0   switch_input.asm._SEC000000
+     compare_PW                                D144       3       3       1   Compare_Strings.asm._SEC000000
+     compare_p                                 D147      14      20       0   Compare_Strings.asm._SEC000000
+     notequal_p                                D15B      10      16       0   Compare_Strings.asm._SEC000000
+     pass_res2                                 D16B       F      15       0   Compare_Strings.asm._SEC000000
+     passv_res2                                D17A       B      11       0   Compare_Strings.asm._SEC000000
+     compare_Admin                             D185       3       3       0   Compare_Strings.asm._SEC000000
+     compare_a                                 D188      14      20       0   Compare_Strings.asm._SEC000000
+     notequal_a                                D19C      10      16       0   Compare_Strings.asm._SEC000000
+     name_res2                                 D1AC       F      15       0   Compare_Strings.asm._SEC000000
+     namev_res2                                D1BB       B      11       0   Compare_Strings.asm._SEC000000
+     equal_p                                   D1C6       7       7       0   Compare_Strings.asm._SEC000000
+     equal_a                                   D1CD       7       7       0   Compare_Strings.asm._SEC000000
 - VARIABLES:
 MODULE:                 -- Emergency_Shutoff.asm.o --
 - PROCEDURES:
-     Emergency                                 D519       9       9       0   EmergShut   
+     Emergency                                 D1D4       9       9       0   EmergShut   
 - VARIABLES:
      em_v                                       572       1       1       3   MY_EXTENDED_RAM
 MODULE:                 -- CoalFill.asm.o --
 - PROCEDURES:
-     Coal_S                                    D522      11      17       1   Coal        
-     Fill_Coal_S                               D533       7       7       0   Coal        
-     Fill_Coal                                 D53A      20      32       1   Coal        
-     DONE                                      D55A       1       1       0   Coal        
+     Coal_S                                    D1DD      11      17       1   Coal        
+     Fill_Coal_S                               D1EE       7       7       0   Coal        
+     Fill_Coal                                 D1F5      20      32       1   Coal        
+     DONE                                      D215       1       1       0   Coal        
 - VARIABLES:
-     array                                     C2CE       5       5       1   MY_EXTENDED_ROM
+     array                                     C2BF       5       5       1   MY_EXTENDED_ROM
      coal_place                                 573       2       2       3   MY_EXTENDED_RAM
-MODULE:                 -- Create_Username2.asm.o --
-- PROCEDURES:
-     user_chng2                                D55B      20      32       1   Create_Username2.asm._SEC000000
-- VARIABLES:
 
 *********************************************************************************************
 MODULE STATISTIC
   Name                                      Data   Code  Const
 ---------------------------------------------------------------------------------------------
-  main.asm.o                                 133    448      6
+  main.asm.o                                 131    433      6
   lcddisp.c.o                                  2    212      0
   mc9s12e128.c.o                             352      0      0
   SendsChr.c.o                                 4     34      0
-  strings.asm.o                                0   2404      0
-  interrupt.asm.o                              6    113      0
+  strings.asm.o                                0   2072      0
+  interrupt.asm.o                              8    187      0
   date.asm.o                                   0    172      0
   time.asm.o                                   1    182      0
   debounce.asm.o                               0      9      0
   keypad_input.asm.o                           1     92      0
   sound.asm.o                                  3     94     18
   Control_Menu.asm.o                           0    167      0
-  Functions.asm.o                              0    148      0
+  Functions.asm.o                              0    145      0
   PassWord.asm.o                               0    156      0
   PassWordVerify.asm.o                         0    156      0
   User_name.asm.o                              0    156      0
   Create_Password.asm.o                        0     32      0
   Create_Username.asm.o                        0     32      0
-  Default_String_Display.asm.o                 0    100      0
-  Compare_Strings.asm.o                        0    192      0
-  Re_enter_Username.asm.o                      0    156      0
-  switch_input.asm.o                           0    317      0
+  Default_String_Display.asm.o                 0     60      0
+  Compare_Strings.asm.o                        0    144      0
   Emergency_Shutoff.asm.o                      1      9      0
   CoalFill.asm.o                               2     57      5
-  Create_Username2.asm.o                       0     32      0
   other                                      256      6      0
 
 *********************************************************************************************
 SECTION USE IN OBJECT-ALLOCATION SECTION
 ---------------------------------------------------------------------------------------------
 SECTION: ".text"
-  port_t port_p port_u 
+  port_p port_u 
 SECTION: ".bss"
   data tone tone_count 
 SECTION: ".init"
@@ -1022,10 +956,10 @@ SECTION: "NON_BANKED"
 SECTION: "MY_EXTENDED_ROM"
   delay keys song1 song2 array 
 SECTION: "MY_EXTENDED_RAM"
-  user_input disp start_f enter_f date_f equal_f check switch_f flag choose 
-  passflag homeflag command prev_val date time name namev seloff sound_f gens1 
-  gens2 gens3 on_off start_c sound_c stepper_c prev_val clearv place sound_rdy 
-  em_v coal_place 
+  user_input disp start_f enter_f date_f equal_f check switch_f flag command 
+  prev_val date time name namev seloff sound_f gens1 gens2 gens3 gens1_coal 
+  gens2_coal gens3_coal on_off start_c sound_c stepper_c stepper_it stepper_num 
+  prev_val clearv place sound_rdy em_v coal_place 
 SECTION: "my_LCD"
   pass passv cursor stepper_r stepper_s 
 SECTION: ".abs_section_8"
@@ -1576,10 +1510,10 @@ SECTION: ".abs_section_27e"
   _PIFAD 
 SECTION: "StringCode"
   Startup_1 Startup_2 date_str admin_u menu_str PW_String PW_Verify_String 
-  re_enter accepted GenSelStr re_admin_u match_a admin_u2 match_p 
+  re_enter accepted GenSelStr re_admin_u 
 SECTION: "My_code"
   RTI_ISR MIDDLE DONE_SOUND DONE_STEPPER EM_SOUND SOUND_RT done_sound Stepper 
-  exit_start_ISR exit_ISR 
+  StepperS1 StepperS2 exit_start_ISR exit_ISR 
 SECTION: "Highlight_section"
   Date_Start I_num D_num R_num L_num F_key n_res_high n_res_low l_res r_res 
   DONE Time_Start I_num T_Comp D_num R_num L_num F_key n_res_high n_res_low 
@@ -1607,25 +1541,14 @@ SECTION: "Create_Password.asm._SEC000000"
 SECTION: "Create_Username.asm._SEC000000"
   user_chng 
 SECTION: "Default_String_Display.asm._SEC000000"
-  Default_PW Default_RE_PW RSRTMSG Pass_wordV User_name Default_RE_Ad RSRTMSG2 
-  User_name2 loading RSRTMSG3 
+  Default_PW Default_RE_PW RSRTMSG Pass_wordV User_name Default_RE_Ad 
 SECTION: "Compare_Strings.asm._SEC000000"
-  compare_PW compare_p notequal_p passv_res2 skip pass_res2 clearpass 
-  pass_res3 compare_Admin compare_a notequal_a namev_res2 clearnamev name_res3 
-  equal_p equal_a 
-SECTION: "Re_enter_Username.asm._SEC000000"
-  Re_Username inc_alph skip R_curs boundary1 dec_alph skip2 L_curs boundary2 
-  F_key leave 
-SECTION: "switch_input.asm._SEC000000"
-  scan_switch loop cont0 gen0 cont7 gen123 cont3 gen12 cont5 gen13 cont6 gen23 
-  cont1 gen1 cont2 gen2 cont4 gen3 change back2 no_match_a skip2 RSRTMSG3 back 
-  no_match_p RSRTMSG4 skip leave 
+  compare_PW compare_p notequal_p pass_res2 passv_res2 compare_Admin compare_a 
+  notequal_a name_res2 namev_res2 equal_p equal_a 
 SECTION: "EmergShut"
   Emergency 
 SECTION: "Coal"
   Coal_S Fill_Coal_S Fill_Coal DONE 
-SECTION: "Create_Username2.asm._SEC000000"
-  user_chng2 
 
 *********************************************************************************************
 OBJECT LIST SORTED BY ADDRESS
@@ -1858,7 +1781,6 @@ OBJECT LIST SORTED BY ADDRESS
      _PMFMODC                                   234       2       2       0   .abs_section_234
      _PMFDTMC                                   236       2       2       0   .abs_section_236
      _PTT                                       240       1       1       2   .abs_section_240
-     port_t                                     240       0       0      15   .text       
      _PTIT                                      241       1       1       0   .abs_section_241
      _DDRT                                      242       1       1       0   .abs_section_242
      _RDRT                                      243       1       1       0   .abs_section_243
@@ -1911,258 +1833,211 @@ OBJECT LIST SORTED BY ADDRESS
      tone                                       502       2       2       2   .bss        
      tone_count                                 504       2       2       4   .bss        
      user_input                                 506       1       1       0   MY_EXTENDED_RAM
-     disp                                       507      21      33     478   MY_EXTENDED_RAM
-     start_f                                    528       1       1      17   MY_EXTENDED_RAM
-     enter_f                                    529       1       1      24   MY_EXTENDED_RAM
+     disp                                       507      21      33     408   MY_EXTENDED_RAM
+     start_f                                    528       1       1      10   MY_EXTENDED_RAM
+     enter_f                                    529       1       1      21   MY_EXTENDED_RAM
      date_f                                     52A       1       1       0   MY_EXTENDED_RAM
-     equal_f                                    52B       1       1       7   MY_EXTENDED_RAM
-     check                                      52C       1       1       4   MY_EXTENDED_RAM
-     switch_f                                   52D       1       1       1   MY_EXTENDED_RAM
-     flag                                       52E       1       1       3   MY_EXTENDED_RAM
-     choose                                     52F       1       1       3   MY_EXTENDED_RAM
-     passflag                                   530       1       1       3   MY_EXTENDED_RAM
-     homeflag                                   531       1       1       1   MY_EXTENDED_RAM
-     command                                    532       1       1      25   MY_EXTENDED_RAM
-     prev_val                                   533       1       1       4   MY_EXTENDED_RAM
-     date                                       534       8       8      23   MY_EXTENDED_RAM
-     time                                       53C       4       4      16   MY_EXTENDED_RAM
-     name                                       540      10      16      25   MY_EXTENDED_RAM
-     namev                                      550      10      16      27   MY_EXTENDED_RAM
-     seloff                                     560       2       2      27   MY_EXTENDED_RAM
-     sound_f                                    562       1       1       0   MY_EXTENDED_RAM
-     gens1                                      563       1       1       8   MY_EXTENDED_RAM
-     gens2                                      564       1       1       8   MY_EXTENDED_RAM
-     gens3                                      565       1       1       8   MY_EXTENDED_RAM
-     on_off                                     566       1       1       8   MY_EXTENDED_RAM
-     start_c                                    567       2       2       5   MY_EXTENDED_RAM
-     sound_c                                    569       2       2       6   MY_EXTENDED_RAM
-     stepper_c                                  56B       2       2       5   MY_EXTENDED_RAM
+     equal_f                                    52B       1       1       5   MY_EXTENDED_RAM
+     check                                      52C       1       1       1   MY_EXTENDED_RAM
+     switch_f                                   52D       1       1       0   MY_EXTENDED_RAM
+     flag                                       52E       1       1       1   MY_EXTENDED_RAM
+     command                                    52F       1       1      23   MY_EXTENDED_RAM
+     prev_val                                   530       1       1       4   MY_EXTENDED_RAM
+     date                                       531       8       8      23   MY_EXTENDED_RAM
+     time                                       539       4       4      16   MY_EXTENDED_RAM
+     name                                       53D       F      15      26   MY_EXTENDED_RAM
+     namev                                      54C       F      15      19   MY_EXTENDED_RAM
+     seloff                                     55B       2       2      27   MY_EXTENDED_RAM
+     sound_f                                    55D       1       1       0   MY_EXTENDED_RAM
+     gens1                                      55E       1       1       8   MY_EXTENDED_RAM
+     gens2                                      55F       1       1       8   MY_EXTENDED_RAM
+     gens3                                      560       1       1       8   MY_EXTENDED_RAM
+     gens1_coal                                 561       1       1       0   MY_EXTENDED_RAM
+     gens2_coal                                 562       1       1       0   MY_EXTENDED_RAM
+     gens3_coal                                 563       1       1       0   MY_EXTENDED_RAM
+     on_off                                     564       1       1       0   MY_EXTENDED_RAM
+     start_c                                    565       2       2       5   MY_EXTENDED_RAM
+     sound_c                                    567       2       2       6   MY_EXTENDED_RAM
+     stepper_c                                  569       2       2       8   MY_EXTENDED_RAM
+     stepper_it                                 56B       1       1       4   MY_EXTENDED_RAM
+     stepper_num                                56C       1       1       3   MY_EXTENDED_RAM
      prev_val                                   56D       1       1       2   MY_EXTENDED_RAM
      clearv                                     56E       1       1       7   MY_EXTENDED_RAM
      place                                      56F       2       2       5   MY_EXTENDED_RAM
      sound_rdy                                  571       1       1       7   MY_EXTENDED_RAM
      em_v                                       572       1       1       3   MY_EXTENDED_RAM
      coal_place                                 573       2       2       3   MY_EXTENDED_RAM
-     pass                                       575      10      16      27   my_LCD      
+     pass                                       575      10      16      26   my_LCD      
      passv                                      585      10      16      26   my_LCD      
-     cursor                                     595       2       2      51   my_LCD      
-     stepper_r                                  597       1       1       7   my_LCD      
+     cursor                                     595       2       2      38   my_LCD      
+     stepper_r                                  597       1       1       9   my_LCD      
      stepper_s                                  598       1       1       4   my_LCD      
      _Startup                                  C000       0       0       0   .init       
-     Entry                                     C000      A8     168       0   .init       
-     date_res                                  C0A8      11      17       0   .init       
-     time_res                                  C0B9       F      15       0   .init       
-     name_res                                  C0C8      15      21       0   .init       
-     pass_res                                  C0DD       F      15       0   .init       
-     passv_res                                 C0EC       F      15       0   .init       
-     name_resv                                 C0FB      27      39       0   .init       
-     SRTMSG1                                   C122      13      19       0   .init       
-     SRTMSG2                                   C135      2F      47       0   .init       
-     no_match                                  C164       3       3       0   .init       
-     skip                                      C167      20      32       0   .init       
-     FILL                                      C187       5       5       0   .init       
-     PW_Verify                                 C18C      20      32       1   .init       
-     prompt                                    C1AC       E      14       1   .init       
-     RSRTMSG2                                  C1BA       6       6       0   .init       
-     delay_ms                                  C1C0      17      23       5   NON_BANKED  
-     init_LCD                                  C1D7      52      82       1   NON_BANKED  
-     display_string                            C229      38      56      20   NON_BANKED  
-     epulse                                    C261      24      36       3   NON_BANKED  
-     sendCommand                               C285       F      15       7   NON_BANKED  
-     SendsChr                                  C294       8       8       2   NON_BANKED  
-     PlayTone                                  C29C      1A      26       1   NON_BANKED  
-     delay                                     C2B6       2       2       1   MY_EXTENDED_ROM
-     keys                                      C2B8       4       4       0   MY_EXTENDED_ROM
-     song1                                     C2BC       F      15       1   MY_EXTENDED_ROM
-     song2                                     C2CB       3       3       1   MY_EXTENDED_ROM
-     array                                     C2CE       5       5       1   MY_EXTENDED_ROM
-     Startup_1                                 C2D3      A6     166       1   StringCode  
-     Startup_2                                 C379      A6     166       1   StringCode  
-     date_str                                  C41F      B2     178       3   StringCode  
-     admin_u                                   C4D1      B6     182       2   StringCode  
-     menu_str                                  C587      99     153       1   StringCode  
-     PW_String                                 C620      B6     182       2   StringCode  
-     PW_Verify_String                          C6D6      B6     182       2   StringCode  
-     re_enter                                  C78C      A6     166       1   StringCode  
-     accepted                                  C832      A6     166       1   StringCode  
-     GenSelStr                                 C8D8      B2     178       1   StringCode  
-     re_admin_u                                C98A      A6     166       1   StringCode  
-     match_a                                   CA30      AB     171       1   StringCode  
-     admin_u2                                  CADB      B6     182       1   StringCode  
-     match_p                                   CB91      A6     166       1   StringCode  
-     RTI_ISR                                   CC37      1C      28       0   My_code     
-     MIDDLE                                    CC53       5       5       0   My_code     
-     DONE_SOUND                                CC58       5       5       0   My_code     
-     DONE_STEPPER                              CC5D       2       2       0   My_code     
-     EM_SOUND                                  CC5F       5       5       0   My_code     
-     SOUND_RT                                  CC64      11      17       0   My_code     
-     done_sound                                CC75       7       7       0   My_code     
-     Stepper                                   CC7C      21      33       0   My_code     
-     exit_start_ISR                            CC9D       7       7       0   My_code     
-     exit_ISR                                  CCA4       4       4       0   My_code     
-     Date_Start                                CCA8      32      50       1   Highlight_section
-     I_num                                     CCDA      12      18       0   Highlight_section
-     D_num                                     CCEC      12      18       0   Highlight_section
-     R_num                                     CCFE       E      14       0   Highlight_section
-     L_num                                     CD0C       E      14       0   Highlight_section
-     F_key                                     CD1A       7       7       0   Highlight_section
-     n_res_high                                CD21       A      10       0   Highlight_section
-     n_res_low                                 CD2B       A      10       0   Highlight_section
-     l_res                                     CD35       8       8       0   Highlight_section
-     r_res                                     CD3D       8       8       0   Highlight_section
-     DONE                                      CD45       F      15       0   Highlight_section
-     Time_Start                                CD54      27      39       1   Highlight_section
-     I_num                                     CD7B      1C      28       0   Highlight_section
-     T_Comp                                    CD97       B      11       0   Highlight_section
-     D_num                                     CDA2      12      18       0   Highlight_section
-     R_num                                     CDB4       E      14       0   Highlight_section
-     L_num                                     CDC2       E      14       0   Highlight_section
-     F_key                                     CDD0       7       7       0   Highlight_section
-     n_res_high                                CDD7       A      10       0   Highlight_section
-     n_res_low                                 CDE1       A      10       0   Highlight_section
-     l_res                                     CDEB       8       8       0   Highlight_section
-     r_res                                     CDF3       8       8       0   Highlight_section
-     DONE                                      CDFB       F      15       0   Highlight_section
-     GenSel                                    CE0A      26      38       1   Highlight_section
-     R_num                                     CE30       E      14       0   Highlight_section
-     L_num                                     CE3E       E      14       0   Highlight_section
-     F_key                                     CE4C       7       7       0   Highlight_section
-     l_res                                     CE53       8       8       0   Highlight_section
-     r_res                                     CE5B       8       8       0   Highlight_section
-     SEL                                       CE63       C      12       0   Highlight_section
-     Sel0                                      CE6F      11      17       0   Highlight_section
-     Sel1                                      CE80      11      17       0   Highlight_section
-     Sel2                                      CE91      11      17       0   Highlight_section
-     DONE                                      CEA2       F      15       0   Highlight_section
-     delay1ms                                  CEB1       4       4       1   debounce.asm._SEC000000
-     loop                                      CEB5       5       5       0   debounce.asm._SEC000000
-     scan                                      CEBA       3       3       8   KEY         
-     rescan                                    CEBD      24      36       0   KEY         
-     up                                        CEE1       8       8       0   KEY         
-     right                                     CEE9       8       8       0   KEY         
-     down                                      CEF1       8       8       0   KEY         
-     left                                      CEF9       8       8       0   KEY         
-     prompt                                    CF01       8       8       0   KEY         
-     NCommand                                  CF09       B      11       0   KEY         
-     leave                                     CF14       2       2       0   KEY         
-     Song_Start                                CF16       7       7       3   MY_SONG     
-     Door_Song                                 CF1D      2B      43       2   MY_SONG     
-     EM_Song                                   CF48      2B      43       1   MY_SONG     
-     DONE                                      CF73       1       1       0   MY_SONG     
-     Date_Change                               CF74      1E      30       1   Functions.asm._SEC000000
-     Time_Change                               CF92      1E      30       1   Functions.asm._SEC000000
-     SONG_TIME_START                           CFB0       3       3       0   Functions.asm._SEC000000
-     Song                                      CFB3       5       5       0   Functions.asm._SEC000000
-     MENU                                      CFB8      26      38       1   Functions.asm._SEC000000
-     Cont_Men                                  CFDE      1E      30       1   Functions.asm._SEC000000
-     CoalFiller                                CFFC       8       8       1   Functions.asm._SEC000000
-     CoalFiller2                               D004       4       4       0   Functions.asm._SEC000000
-     Password_start                            D008      1C      28       1   PassWord.asm._SEC000000
-     inc_alph                                  D024       F      15       0   PassWord.asm._SEC000000
-     skip                                      D033      10      16       0   PassWord.asm._SEC000000
-     R_curs                                    D043      11      17       0   PassWord.asm._SEC000000
-     boundary1                                 D054       8       8       0   PassWord.asm._SEC000000
-     dec_alph                                  D05C       F      15       0   PassWord.asm._SEC000000
-     skip2                                     D06B      10      16       0   PassWord.asm._SEC000000
-     L_curs                                    D07B      11      17       0   PassWord.asm._SEC000000
-     boundary2                                 D08C       8       8       0   PassWord.asm._SEC000000
-     F_key                                     D094       5       5       0   PassWord.asm._SEC000000
-     leave                                     D099       B      11       0   PassWord.asm._SEC000000
-     Password_verify                           D0A4      1C      28       1   PassWordVerify.asm._SEC000000
-     inc_alph                                  D0C0       F      15       0   PassWordVerify.asm._SEC000000
-     skip                                      D0CF      10      16       0   PassWordVerify.asm._SEC000000
-     R_curs                                    D0DF      11      17       0   PassWordVerify.asm._SEC000000
-     boundary1                                 D0F0       8       8       0   PassWordVerify.asm._SEC000000
-     dec_alph                                  D0F8       F      15       0   PassWordVerify.asm._SEC000000
-     skip2                                     D107      10      16       0   PassWordVerify.asm._SEC000000
-     L_curs                                    D117      11      17       0   PassWordVerify.asm._SEC000000
-     boundary2                                 D128       8       8       0   PassWordVerify.asm._SEC000000
-     F_key                                     D130       5       5       0   PassWordVerify.asm._SEC000000
-     leave                                     D135       B      11       0   PassWordVerify.asm._SEC000000
-     Username_start                            D140      1C      28       1   User_name.asm._SEC000000
-     inc_alph                                  D15C       F      15       0   User_name.asm._SEC000000
-     skip                                      D16B      10      16       0   User_name.asm._SEC000000
-     R_curs                                    D17B      11      17       0   User_name.asm._SEC000000
-     boundary1                                 D18C       8       8       0   User_name.asm._SEC000000
-     dec_alph                                  D194       F      15       0   User_name.asm._SEC000000
-     skip2                                     D1A3      10      16       0   User_name.asm._SEC000000
-     L_curs                                    D1B3      11      17       0   User_name.asm._SEC000000
-     boundary2                                 D1C4       8       8       0   User_name.asm._SEC000000
-     F_key                                     D1CC       5       5       0   User_name.asm._SEC000000
-     leave                                     D1D1       B      11       0   User_name.asm._SEC000000
-     PW_Creation                               D1DC      20      32       2   Create_Password.asm._SEC000000
-     user_chng                                 D1FC      20      32       1   Create_Username.asm._SEC000000
-     Default_PW                                D21C       A      10       2   Default_String_Display.asm._SEC000000
-     Default_RE_PW                             D226       E      14       2   Default_String_Display.asm._SEC000000
-     RSRTMSG                                   D234       6       6       0   Default_String_Display.asm._SEC000000
-     Pass_wordV                                D23A       A      10       1   Default_String_Display.asm._SEC000000
-     User_name                                 D244       A      10       1   Default_String_Display.asm._SEC000000
-     Default_RE_Ad                             D24E       E      14       1   Default_String_Display.asm._SEC000000
-     RSRTMSG2                                  D25C       6       6       0   Default_String_Display.asm._SEC000000
-     User_name2                                D262       A      10       2   Default_String_Display.asm._SEC000000
-     loading                                   D26C       E      14       1   Default_String_Display.asm._SEC000000
-     RSRTMSG3                                  D27A       6       6       0   Default_String_Display.asm._SEC000000
-     compare_PW                                D280       6       6       2   Compare_Strings.asm._SEC000000
-     compare_p                                 D286      14      20       0   Compare_Strings.asm._SEC000000
-     notequal_p                                D29A      12      18       0   Compare_Strings.asm._SEC000000
-     passv_res2                                D2AC       A      10       0   Compare_Strings.asm._SEC000000
-     skip                                      D2B6       5       5       0   Compare_Strings.asm._SEC000000
-     pass_res2                                 D2BB      11      17       0   Compare_Strings.asm._SEC000000
-     clearpass                                 D2CC       5       5       0   Compare_Strings.asm._SEC000000
-     pass_res3                                 D2D1      11      17       0   Compare_Strings.asm._SEC000000
-     compare_Admin                             D2E2       6       6       1   Compare_Strings.asm._SEC000000
-     compare_a                                 D2E8      14      20       0   Compare_Strings.asm._SEC000000
-     notequal_a                                D2FC       D      13       0   Compare_Strings.asm._SEC000000
-     namev_res2                                D309       E      14       0   Compare_Strings.asm._SEC000000
-     clearnamev                                D317       5       5       0   Compare_Strings.asm._SEC000000
-     name_res3                                 D31C       C      12       0   Compare_Strings.asm._SEC000000
-     equal_p                                   D328       C      12       0   Compare_Strings.asm._SEC000000
-     equal_a                                   D334       C      12       0   Compare_Strings.asm._SEC000000
-     Re_Username                               D340      1C      28       1   Re_enter_Username.asm._SEC000000
-     inc_alph                                  D35C       F      15       0   Re_enter_Username.asm._SEC000000
-     skip                                      D36B      10      16       0   Re_enter_Username.asm._SEC000000
-     R_curs                                    D37B      11      17       0   Re_enter_Username.asm._SEC000000
-     boundary1                                 D38C       8       8       0   Re_enter_Username.asm._SEC000000
-     dec_alph                                  D394       F      15       0   Re_enter_Username.asm._SEC000000
-     skip2                                     D3A3      10      16       0   Re_enter_Username.asm._SEC000000
-     L_curs                                    D3B3      11      17       0   Re_enter_Username.asm._SEC000000
-     boundary2                                 D3C4       8       8       0   Re_enter_Username.asm._SEC000000
-     F_key                                     D3CC       5       5       0   Re_enter_Username.asm._SEC000000
-     leave                                     D3D1       B      11       0   Re_enter_Username.asm._SEC000000
-     scan_switch                               D3DC       3       3       1   switch_input.asm._SEC000000
-     loop                                      D3DF      60      96       0   switch_input.asm._SEC000000
-     cont0                                     D43F       0       0       0   switch_input.asm._SEC000000
-     gen0                                      D43F       9       9       0   switch_input.asm._SEC000000
-     cont7                                     D448       0       0       0   switch_input.asm._SEC000000
-     gen123                                    D448       9       9       0   switch_input.asm._SEC000000
-     cont3                                     D451       0       0       0   switch_input.asm._SEC000000
-     gen12                                     D451       9       9       0   switch_input.asm._SEC000000
-     cont5                                     D45A       0       0       0   switch_input.asm._SEC000000
-     gen13                                     D45A       9       9       0   switch_input.asm._SEC000000
-     cont6                                     D463       0       0       0   switch_input.asm._SEC000000
-     gen23                                     D463       9       9       0   switch_input.asm._SEC000000
-     cont1                                     D46C       0       0       0   switch_input.asm._SEC000000
-     gen1                                      D46C       9       9       0   switch_input.asm._SEC000000
-     cont2                                     D475       0       0       0   switch_input.asm._SEC000000
-     gen2                                      D475       9       9       0   switch_input.asm._SEC000000
-     cont4                                     D47E       0       0       0   switch_input.asm._SEC000000
-     gen3                                      D47E       9       9       0   switch_input.asm._SEC000000
-     change                                    D487       8       8       0   switch_input.asm._SEC000000
-     back2                                     D48F       5       5       0   switch_input.asm._SEC000000
-     no_match_a                                D494       5       5       0   switch_input.asm._SEC000000
-     skip2                                     D499      19      25       0   switch_input.asm._SEC000000
-     RSRTMSG3                                  D4B2       5       5       0   switch_input.asm._SEC000000
-     back                                      D4B7       5       5       0   switch_input.asm._SEC000000
-     no_match_p                                D4BC       3       3       0   switch_input.asm._SEC000000
-     RSRTMSG4                                  D4BF       7       7       0   switch_input.asm._SEC000000
-     skip                                      D4C6      47      71       0   switch_input.asm._SEC000000
-     leave                                     D50D       C      12       0   switch_input.asm._SEC000000
-     Emergency                                 D519       9       9       0   EmergShut   
-     Coal_S                                    D522      11      17       1   Coal        
-     Fill_Coal_S                               D533       7       7       0   Coal        
-     Fill_Coal                                 D53A      20      32       1   Coal        
-     DONE                                      D55A       1       1       0   Coal        
-     user_chng2                                D55B      20      32       1   Create_Username2.asm._SEC000000
+     Entry                                     C000      99     153       0   .init       
+     date_res                                  C099      11      17       0   .init       
+     time_res                                  C0AA       F      15       0   .init       
+     name_res                                  C0B9      15      21       0   .init       
+     pass_res                                  C0CE       F      15       0   .init       
+     passv_res                                 C0DD       F      15       0   .init       
+     name_resv                                 C0EC      27      39       0   .init       
+     SRTMSG1                                   C113      13      19       0   .init       
+     SRTMSG2                                   C126      2F      47       0   .init       
+     no_match                                  C155       3       3       0   .init       
+     skip                                      C158      20      32       0   .init       
+     FILL                                      C178       5       5       0   .init       
+     PW_Verify                                 C17D      20      32       1   .init       
+     prompt                                    C19D       E      14       1   .init       
+     RSRTMSG2                                  C1AB       6       6       0   .init       
+     delay_ms                                  C1B1      17      23       5   NON_BANKED  
+     init_LCD                                  C1C8      52      82       1   NON_BANKED  
+     display_string                            C21A      38      56      16   NON_BANKED  
+     epulse                                    C252      24      36       3   NON_BANKED  
+     sendCommand                               C276       F      15       7   NON_BANKED  
+     SendsChr                                  C285       8       8       2   NON_BANKED  
+     PlayTone                                  C28D      1A      26       1   NON_BANKED  
+     delay                                     C2A7       2       2       1   MY_EXTENDED_ROM
+     keys                                      C2A9       4       4       0   MY_EXTENDED_ROM
+     song1                                     C2AD       F      15       1   MY_EXTENDED_ROM
+     song2                                     C2BC       3       3       1   MY_EXTENDED_ROM
+     array                                     C2BF       5       5       1   MY_EXTENDED_ROM
+     Startup_1                                 C2C4      A6     166       1   StringCode  
+     Startup_2                                 C36A      A6     166       1   StringCode  
+     date_str                                  C410      B2     178       3   StringCode  
+     admin_u                                   C4C2      B6     182       2   StringCode  
+     menu_str                                  C578      99     153       1   StringCode  
+     PW_String                                 C611      B6     182       2   StringCode  
+     PW_Verify_String                          C6C7      B6     182       2   StringCode  
+     re_enter                                  C77D      A6     166       1   StringCode  
+     accepted                                  C823      A6     166       1   StringCode  
+     GenSelStr                                 C8C9      B2     178       1   StringCode  
+     re_admin_u                                C97B     161     353       1   StringCode  
+     RTI_ISR                                   CADC      20      32       0   My_code     
+     MIDDLE                                    CAFC       5       5       0   My_code     
+     DONE_SOUND                                CB01       5       5       0   My_code     
+     DONE_STEPPER                              CB06       4       4       0   My_code     
+     EM_SOUND                                  CB0A       5       5       0   My_code     
+     SOUND_RT                                  CB0F      11      17       0   My_code     
+     done_sound                                CB20       7       7       0   My_code     
+     Stepper                                   CB27      18      24       0   My_code     
+     StepperS1                                 CB3F      2A      42       0   My_code     
+     StepperS2                                 CB69      23      35       0   My_code     
+     exit_start_ISR                            CB8C       7       7       0   My_code     
+     exit_ISR                                  CB93       4       4       0   My_code     
+     Date_Start                                CB97      32      50       1   Highlight_section
+     I_num                                     CBC9      12      18       0   Highlight_section
+     D_num                                     CBDB      12      18       0   Highlight_section
+     R_num                                     CBED       E      14       0   Highlight_section
+     L_num                                     CBFB       E      14       0   Highlight_section
+     F_key                                     CC09       7       7       0   Highlight_section
+     n_res_high                                CC10       A      10       0   Highlight_section
+     n_res_low                                 CC1A       A      10       0   Highlight_section
+     l_res                                     CC24       8       8       0   Highlight_section
+     r_res                                     CC2C       8       8       0   Highlight_section
+     DONE                                      CC34       F      15       0   Highlight_section
+     Time_Start                                CC43      27      39       1   Highlight_section
+     I_num                                     CC6A      1C      28       0   Highlight_section
+     T_Comp                                    CC86       B      11       0   Highlight_section
+     D_num                                     CC91      12      18       0   Highlight_section
+     R_num                                     CCA3       E      14       0   Highlight_section
+     L_num                                     CCB1       E      14       0   Highlight_section
+     F_key                                     CCBF       7       7       0   Highlight_section
+     n_res_high                                CCC6       A      10       0   Highlight_section
+     n_res_low                                 CCD0       A      10       0   Highlight_section
+     l_res                                     CCDA       8       8       0   Highlight_section
+     r_res                                     CCE2       8       8       0   Highlight_section
+     DONE                                      CCEA       F      15       0   Highlight_section
+     GenSel                                    CCF9      26      38       1   Highlight_section
+     R_num                                     CD1F       E      14       0   Highlight_section
+     L_num                                     CD2D       E      14       0   Highlight_section
+     F_key                                     CD3B       7       7       0   Highlight_section
+     l_res                                     CD42       8       8       0   Highlight_section
+     r_res                                     CD4A       8       8       0   Highlight_section
+     SEL                                       CD52       C      12       0   Highlight_section
+     Sel0                                      CD5E      11      17       0   Highlight_section
+     Sel1                                      CD6F      11      17       0   Highlight_section
+     Sel2                                      CD80      11      17       0   Highlight_section
+     DONE                                      CD91       F      15       0   Highlight_section
+     delay1ms                                  CDA0       4       4       1   debounce.asm._SEC000000
+     loop                                      CDA4       5       5       0   debounce.asm._SEC000000
+     scan                                      CDA9       3       3       7   KEY         
+     rescan                                    CDAC      24      36       0   KEY         
+     up                                        CDD0       8       8       0   KEY         
+     right                                     CDD8       8       8       0   KEY         
+     down                                      CDE0       8       8       0   KEY         
+     left                                      CDE8       8       8       0   KEY         
+     prompt                                    CDF0       8       8       0   KEY         
+     NCommand                                  CDF8       B      11       0   KEY         
+     leave                                     CE03       2       2       0   KEY         
+     Song_Start                                CE05       7       7       3   MY_SONG     
+     Door_Song                                 CE0C      2B      43       2   MY_SONG     
+     EM_Song                                   CE37      2B      43       1   MY_SONG     
+     DONE                                      CE62       1       1       0   MY_SONG     
+     Date_Change                               CE63      1E      30       1   Functions.asm._SEC000000
+     Time_Change                               CE81      1E      30       1   Functions.asm._SEC000000
+     SONG_TIME_START                           CE9F       3       3       0   Functions.asm._SEC000000
+     Song                                      CEA2       5       5       0   Functions.asm._SEC000000
+     MENU                                      CEA7      23      35       1   Functions.asm._SEC000000
+     Cont_Men                                  CECA      1E      30       1   Functions.asm._SEC000000
+     CoalFiller                                CEE8       8       8       1   Functions.asm._SEC000000
+     CoalFiller2                               CEF0       4       4       0   Functions.asm._SEC000000
+     Password_start                            CEF4      1C      28       1   PassWord.asm._SEC000000
+     inc_alph                                  CF10       F      15       0   PassWord.asm._SEC000000
+     skip                                      CF1F      10      16       0   PassWord.asm._SEC000000
+     R_curs                                    CF2F      11      17       0   PassWord.asm._SEC000000
+     boundary1                                 CF40       8       8       0   PassWord.asm._SEC000000
+     dec_alph                                  CF48       F      15       0   PassWord.asm._SEC000000
+     skip2                                     CF57      10      16       0   PassWord.asm._SEC000000
+     L_curs                                    CF67      11      17       0   PassWord.asm._SEC000000
+     boundary2                                 CF78       8       8       0   PassWord.asm._SEC000000
+     F_key                                     CF80       5       5       0   PassWord.asm._SEC000000
+     leave                                     CF85       B      11       0   PassWord.asm._SEC000000
+     Password_verify                           CF90      1C      28       1   PassWordVerify.asm._SEC000000
+     inc_alph                                  CFAC       F      15       0   PassWordVerify.asm._SEC000000
+     skip                                      CFBB      10      16       0   PassWordVerify.asm._SEC000000
+     R_curs                                    CFCB      11      17       0   PassWordVerify.asm._SEC000000
+     boundary1                                 CFDC       8       8       0   PassWordVerify.asm._SEC000000
+     dec_alph                                  CFE4       F      15       0   PassWordVerify.asm._SEC000000
+     skip2                                     CFF3      10      16       0   PassWordVerify.asm._SEC000000
+     L_curs                                    D003      11      17       0   PassWordVerify.asm._SEC000000
+     boundary2                                 D014       8       8       0   PassWordVerify.asm._SEC000000
+     F_key                                     D01C       5       5       0   PassWordVerify.asm._SEC000000
+     leave                                     D021       B      11       0   PassWordVerify.asm._SEC000000
+     Username_start                            D02C      1C      28       1   User_name.asm._SEC000000
+     inc_alph                                  D048       F      15       0   User_name.asm._SEC000000
+     skip                                      D057      10      16       0   User_name.asm._SEC000000
+     R_curs                                    D067      11      17       0   User_name.asm._SEC000000
+     boundary1                                 D078       8       8       0   User_name.asm._SEC000000
+     dec_alph                                  D080       F      15       0   User_name.asm._SEC000000
+     skip2                                     D08F      10      16       0   User_name.asm._SEC000000
+     L_curs                                    D09F      11      17       0   User_name.asm._SEC000000
+     boundary2                                 D0B0       8       8       0   User_name.asm._SEC000000
+     F_key                                     D0B8       5       5       0   User_name.asm._SEC000000
+     leave                                     D0BD       B      11       0   User_name.asm._SEC000000
+     PW_Creation                               D0C8      20      32       1   Create_Password.asm._SEC000000
+     user_chng                                 D0E8      20      32       1   Create_Username.asm._SEC000000
+     Default_PW                                D108       A      10       1   Default_String_Display.asm._SEC000000
+     Default_RE_PW                             D112       E      14       1   Default_String_Display.asm._SEC000000
+     RSRTMSG                                   D120       6       6       0   Default_String_Display.asm._SEC000000
+     Pass_wordV                                D126       A      10       1   Default_String_Display.asm._SEC000000
+     User_name                                 D130       A      10       1   Default_String_Display.asm._SEC000000
+     Default_RE_Ad                             D13A       A      10       0   Default_String_Display.asm._SEC000000
+     compare_PW                                D144       3       3       1   Compare_Strings.asm._SEC000000
+     compare_p                                 D147      14      20       0   Compare_Strings.asm._SEC000000
+     notequal_p                                D15B      10      16       0   Compare_Strings.asm._SEC000000
+     pass_res2                                 D16B       F      15       0   Compare_Strings.asm._SEC000000
+     passv_res2                                D17A       B      11       0   Compare_Strings.asm._SEC000000
+     compare_Admin                             D185       3       3       0   Compare_Strings.asm._SEC000000
+     compare_a                                 D188      14      20       0   Compare_Strings.asm._SEC000000
+     notequal_a                                D19C      10      16       0   Compare_Strings.asm._SEC000000
+     name_res2                                 D1AC       F      15       0   Compare_Strings.asm._SEC000000
+     namev_res2                                D1BB       B      11       0   Compare_Strings.asm._SEC000000
+     equal_p                                   D1C6       7       7       0   Compare_Strings.asm._SEC000000
+     equal_a                                   D1CD       7       7       0   Compare_Strings.asm._SEC000000
+     Emergency                                 D1D4       9       9       0   EmergShut   
+     Coal_S                                    D1DD      11      17       1   Coal        
+     Fill_Coal_S                               D1EE       7       7       0   Coal        
+     Fill_Coal                                 D1F5      20      32       1   Coal        
+     DONE                                      D215       1       1       0   Coal        
 
 *********************************************************************************************
 UNUSED-OBJECTS SECTION
@@ -2190,7 +2065,7 @@ OBJECT-DEPENDENCIES SECTION
 Entry                     USES __SEG_END_SSTACK start_f sound_rdy enter_f 
                                 command seloff tone_count gens1 gens2 gens3 sound_c 
                                 start_c clearv cursor check flag em_v stepper_r 
-                                stepper_c stepper_s choose passflag homeflag init_LCD 
+                                stepper_c stepper_s init_LCD 
 date_res                  USES date 
 time_res                  USES time 
 name_res                  USES name start_c 
@@ -2226,17 +2101,16 @@ PW_Verify_String          USES disp passv
 re_enter                  USES disp 
 accepted                  USES disp 
 GenSelStr                 USES disp gens1 gens2 gens3 
-re_admin_u                USES disp 
-match_a                   USES disp 
-admin_u2                  USES disp namev 
-match_p                   USES disp 
+re_admin_u                USES disp namev 
 RTI_ISR                   USES em_v start_f start_c 
 MIDDLE                    USES sound_rdy 
 DONE_SOUND                USES stepper_s 
 EM_SOUND                  USES EM_Song 
 SOUND_RT                  USES sound_c PlayTone 
 done_sound                USES sound_rdy 
-Stepper                   USES stepper_r stepper_c 
+Stepper                   USES stepper_it stepper_num 
+StepperS1                 USES stepper_r stepper_c stepper_num stepper_it 
+StepperS2                 USES stepper_r stepper_c 
 exit_start_ISR            USES start_c 
 Date_Start                USES command prev_val clearv 
 I_num                     USES seloff date 
@@ -2288,8 +2162,8 @@ Time_Change               USES scan Time_Start date_str disp display_string
                                 enter_f seloff 
 SONG_TIME_START           USES Song_Start 
 Song                      USES Door_Song 
-MENU                      USES scan scan_switch menu_str disp display_string 
-                                clearv command enter_f 
+MENU                      USES scan menu_str disp display_string clearv 
+                                command enter_f 
 Cont_Men                  USES scan GenSel GenSelStr disp display_string 
                                 enter_f seloff 
 CoalFiller                USES stepper_r Fill_Coal 
@@ -2336,62 +2210,23 @@ Default_RE_PW             USES re_enter disp display_string start_f
 RSRTMSG                   USES start_f 
 Pass_wordV                USES PW_Verify_String disp display_string 
 User_name                 USES admin_u disp display_string 
-Default_RE_Ad             USES re_admin_u disp display_string start_f 
-RSRTMSG2                  USES start_f 
-User_name2                USES admin_u2 disp display_string 
-loading                   USES match_p disp display_string start_f 
-RSRTMSG3                  USES start_f 
+Default_RE_Ad             USES re_admin_u disp display_string 
 compare_PW                USES cursor 
 compare_p                 USES pass passv 
-notequal_p                USES equal_f cursor passflag 
-passv_res2                USES passv 
+notequal_p                USES equal_f cursor 
 pass_res2                 USES pass 
-pass_res3                 USES pass passflag 
+passv_res2                USES passv 
 compare_Admin             USES cursor 
 compare_a                 USES name namev 
 notequal_a                USES equal_f cursor 
+name_res2                 USES name 
 namev_res2                USES namev 
-name_res3                 USES namev 
-equal_p                   USES equal_f cursor 
-equal_a                   USES equal_f cursor 
-Re_Username               USES command 
-inc_alph                  USES cursor namev 
-skip                      USES namev 
-R_curs                    USES cursor 
-boundary1                 USES cursor 
-dec_alph                  USES cursor namev 
-skip2                     USES namev 
-L_curs                    USES cursor 
-boundary2                 USES cursor 
-F_key                     USES enter_f 
-leave                     USES namev command 
-loop                      USES check port_t flag 
-gen0                      USES on_off 
-gen123                    USES on_off 
-gen12                     USES on_off 
-gen13                     USES on_off 
-gen23                     USES on_off 
-gen1                      USES on_off 
-gen2                      USES on_off 
-gen3                      USES on_off 
-change                    USES check switch_f 
-back2                     USES User_name2 
-no_match_a                USES Default_RE_Ad 
-skip2                     USES user_chng2 compare_Admin equal_f match_a disp 
-                                display_string start_f 
-RSRTMSG3                  USES start_f 
-back                      USES Default_PW 
-no_match_p                USES Default_RE_PW 
-RSRTMSG4                  USES start_f 
-skip                      USES PW_Creation compare_PW equal_f loading port_t 
-                                choose 
-leave                     USES check flag 
+equal_p                   USES equal_f 
+equal_a                   USES equal_f 
 Emergency                 USES Song_Start em_v 
 Coal_S                    USES stepper_r stepper_s stepper_c 
 Fill_Coal_S               USES array coal_place 
 Fill_Coal                 USES coal_place port_p stepper_r stepper_s 
-user_chng2                USES scan Re_Username User_name2 disp display_string 
-                                enter_f cursor 
 
 *********************************************************************************************
 DEPENDENCY TREE
@@ -2423,5 +2258,5 @@ STATISTIC SECTION
 ExeFile:
 --------
 Number of blocks to be downloaded: 12
-Total size of all blocks to be downloaded: 5505
+Total size of all blocks to be downloaded: 4636
 

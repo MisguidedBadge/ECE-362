@@ -11,13 +11,13 @@
             INCLUDE 'derivative.inc'
 
 ; export symbols
-            XDEF Entry, _Startup, disp, start_f,flag,homeflag
-            XDEF command,port_t
+            XDEF Entry, _Startup, disp, start_f,flag
+            XDEF command
             XDEF port_u, delay
             XDEF date,date_f, time,enter_f, prev_val, seloff;, User_name
-            XDEF sound_f,on_off,choose
-            XDEF gens1, gens2, gens3			;generator selection
-            XDEF pass, passv,passflag
+            XDEF sound_f,on_off
+            XDEF gens1, gens2, gens3			; generator selection
+            XDEF pass, passv
             XDEF User_name,name,namev,cursor, equal_f,check,switch_f 
             XDEF PW_Verify, port_p, stepper_r, stepper_s
             
@@ -25,7 +25,7 @@
             ; reference 'Entry' either in the linker .prm file
             ; or from C/C++ later on
 
-            XREF __SEG_END_SSTACK, read_pot, display_string, pot_value, init_LCD, RTI_ISR, start_c    ;symbol defined by the linker for the end of the stack
+            XREF __SEG_END_SSTACK, read_pot, display_string, pot_value, init_LCD, RTI_ISR, start_c    ; symbol defined by the linker for the end of the stack
             XREF Startup_1, Startup_2, date_str, menu_str,GenSelStr,re_enter,accepted
             XREF Date_Start, Time_Start, Password_start, Password_verify
             XREF scan,admin_u, SendsChr,Username_start,PW_String,PW_Verify_String
@@ -38,7 +38,7 @@
 
             ; Potentiometer References
 
-;;--------------------------------AUSTIN's-------------------------------------------------------------;          
+;;--------------------------------AUSTIN's----------------;;          
 MY_EXTENDED_ROM:  SECTION
 delay       dc.w  1000                    		;1ms delay
 keys        dc.b  $84,$42,$24,$48         		;represents hex keys 2,6,8&4 respectively
@@ -52,19 +52,19 @@ port_u      equ   $268                    		;hexpad address
 PER         equ   $26C                   		;pull_enable register
 PSR         equ   $26D                    		;polarity_select
 port_t_ddr	equ	  $242
-port_t		equ	  $240							;switches
+port_t		equ	  $240
 port_p_ddr	equ	  $25A 							;port_p_ddr
 port_p		equ	  $258							;port_p
                   
 
 ; variable/data section
 MY_EXTENDED_RAM: SECTION
-user_input  ds.b 1                        		;Austin's input
-;;--------------------------------AUSTIN's---------------------------------------------------------------;
+user_input  ds.b 1                        ;Austin's input
+;;------------------------------AUSTIN's--------------------;;
 
 ; variable/data section
 MY_EXTENDED_RAM: SECTION
-disp:	    ds.b 33
+disp:	      ds.b 33
 start_f:    ds.b 1	    						;start flag
 enter_f:    ds.b 1	    						;enter flag
 date_f:     ds.b 1      						;date change flag
@@ -72,31 +72,32 @@ equal_f	    ds.b 1	    						;equal flag
 check:		ds.b 1	   							;previous switch value to compare with current switch value
 switch_f:	ds.b 1	    						;switch pressed flag (1 if switch is pressed)
 flag:		ds.b 1								;User MUST flip a switch when set to 1, otherwise program doesn't wait for it 
-choose:		ds.b 1								;choose which generator to turn on (located in switch input)
-passflag:	ds.b 1								;for when re_entering password after first time verifying
-homeflag	ds.b 1								;so the program only displays 'loading home screen' the first time a switch is flipped, other times displays which generator(s) is/are turned on		
+
 ;temporary variables
 command:    ds.b 1
-prev_val:	ds.b 1	    						;previous command received from user
+prev_val:	ds.b 1	    						; previous command received from user
 
 
 ;Time Variables
-date:    	ds.b  	8							;Date string
-time:		ds.b  	4							;Time string
+date:    	ds.b  8								;Date string
+time:		ds.b  4								;Time string
 ;Admin Variables
-name:       ds.b  	16
-namev:		ds.b  	16	    				    ;Name String
+name:       ds.b  15
+namev:		ds.b  15	    				    ;Name String
 ;date variables stored in mem array
-seloff:   	ds.w  	1     						;Selection Offset
+seloff:   	ds.w  1     						;Selection Offset
 
 ;sound variables
-sound_f:	ds.b  	1
+sound_f:	ds.b  1
 
 ;control menu
-gens1:		ds.b  	1	
-gens2:		ds.b  	1
-gens3:		ds.b  	1
-on_off:		ds.b  	1							;Determines which generators are on or off (values 0-7) 
+gens1:		ds.b  1
+gens2:		ds.b  1
+gens3:		ds.b  1
+gens1_coal: ds.b  1 							;generator coal 
+gens2_coal: ds.b  1
+gens3_coal:	ds.b  1
+on_off:		ds.b  1								;Determines which generators are on or off (values 0-7) 
 
 ;LCD Variables
 my_LCD: SECTION
@@ -104,7 +105,7 @@ my_LCD: SECTION
 pass:		ds.b	16
 passv:		ds.b	16
 ;date variables stored in mem array
-cursor:     ds.w  	1							;gives cursor location on LCD			   
+cursor:     ds.w  1								;gives cursor location on LCD			   
 ;Stepper Motor
 stepper_r:	ds.b	1							;stepper ready
 stepper_s:	ds.b	1
@@ -136,22 +137,20 @@ _Startup:
 				MOVW  	#0, seloff
 				MOVW  	#0, tone_count	
 				MOVB  	#$2D, gens1				;Select generator 1 as the default value
-				MOVB  	#$20, gens2				 
-				MOVB  	#$20, gens3				
+				MOVB  	#$20, gens2				; 
+				MOVB  	#$20, gens3				;
 				MOVW  	#0, sound_c				;reset sound_c
 				MOVW  	#0, start_c
 				MOVB  	#0, clearv
 				MOVW  	#0, cursor
 				MOVB	#0, check				;initialize previous switch value to 0
-				MOVB	#1, flag	
-				MOVB	#0, em_v
-				MOVB	#$1E,port_p_ddr
-				MOVB	#0, stepper_r
-				MOVW	#0, stepper_c
-				MOVB	#0, stepper_s
-				movb	#0, choose				;initialize choose to any value
-				movb	#0,passflag
-				movb	#0,homeflag
+				movb	#1, flag	
+				movb	#0, em_v
+				movb	#$1E,port_p_ddr
+				movb	#0, stepper_r
+				movw	#0, stepper_c
+				movb	#0, stepper_s
+				
 				jsr	  	init_LCD            	;call init_LCD
 			
 
@@ -203,7 +202,7 @@ pass_res:		stab	pass,x
 passv_res:		stab	passv,x
 				inx
 				cpx   	#16
-				bne		passv_res     	  		;branch until PW initialized to all spaces
+				bne		passv_res     	  ;branch until PW initialized to all spaces
 ;initialize (Re_Enter) name variables to default space values
       			ldab 	#$20        			;ascii space value
       			ldx 	#0          			;initialize x
@@ -223,7 +222,9 @@ name_resv:  	stab 	namev,x      			;store ascii value into each memory location
 
 					
 ;---------------------------SHOW WELCOME MESSAGE------------------;
-;Poseidon Energy Startup Message Sequence			
+;Poseidon Energy Startup Message Sequence
+;
+;			
 START:		
       			jsr 	Startup_1								
 				ldd 	#disp
@@ -265,13 +266,12 @@ skip:			jsr 	PW_Creation	    		;Display users password inputs
 				jsr 	Pass_wordV				;default verify password screen			
 				jsr 	PW_Verify				;Re_type password to verify			
 				jsr 	compare_PW			
-				brclr 	equal_f,#1, no_match
-							
+				brclr 	equal_f,#1, no_match			
 				jsr 	prompt					;Tell user to turn on each generator and set power output to max         		
 				
 							
-				jsr 	MENU					;Shows MW output and time		
-				jsr 	Cont_Men			    ;Control Menu that shows generators
+				jsr 	MENU					; Shows MW output and time		
+				jsr 	Cont_Men			    ; Control Menu that shows generators
 				
 
 				
@@ -282,7 +282,7 @@ skip:			jsr 	PW_Creation	    		;Display users password inputs
 				;-Testing Fill Process -;
 FILL:
 				jsr		CoalFiller
-			    bra 	FILL
+			    bra FILL
 				
 				
 
