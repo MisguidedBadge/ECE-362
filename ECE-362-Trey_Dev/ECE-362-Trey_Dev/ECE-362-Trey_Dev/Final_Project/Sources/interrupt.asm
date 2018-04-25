@@ -1,4 +1,4 @@
- 	Xdef    start_c, RTI_ISR,sound_c, stepper_c
+ 	Xdef    start_c, RTI_ISR,sound_c, stepper_c, stepper_it, stepper_num
 	Xref	SECOND, start_f, date_f, PlayTone, sound_f,sound_rdy,repass, em_v, EM_Song, stepper_r, stepper_s
 
 
@@ -108,7 +108,8 @@ Stepper:
 		BRCLR stepper_it, #8, StepperS1
 	;	ldx 		
 		
-		
+
+;-----------------------------Filling Process Start------------------------------;		
 StepperS1:
 		BRSET stepper_r, #1, DONE_STEPPER
 		Ldx	stepper_c						;load count to x
@@ -125,7 +126,7 @@ StepperS1:
 		
 		lbra	 DONE_STEPPER
 		
-
+;------------------------------Middle of the Process------------------------------;
 StepperS2:
 		BRSET stepper_r, #1, DONE_STEPPER 
 		Ldx	stepper_c						;load count to x

@@ -1,6 +1,6 @@
 	XDEF  Fill_Coal,Coal_S
 	
-	XREF  port_p, stepper_r, stepper_c, stepper_s
+	XREF  port_p, stepper_r, stepper_c, stepper_s, stepper_num, stepper_it
 	
 	
 MY_EXTENDED_ROM: SECTION
@@ -20,6 +20,8 @@ Coal_S:
 			  movb	#0, stepper_r
 			  movb	#1, stepper_s
 			  movw	#0, stepper_c
+			  movw	#500, stepper_num
+			  movb  #0, stepper_it
 			  rts
 Fill_Coal_S:
 			  LDX  #array 				;load with the first element address
@@ -37,6 +39,8 @@ Fill_Coal:
               STX  coal_place
               movb #0, stepper_r
               BRA  DONE
+              
+
 Coal_F:
 			  ;Set values to unuseable state for ignoring interupt
 			  movb	#0, stepper_s

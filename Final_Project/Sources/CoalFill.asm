@@ -32,13 +32,13 @@ Fill_Coal:
 			  LDX	coal_place
 			  LDAA 1,X+   				;load value of element and increment x
               
-              CMPA 0 					;check and see if it went past the array
-              BEQ  Fill_Coal_S  		;if it is then go back
+        CMPA 0 					;check and see if it went past the array
+        BEQ  Fill_Coal_S  		;if it is then go back
               
-              STAA port_p 				;store for stepper output
-              STX  coal_place
-              movb #0, stepper_r
-              BRA  DONE
+        STAA port_p 				;store for stepper output
+        STX  coal_place
+        movb #0, stepper_r
+        BRA  DONE
               
 
 Coal_F:
