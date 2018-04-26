@@ -1,4 +1,4 @@
-	XDEF  Fill_Coal,Coal_S
+	XDEF  Fill_Coal,Coal_S, Fill_Coal_S
 	
 	XREF  port_p, stepper_r, stepper_c, stepper_s, stepper_num, stepper_it
 	

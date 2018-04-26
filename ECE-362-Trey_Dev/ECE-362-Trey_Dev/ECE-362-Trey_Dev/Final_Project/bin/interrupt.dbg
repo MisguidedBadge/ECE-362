@@ -1,4 +1,7 @@
  	Xdef    start_c, RTI_ISR,sound_c, stepper_c, stepper_it, stepper_num
+	
+	
+  XREF  on_off, Use_Coal, SOUND_RT, EM_SOUND, Stepper
 	Xref	SECOND, start_f, date_f, PlayTone, sound_f,sound_rdy,repass, em_v, EM_Song, stepper_r, stepper_s
 
 
@@ -8,6 +11,8 @@ sound_c	ds.w	1
 stepper_c ds.w	1
 stepper_it	ds.b	1	;stepper iteration... this is to make the stepper slowly go up in value
 stepper_num	ds.w	1	;stepper delay
+
+
 
 My_code:	section
 
@@ -19,7 +24,12 @@ RTI_ISR:
 ;
 ;	        
     
-    BRSET em_v, #1, EM_SOUND
+    BRCLR em_v, #1, SKIP_EM
+    
+    jsr EM_SOUND 
+
+SKIP_EM:
+  
         
     BRSET start_f, #1, MIDDLE		;branch after 3 seconds
 		Ldx	start_c						;load count to x
@@ -32,16 +42,26 @@ RTI_ISR:
 
 		
 
+
+
+
 ;----------------------MIDDLE SEQUENCE------------------------------------;
+
 	
 MIDDLE: 
     
+
+    BRSET on_off, #7, DONE_COAL
+    jsr Use_Coal
+    
+DONE_COAL: 
 		
 ;----------------------SOUND CHECK------------------------------------;
 ;Check if sound is ready to play from sound.asm
 ;
 ;			
-		BRSET sound_rdy, #1, SOUND_RT				;Sound routine to run if flag set
+		BRCLR sound_rdy, #1, DONE_SOUND				;Sound routine to run if flag set
+		jsr SOUND_RT
 
 DONE_SOUND:
 
@@ -50,112 +70,22 @@ DONE_SOUND:
 ;Check if stepper motor is ready to go from CoalFill.asm
 ;
 ;			
-		BRSET stepper_s, #1,Stepper					;Stepper routine to run if flag set
+		ldaa stepper_s
+		cmpa #1
+		bne  DONE_STEPPER
+		jsr  Stepper
+		;BRSET stepper_s, #1,Stepper					;Stepper routine to run if flag set
 
 DONE_STEPPER:
 		
 		
  
-		lbra exit_ISR
+    bra exit_ISR
  ;----------------------END MIDDLE SEQUENCE-------------------------------;
- 
 
-
-;----------------------EMERGENCY SOUND ROUTINE---------------------------------;
-EM_SOUND:
-		jsr EM_Song	 		;play the emergency song (Needs interrupt because password reset)
-		bra SOUND_RT
- 
-
-;----------------------SOUND COUNTER CHECK----------------------------;
-;Check if sound count ("delay") is done
-;If not then continue playing same note
-;
-SOUND_RT:
-		ldx sound_c						;load sound count ("delay")
-		cpx #0							;If 0 then sound is done playing
-		beq done_sound					;
-		dex								;Decrement sound count 
-		stx sound_c						;Store into sound count variable
-		jsr PlayTone					;jump to playtone
-		bra DONE_SOUND					;exit ISR
-		
-;----------------------SOUND DONE PATH--------------------------------;
-;Check if sound is ready to play from sound.asm
-;
-;
-done_sound:		
-		MOVB #0, sound_rdy				;Reset sound flag to let sound.asm play new note
-		bra DONE_SOUND					;Exit ISR
 					
 
 
-
-		
-
-;----------------------Stepper Motor--------------------------------;
-Stepper:
-		
-	;	BRSET stepper_full, #1, StepperS3
-;-----------------------------Stepper Coal filling Start------------------------;		
-		BRCLR stepper_it, #8, StepperS1	;8 iterations before going up in value
-		ldx stepper_num
-		cpx #234
-		beq StepperS2
-		dex
-		stx stepper_num
-		bra DONE_STEPPER
-;----------------------------Stepper Coal Filling Finish------------------------;
-		BRCLR stepper_it, #8, StepperS2
-	;	ldx 		
-		
-
-;-----------------------------Filling Process Start------------------------------;		
-StepperS1:
-		BRSET stepper_r, #1, DONE_STEPPER
-		Ldx	stepper_c						        ;load count to x
-		inx									            ;increment count
-		stx stepper_c 
-		Cpx	stepper_num		              ;decrements down to 30 ms
-		Bne	DONE_STEPPER					      ;
-		Ldx	#0		                  		;reset to 0 if 30ms
-		ldaa stepper_it
-		inca
-		staa stepper_it
-		MOVB #1, stepper_r
-		MOVW #0, stepper_c
-		
-		lbra	 DONE_STEPPER
-		
-;------------------------------Middle of the Process------------------------------;
-StepperS2:
-		BRSET stepper_r, #1, DONE_STEPPER 
-		Ldx	stepper_c					      	;load count to x
-		inx									          ;increment count
-		stx stepper_c 
-		Cpx	#0234		                	;see if equal to 30ms
-		Bne	DONE_STEPPER					    ;
-		Ldx	#0		                  	;reset to 0 if 30ms
-		MOVB #1, stepper_r
-		MOVW #0, stepper_c
-		
-		lbra	 DONE_STEPPER
-
-StepperS3:
-    ldaa stepper_r
-    cmpa #1
-    lbeq  DONE_STEPPER 
-		Ldx	stepper_c						      ;load count to x
-		inx									          ;increment count
-		stx stepper_c 
-		Cpx	stepper_num		            ;see if equal to 30ms
-		lBne	DONE_STEPPER					    ;
-		Ldx	#0		                    ;reset to 0 if 30ms
-		ldaa stepper_it
-		inca
-		staa stepper_it
-		MOVB #1, stepper_r
-		MOVW #0, stepper_c
 
 ;--------------------EXIT Interrupt---------------------------------------;		
 exit_start_ISR:

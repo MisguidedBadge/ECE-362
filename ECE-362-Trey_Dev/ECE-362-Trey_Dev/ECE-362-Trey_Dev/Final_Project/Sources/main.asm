@@ -16,7 +16,7 @@
             XDEF port_u, delay
             XDEF date,date_f, time,enter_f, prev_val, seloff;, User_name
             XDEF sound_f,on_off
-            XDEF gens1, gens2, gens3			; generator selection
+            XDEF gens1, gens2, gens3, gc11,gc12,gc21,gc22,gc31,gc32,gens1_coal,gens2_coal,gens3_coal			; generator selection
             XDEF pass, passv
             XDEF User_name,name,namev,cursor, equal_f,check,switch_f 
             XDEF PW_Verify, port_p, stepper_r, stepper_s
@@ -33,6 +33,7 @@
             XREF Door_Song, Song_Start, sound_rdy,  tone_count, sound_c
             XREF GenSel,Date_Change, Time_Change, SONG_TIME_START, Song, Cont_Men, MENU, clearv
             XREF PW_Creation, compare_string , user_chng,Re_Username,re_admin_u, em_v,Fill_Coal,Coal_S, stepper_c, CoalFiller
+            XREF Fill_Coal_S
             ; LCD References
 	         
 
@@ -96,8 +97,8 @@ gens2:		ds.b  1
 gens3:		ds.b  1
 ;generator coal by percentage
 ; 65000 lower nibble  3692  240 Mil
-;  ------             369  24  Mil
-;                     37  2.4 Mil
+;  ------             369   24  Mil
+;                     37    2.4 Mil
 
 ; 65000 lower nibble 738
 
@@ -168,7 +169,12 @@ _Startup:
 				movb	  #0, stepper_r
 				movw	  #0, stepper_c
 				movb	  #0, stepper_s
-				movw    #6500, 
+				movw    #6500,gc11      ;default values for the coal
+				movw    #6500,gc21
+				movw    #6500,gc31
+				movw    #7384,gc12
+				movw    #14769,gc22
+				movw    #22153,gc32 
 				
 				jsr	  	init_LCD            	;call init_LCD
 			
@@ -294,13 +300,15 @@ skip:			jsr 	PW_Creation	    	;Display users password inputs
 				  jsr 	prompt					  ;Tell user to turn on each generator and set power output to max         		
 				
 MainMenu:                   							
-				  jsr 	MENU					    ; Shows MW output and time		
+				  jsr 	MENU					    ; Shows MW output and time
+				  jsr   Fill_Coal_S		
 				  jsr 	Cont_Men			    ; Control Menu that shows generators
 				
 
 				
 			    ;- Reset Stepper Values -;
 				  jsr		Coal_S
+				  jsr   Fill_Coal_S
 				  jsr		Song_Start
 
 				  ;-Testing Fill Process -;

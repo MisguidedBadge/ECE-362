@@ -27,21 +27,25 @@ Push:	Section
 		
 Generator1:
 ;If generator 1 then check if the generator switch is flipped
-
+    ldaa on_off 
+    anda %001         ; Check and see if switch one is pressed
+   ; bne  
 
 Generator2:
 
-
+    ldaa on_off
+    anda %010         ; Check and see if switch two is pressed
+   ; bne  
 
 Generator3:
 		
-		
-		ldab on_off	;load the generator on_off		
-		
+				
 		
 		
 		
 		
+		
+DONE:
 		
 		pshy
 		pshx

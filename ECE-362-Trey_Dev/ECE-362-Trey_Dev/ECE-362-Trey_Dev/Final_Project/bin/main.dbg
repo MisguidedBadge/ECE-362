@@ -7308,7 +7308,7 @@ mPMFDTMC_PMFDTMC11:                      equ        This_symb_has_been_depreciat
             XDEF port_u, delay
             XDEF date,date_f, time,enter_f, prev_val, seloff;, User_name
             XDEF sound_f,on_off
-            XDEF gens1, gens2, gens3			; generator selection
+            XDEF gens1, gens2, gens3, gc11,gc12,gc21,gc22,gc31,gc32,gens1_coal,gens2_coal,gens3_coal			; generator selection
             XDEF pass, passv
             XDEF User_name,name,namev,cursor, equal_f,check,switch_f 
             XDEF PW_Verify, port_p, stepper_r, stepper_s
@@ -7325,6 +7325,7 @@ mPMFDTMC_PMFDTMC11:                      equ        This_symb_has_been_depreciat
             XREF Door_Song, Song_Start, sound_rdy,  tone_count, sound_c
             XREF GenSel,Date_Change, Time_Change, SONG_TIME_START, Song, Cont_Men, MENU, clearv
             XREF PW_Creation, compare_string , user_chng,Re_Username,re_admin_u, em_v,Fill_Coal,Coal_S, stepper_c, CoalFiller
+            XREF Fill_Coal_S
             ; LCD References
 	         
 
@@ -7387,13 +7388,13 @@ gens1:		ds.b  1
 gens2:		ds.b  1
 gens3:		ds.b  1
 ;generator coal by percentage
-; 6500 lower nibble 369 (100 loops) upper nib 240 Mil
-;  ------           369 (10 loops)   24  Mil
-;                   369 (1 loop)  2.4 Mil
+; 65000 lower nibble  3692  240 Mil
+;  ------             369   24  Mil
+;                     37    2.4 Mil
 
-; 6500 lower nibble 738
+; 65000 lower nibble 738
 
-; 6500 lower nibble 1108
+; 65000 lower nibble 1108
 gc11     ds.w   1 ; upper
 gc12     ds.w   1 ; lower
 gc21     ds.w   1
@@ -7433,9 +7434,9 @@ _Startup:
 				CLI
 			
 			
-	    		MOVB  	#$F0,port_u_ddr   		;init bits 4-7 of hexpad as outputs    
-	    		MOVB  	#$0F,PER          		;enable pull_enable register for hex
-	    		MOVB  	#$FF,PSR          		;init hexpad input bits 0-3 as 
+	    	MOVB  	#$F0,port_u_ddr   		;init bits 4-7 of hexpad as outputs    
+	    	MOVB  	#$0F,PER          		;enable pull_enable register for hex
+	      MOVB  	#$FF,PSR          		;init hexpad input bits 0-3 as 
 			
 				MOVB  	#0, start_f				;Make the start flag 0
 				MOVB  	#$20, port_t_ddr
@@ -7453,13 +7454,19 @@ _Startup:
 				MOVW  	#0, start_c
 				MOVB  	#0, clearv
 				MOVW  	#0, cursor
-				MOVB	#0, check				;initialize previous switch value to 0
-				movb	#1, flag	
-				movb	#0, em_v
-				movb	#$1E,port_p_ddr
-				movb	#0, stepper_r
-				movw	#0, stepper_c
-				movb	#0, stepper_s
+				MOVB	  #0, check				;initialize previous switch value to 0
+				movb	  #1, flag	
+				movb	  #0, em_v
+				movb	  #$1E,port_p_ddr
+				movb	  #0, stepper_r
+				movw	  #0, stepper_c
+				movb	  #0, stepper_s
+				movw    #6500,gc11      ;default values for the coal
+				movw    #6500,gc21
+				movw    #6500,gc31
+				movw    #7384,gc12
+				movw    #14769,gc22
+				movw    #22153,gc32 
 				
 				jsr	  	init_LCD            	;call init_LCD
 			
@@ -7475,7 +7482,8 @@ _Startup:
 				ldab 	#1       
 				addb 	#$30        			;Add value to make it ASCII
 				ldx 	#0          			;Start with zero and index up to 8
-date_res:		stab 	date,x
+date_res:		
+        stab 	date,x
 				inx
 				cpx 	#8          			;only want the 8th index
 				bne 	date_res
@@ -7484,17 +7492,18 @@ date_res:		stab 	date,x
 				ldab 	#1       
 				addb 	#$30        			;Add value to make it ASCII
 				ldx 	#0          			;Start with zero and index up to 8
-time_res:		stab 	time, x
+time_res:		
+        stab 	time, x
 				inx
 				cpx 	#4          			;only want the 4th index
 				bne 	time_res
 ;initialize name variables to default space values
-      			ldab 	#$20        			;ascii space value
-      			ldx 	#0          			;initialize x
+      	ldab 	#$20        			;ascii space value
+      	ldx 	#0          			;initialize x
 name_res:  		    
-      			stab 	name,x      			;store ascii value into each memory location            
-      			inx
-      			cpx 	#16         			;check if all locations have been stored
+      	stab 	name,x      			;store ascii value into each memory location            
+      	inx
+      	cpx 	#16         			;check if all locations have been stored
 				bne 	name_res 		 		
 						
 				ldx 	#0
@@ -7502,23 +7511,26 @@ name_res:
 ;initialize pass variables to default space values
 				ldab	#$20	     			;ascii space value
 				ldx		#0	         			;initialize x
-pass_res:		stab	pass,x
+pass_res:		
+        stab	pass,x
 				inx
 				cpx   	#16
 				bne		pass_res     			;branch until PW initialized to all spaces
 ;initialize pass verification variables to default space values			
 				ldab	#$20	     			;ascii space value
 				ldx		#0	          	 		;initialize x
-passv_res:		stab	passv,x
+passv_res:		
+        stab	passv,x
 				inx
 				cpx   	#16
 				bne		passv_res     	  ;branch until PW initialized to all spaces
 ;initialize (Re_Enter) name variables to default space values
-      			ldab 	#$20        			;ascii space value
-      			ldx 	#0          			;initialize x
-name_resv:  	stab 	namev,x      			;store ascii value into each memory location            
-      			inx
-      			cpx 	#16         			;check if all locations have been stored
+      	ldab 	#$20        			;ascii space value
+      	ldx 	#0          			;initialize x
+name_resv:  	
+        stab 	namev,x      			;store ascii value into each memory location            
+      	inx
+      	cpx 	#16         			;check if all locations have been stored
 				bne 	name_resv 		 		
 				
 			
@@ -7580,13 +7592,15 @@ skip:			jsr 	PW_Creation	    	;Display users password inputs
 				  jsr 	prompt					  ;Tell user to turn on each generator and set power output to max         		
 				
 MainMenu:                   							
-				  jsr 	MENU					    ; Shows MW output and time		
+				  jsr 	MENU					    ; Shows MW output and time
+				  jsr   Fill_Coal_S		
 				  jsr 	Cont_Men			    ; Control Menu that shows generators
 				
 
 				
 			    ;- Reset Stepper Values -;
 				  jsr		Coal_S
+				  jsr   Fill_Coal_S
 				  jsr		Song_Start
 
 				  ;-Testing Fill Process -;

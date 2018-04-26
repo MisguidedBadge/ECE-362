@@ -29,13 +29,13 @@ Generator1:
 ;If generator 1 then check if the generator switch is flipped
     ldaa on_off 
     anda %001         ; Check and see if switch one is pressed
-    bne  
+   ; bne  
 
 Generator2:
 
     ldaa on_off
     anda %010         ; Check and see if switch two is pressed
-    bne  
+   ; bne  
 
 Generator3:
 		
