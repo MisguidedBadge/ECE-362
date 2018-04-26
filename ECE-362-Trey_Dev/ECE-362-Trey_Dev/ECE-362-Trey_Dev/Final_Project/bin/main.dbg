@@ -7361,9 +7361,9 @@ start_f:    ds.b 1	    						;start flag
 enter_f:    ds.b 1	    						;enter flag
 date_f:     ds.b 1      						;date change flag
 equal_f	    ds.b 1	    						;equal flag		
-check:		ds.b 1	   							;previous switch value to compare with current switch value
-switch_f:	ds.b 1	    						;switch pressed flag (1 if switch is pressed)
-flag:		ds.b 1								;User MUST flip a switch when set to 1, otherwise program doesn't wait for it 
+check:		ds.b 1	   							  ;previous switch value to compare with current switch value
+switch_f:	ds.b 1	    						  ;switch pressed flag (1 if switch is pressed)
+flag:		ds.b 1								      ;User MUST flip a switch when set to 1, otherwise program doesn't wait for it 
 
 ;temporary variables
 command:    ds.b 1
@@ -7386,10 +7386,28 @@ sound_f:	ds.b  1
 gens1:		ds.b  1
 gens2:		ds.b  1
 gens3:		ds.b  1
-gens1_coal: ds.b  1 							;generator coal 
-gens2_coal: ds.b  1
-gens3_coal:	ds.b  1
-on_off:		ds.b  1								;Determines which generators are on or off (values 0-7) 
+;generator coal by percentage
+; 6500 lower nibble 369 (100 loops) upper nib 240 Mil
+;  ------           369 (10 loops)   24  Mil
+;                   369 (1 loop)  2.4 Mil
+
+; 6500 lower nibble 738
+
+; 6500 lower nibble 1108
+gc11     ds.w   1 ; upper
+gc12     ds.w   1 ; lower
+gc21     ds.w   1
+gc22     ds.w   1
+gc31     ds.w   1
+gc32     ds.w   1
+
+
+gens1_coal: ds.b  1 							;generator coal first spot   Upper (240 mil/% at 1%)                                   ;generator coal second spot  Lower
+gens2_coal: ds.b  1               ;generator coal   (4.8 mil/% at 100%) (480 mil/% at 1%) (% times 4.8)
+gens3_coal:	ds.b  1               ;generator coal (720 mil/% at 1%)
+
+on_off:		  ds.b  1								;Determines which generators are on or off (values 0-7) 
+coalfill_f  ds.b  1               ;coal fill flag (if successful then start filling coal
 
 ;LCD Variables
 my_LCD: SECTION
@@ -7539,48 +7557,49 @@ SRTMSG1:		BRCLR 	start_f, #1, SRTMSG1
 SRTMSG2:	    BRCLR 	start_f, #1, SRTMSG2
 			
 ;Show default Date and TIme			
-				jsr 	date_str				;show the default time
+				jsr 	date_str				    ;show the default time
 				ldd 	#disp									     
 				jsr 	display_string
 				MOVW 	#0, seloff			
 				jsr 	Date_Change	     		;jump to date change subroutine
-      			MOVB 	#0, clearv
-				jsr 	Time_Change				;jump to time change subroutine
-      			MOVB 	#0, clearv
+      	MOVB 	#0, clearv
+				jsr 	Time_Change				  ;jump to time change subroutine
+      	MOVB 	#0, clearv
 
 ;---------------------PROGRAM BODY------------------------------------------------						
-      			jsr 	User_name				;show default username screen				
-				jsr 	user_chng	    		;Display users name inputs						
-				jsr 	Default_PW				;show default password screen				
-				bra 	skip            		;skip the re_enter password subroutine				
-no_match:		jsr 	Default_RE_PW   		;show default "re_enter password" screen			
-skip:			jsr 	PW_Creation	    		;Display users password inputs			
-				jsr 	Pass_wordV				;default verify password screen			
-				jsr 	PW_Verify				;Re_type password to verify			
-				jsr 	compare_PW			
-				brclr 	equal_f,#1, no_match			
-				jsr 	prompt					;Tell user to turn on each generator and set power output to max         		
+      		jsr 	User_name				  ;show default username screen				
+				  jsr 	user_chng	    		;Display users name inputs						
+				  jsr 	Default_PW				;show default password screen				
+				  bra 	skip            	;skip the re_enter password subroutine				
+no_match:	jsr 	Default_RE_PW   	;show default "re_enter password" screen			
+skip:			jsr 	PW_Creation	    	;Display users password inputs			
+				  jsr 	Pass_wordV				;default verify password screen			
+				  jsr 	PW_Verify				  ;Re_type password to verify			
+				  jsr 	compare_PW			
+				  brclr 	equal_f,#1, no_match			
+				  jsr 	prompt					  ;Tell user to turn on each generator and set power output to max         		
 				
-							
-				jsr 	MENU					; Shows MW output and time		
-				jsr 	Cont_Men			    ; Control Menu that shows generators
+MainMenu:                   							
+				  jsr 	MENU					    ; Shows MW output and time		
+				  jsr 	Cont_Men			    ; Control Menu that shows generators
 				
 
 				
 			    ;- Reset Stepper Values -;
-				jsr		Coal_S
-				jsr		Song_Start
+				  jsr		Coal_S
+				  jsr		Song_Start
 
-				;-Testing Fill Process -;
+				  ;-Testing Fill Process -;
 FILL:
-				jsr		CoalFiller
+				  jsr		CoalFiller
 			    bra FILL
 				
 				
 
 
 ;------------Re_type password to verify--------------------------------------------
-PW_Verify:	    jsr	    scan		   		    ;check keypad input
+PW_Verify:	    
+          jsr	    scan		   		    ;check keypad input
 			    jsr	    Password_verify 	    ;manipulates keypad input and provides a PW output
 			    jsr	    PW_Verify_String	    ;store input into variables
 			    ldd	    #disp
@@ -7591,11 +7610,13 @@ PW_Verify:	    jsr	    scan		   		    ;check keypad input
 			    rts			
 	      	   
 ;------------PASSWORD ACCEPTED DEFAULT STRING--------------------------------------
-prompt:		    jsr	    accepted
+prompt:		    
+          jsr	    accepted
 			    ldd	    #disp
 			    jsr	    display_string
-          		MOVB    #0,start_f              ;to stay in loop in next isntruction
-RSRTMSG2:		BRCLR	start_f, #1, RSRTMSG2   ;display try again message for 3 seconds				    
+          MOVB    #0,start_f              ;to stay in loop in next isntruction
+RSRTMSG2:		
+          BRCLR	start_f, #1, RSRTMSG2   ;display try again message for 3 seconds				    
 			    rts	      			
 
 	       

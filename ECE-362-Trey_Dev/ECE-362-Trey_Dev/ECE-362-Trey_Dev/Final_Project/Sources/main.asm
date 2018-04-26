@@ -69,9 +69,9 @@ start_f:    ds.b 1	    						;start flag
 enter_f:    ds.b 1	    						;enter flag
 date_f:     ds.b 1      						;date change flag
 equal_f	    ds.b 1	    						;equal flag		
-check:		ds.b 1	   							;previous switch value to compare with current switch value
-switch_f:	ds.b 1	    						;switch pressed flag (1 if switch is pressed)
-flag:		ds.b 1								;User MUST flip a switch when set to 1, otherwise program doesn't wait for it 
+check:		ds.b 1	   							  ;previous switch value to compare with current switch value
+switch_f:	ds.b 1	    						  ;switch pressed flag (1 if switch is pressed)
+flag:		ds.b 1								      ;User MUST flip a switch when set to 1, otherwise program doesn't wait for it 
 
 ;temporary variables
 command:    ds.b 1
@@ -94,10 +94,28 @@ sound_f:	ds.b  1
 gens1:		ds.b  1
 gens2:		ds.b  1
 gens3:		ds.b  1
-gens1_coal: ds.b  1 							;generator coal 
-gens2_coal: ds.b  1
-gens3_coal:	ds.b  1
-on_off:		ds.b  1								;Determines which generators are on or off (values 0-7) 
+;generator coal by percentage
+; 65000 lower nibble  3692  240 Mil
+;  ------             369  24  Mil
+;                     37  2.4 Mil
+
+; 65000 lower nibble 738
+
+; 65000 lower nibble 1108
+gc11     ds.w   1 ; upper
+gc12     ds.w   1 ; lower
+gc21     ds.w   1
+gc22     ds.w   1
+gc31     ds.w   1
+gc32     ds.w   1
+
+
+gens1_coal: ds.b  1 							;generator coal first spot   Upper (240 mil/% at 1%)                                   ;generator coal second spot  Lower
+gens2_coal: ds.b  1               ;generator coal   (4.8 mil/% at 100%) (480 mil/% at 1%) (% times 4.8)
+gens3_coal:	ds.b  1               ;generator coal (720 mil/% at 1%)
+
+on_off:		  ds.b  1								;Determines which generators are on or off (values 0-7) 
+coalfill_f  ds.b  1               ;coal fill flag (if successful then start filling coal
 
 ;LCD Variables
 my_LCD: SECTION
@@ -123,9 +141,9 @@ _Startup:
 				CLI
 			
 			
-	    		MOVB  	#$F0,port_u_ddr   		;init bits 4-7 of hexpad as outputs    
-	    		MOVB  	#$0F,PER          		;enable pull_enable register for hex
-	    		MOVB  	#$FF,PSR          		;init hexpad input bits 0-3 as 
+	    	MOVB  	#$F0,port_u_ddr   		;init bits 4-7 of hexpad as outputs    
+	    	MOVB  	#$0F,PER          		;enable pull_enable register for hex
+	      MOVB  	#$FF,PSR          		;init hexpad input bits 0-3 as 
 			
 				MOVB  	#0, start_f				;Make the start flag 0
 				MOVB  	#$20, port_t_ddr
@@ -143,13 +161,14 @@ _Startup:
 				MOVW  	#0, start_c
 				MOVB  	#0, clearv
 				MOVW  	#0, cursor
-				MOVB	#0, check				;initialize previous switch value to 0
-				movb	#1, flag	
-				movb	#0, em_v
-				movb	#$1E,port_p_ddr
-				movb	#0, stepper_r
-				movw	#0, stepper_c
-				movb	#0, stepper_s
+				MOVB	  #0, check				;initialize previous switch value to 0
+				movb	  #1, flag	
+				movb	  #0, em_v
+				movb	  #$1E,port_p_ddr
+				movb	  #0, stepper_r
+				movw	  #0, stepper_c
+				movb	  #0, stepper_s
+				movw    #6500, 
 				
 				jsr	  	init_LCD            	;call init_LCD
 			
@@ -165,7 +184,8 @@ _Startup:
 				ldab 	#1       
 				addb 	#$30        			;Add value to make it ASCII
 				ldx 	#0          			;Start with zero and index up to 8
-date_res:		stab 	date,x
+date_res:		
+        stab 	date,x
 				inx
 				cpx 	#8          			;only want the 8th index
 				bne 	date_res
@@ -174,17 +194,18 @@ date_res:		stab 	date,x
 				ldab 	#1       
 				addb 	#$30        			;Add value to make it ASCII
 				ldx 	#0          			;Start with zero and index up to 8
-time_res:		stab 	time, x
+time_res:		
+        stab 	time, x
 				inx
 				cpx 	#4          			;only want the 4th index
 				bne 	time_res
 ;initialize name variables to default space values
-      			ldab 	#$20        			;ascii space value
-      			ldx 	#0          			;initialize x
+      	ldab 	#$20        			;ascii space value
+      	ldx 	#0          			;initialize x
 name_res:  		    
-      			stab 	name,x      			;store ascii value into each memory location            
-      			inx
-      			cpx 	#16         			;check if all locations have been stored
+      	stab 	name,x      			;store ascii value into each memory location            
+      	inx
+      	cpx 	#16         			;check if all locations have been stored
 				bne 	name_res 		 		
 						
 				ldx 	#0
@@ -192,23 +213,26 @@ name_res:
 ;initialize pass variables to default space values
 				ldab	#$20	     			;ascii space value
 				ldx		#0	         			;initialize x
-pass_res:		stab	pass,x
+pass_res:		
+        stab	pass,x
 				inx
 				cpx   	#16
 				bne		pass_res     			;branch until PW initialized to all spaces
 ;initialize pass verification variables to default space values			
 				ldab	#$20	     			;ascii space value
 				ldx		#0	          	 		;initialize x
-passv_res:		stab	passv,x
+passv_res:		
+        stab	passv,x
 				inx
 				cpx   	#16
 				bne		passv_res     	  ;branch until PW initialized to all spaces
 ;initialize (Re_Enter) name variables to default space values
-      			ldab 	#$20        			;ascii space value
-      			ldx 	#0          			;initialize x
-name_resv:  	stab 	namev,x      			;store ascii value into each memory location            
-      			inx
-      			cpx 	#16         			;check if all locations have been stored
+      	ldab 	#$20        			;ascii space value
+      	ldx 	#0          			;initialize x
+name_resv:  	
+        stab 	namev,x      			;store ascii value into each memory location            
+      	inx
+      	cpx 	#16         			;check if all locations have been stored
 				bne 	name_resv 		 		
 				
 			
@@ -247,48 +271,49 @@ SRTMSG1:		BRCLR 	start_f, #1, SRTMSG1
 SRTMSG2:	    BRCLR 	start_f, #1, SRTMSG2
 			
 ;Show default Date and TIme			
-				jsr 	date_str				;show the default time
+				jsr 	date_str				    ;show the default time
 				ldd 	#disp									     
 				jsr 	display_string
 				MOVW 	#0, seloff			
 				jsr 	Date_Change	     		;jump to date change subroutine
-      			MOVB 	#0, clearv
-				jsr 	Time_Change				;jump to time change subroutine
-      			MOVB 	#0, clearv
+      	MOVB 	#0, clearv
+				jsr 	Time_Change				  ;jump to time change subroutine
+      	MOVB 	#0, clearv
 
 ;---------------------PROGRAM BODY------------------------------------------------						
-      			jsr 	User_name				;show default username screen				
-				jsr 	user_chng	    		;Display users name inputs						
-				jsr 	Default_PW				;show default password screen				
-				bra 	skip            		;skip the re_enter password subroutine				
-no_match:		jsr 	Default_RE_PW   		;show default "re_enter password" screen			
-skip:			jsr 	PW_Creation	    		;Display users password inputs			
-				jsr 	Pass_wordV				;default verify password screen			
-				jsr 	PW_Verify				;Re_type password to verify			
-				jsr 	compare_PW			
-				brclr 	equal_f,#1, no_match			
-				jsr 	prompt					;Tell user to turn on each generator and set power output to max         		
+      		jsr 	User_name				  ;show default username screen				
+				  jsr 	user_chng	    		;Display users name inputs						
+				  jsr 	Default_PW				;show default password screen				
+				  bra 	skip            	;skip the re_enter password subroutine				
+no_match:	jsr 	Default_RE_PW   	;show default "re_enter password" screen			
+skip:			jsr 	PW_Creation	    	;Display users password inputs			
+				  jsr 	Pass_wordV				;default verify password screen			
+				  jsr 	PW_Verify				  ;Re_type password to verify			
+				  jsr 	compare_PW			
+				  brclr 	equal_f,#1, no_match			
+				  jsr 	prompt					  ;Tell user to turn on each generator and set power output to max         		
 				
-							
-				jsr 	MENU					; Shows MW output and time		
-				jsr 	Cont_Men			    ; Control Menu that shows generators
+MainMenu:                   							
+				  jsr 	MENU					    ; Shows MW output and time		
+				  jsr 	Cont_Men			    ; Control Menu that shows generators
 				
 
 				
 			    ;- Reset Stepper Values -;
-				jsr		Coal_S
-				jsr		Song_Start
+				  jsr		Coal_S
+				  jsr		Song_Start
 
-				;-Testing Fill Process -;
+				  ;-Testing Fill Process -;
 FILL:
-				jsr		CoalFiller
+				  jsr		CoalFiller
 			    bra FILL
 				
 				
 
 
 ;------------Re_type password to verify--------------------------------------------
-PW_Verify:	    jsr	    scan		   		    ;check keypad input
+PW_Verify:	    
+          jsr	    scan		   		    ;check keypad input
 			    jsr	    Password_verify 	    ;manipulates keypad input and provides a PW output
 			    jsr	    PW_Verify_String	    ;store input into variables
 			    ldd	    #disp
@@ -299,11 +324,13 @@ PW_Verify:	    jsr	    scan		   		    ;check keypad input
 			    rts			
 	      	   
 ;------------PASSWORD ACCEPTED DEFAULT STRING--------------------------------------
-prompt:		    jsr	    accepted
+prompt:		    
+          jsr	    accepted
 			    ldd	    #disp
 			    jsr	    display_string
-          		MOVB    #0,start_f              ;to stay in loop in next isntruction
-RSRTMSG2:		BRCLR	start_f, #1, RSRTMSG2   ;display try again message for 3 seconds				    
+          MOVB    #0,start_f              ;to stay in loop in next isntruction
+RSRTMSG2:		
+          BRCLR	start_f, #1, RSRTMSG2   ;display try again message for 3 seconds				    
 			    rts	      			
 
 	       

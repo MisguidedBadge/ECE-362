@@ -26,7 +26,7 @@ Push:	Section
 		bra  Generator3
 		
 Generator1:
-;If generator 1 then 
+;If generator 1 then check if the generator switch is flipped
 
 
 Generator2:

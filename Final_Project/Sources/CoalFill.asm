@@ -20,7 +20,7 @@ Coal_S:
 			  movb	#0, stepper_r
 			  movb	#1, stepper_s
 			  movw	#0, stepper_c
-			  movw	#500, stepper_num
+			  movw	#800, stepper_num
 			  movb  #0, stepper_it
 			  rts
 Fill_Coal_S:
@@ -44,6 +44,6 @@ Fill_Coal:
 Coal_F:
 			  ;Set values to unuseable state for ignoring interupt
 			  movb	#0, stepper_s
-              movb	#1, stepper_r 
+        movb	#1, stepper_r 
 DONE:      
                rts
