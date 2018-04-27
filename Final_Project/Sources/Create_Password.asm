@@ -1,10 +1,10 @@
         XDEF    PW_Creation
         XREF    Password_start,PW_String,disp,display_string,chng_pass_str
-        XREF    enter_f,cursor,scan,syst_set_f,control_reset,command
+        XREF    enter_f,cursor,scan,syst_set_f,control_reset,command,go_home
 
 PW_Creation:
               
-          		jsr	    scan		   		          ;check keypad input
+          jsr	    scan		   		          ;check keypad input
 			    jsr	    Password_start 		      ;manipulates keypad input and provides a PW output
 			    brset   syst_set_f,#1,Chng_PW_Str           ;branch if system settings is open
 			    jsr	    PW_String			          ;store input into variables
@@ -15,7 +15,8 @@ skip:
 			    ldd	    #disp
 			    jsr	    display_string		      ;display input (password)
 			    
-;--------------check if a or b pressed-------------------------------------
+;--------------check if a or b pressed or if go home flag is set-------------------------------------
+			brset	go_home,#1,reset_pass_passv2
             	ldab  command             ;skip below code if a or b is pressed
             	cmpb  #10
             	beq   reset_pass_passv2

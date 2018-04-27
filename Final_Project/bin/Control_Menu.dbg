@@ -1,7 +1,7 @@
 	
 	XDEF GenSel
 	
-	XREF command, seloff, enter_f, prev_val, gens1, gens2, gens3, clearv
+	XREF command, seloff, enter_f, prev_val, gens1, gens2, gens3, clearv, Push, port_p
 MY_EXTENDED_ROM: SECTION
 numbers:    dc.b    0, 1, 2, 3, 4, 5, 6, 7, 8, 9
 
@@ -27,15 +27,15 @@ GenSel:
 
 
             ldab command    ; load the register with the value of command
+            ;
             cmpb prev_val
             lbeq  DONE
             cmpb #6         ; Right
             lbeq  R_num
             cmpb #4         ; Left
             lbeq  L_num
-            BRCLR clearv, #1, DONE
-            cmpb #15
-            lbeq  F_key  
+            ;BRCLR clearv, #1, DONE
+            BRCLR port_p, #$FF, PB  
             bra  DONE		; Jump to Done (No change) 
 
 ;-------------Shift Number Place Right--------------------------;
@@ -57,8 +57,10 @@ L_num:
             bra SEL
             
 ;-------------Exit the Sequence--------------------------------;             
-F_key:      movb #1,enter_f   ;set zero flag for enter_f          
-            bra DONE
+;F_key:      movb #1,enter_f   ;set zero flag for enter_f          
+;            bra DONE
+PB:         jsr  Push
+            bra  DONE
 
 
 l_res: 	ldx #2				  ;reset when too far left
@@ -100,7 +102,7 @@ Sel2:
 					
 DONE:		
 		MOVB command, prev_val 
-		MOVB #0, command
+		;MOVB #0, command
 		
 		
 		puly

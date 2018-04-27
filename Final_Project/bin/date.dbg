@@ -1,7 +1,7 @@
 	
 	XDEF Date_Start
 	
-	XREF prev_val, disp, command, date, seloff, enter_f, clearv
+	XREF prev_val, disp, command, date, seloff, enter_f, clearv,syst_set_f
 MY_EXTENDED_ROM: SECTION
 numbers:    dc.b    0, 1, 2, 3, 4, 5, 6, 7, 8, 9
 
@@ -107,13 +107,14 @@ r_res: 		ldx #0			; reset to the left most value
 
             
 ;-------------DONE SEQUENCE------------------------------------;            
-DONE:      
-			    MOVB command, prev_val 
-			    MOVB #0, command
-		
+DONE:      		brset	syst_set_f,#1,skip
+			        MOVB command, prev_val 
+			        MOVB #0, command
+skip:	
 		
 		      puly
 		      pulx
 		      puld	
            rts
+
 

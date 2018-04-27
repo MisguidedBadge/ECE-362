@@ -19,10 +19,15 @@ Re_Username:
     		beq     dec_alph    	;decrement alphabet
     		cmpb    #4
     		beq     L_curs      	;move cursor left on LCD
-    		cmpb    #15
-    	    beq     F_key    
-			bra 	leave	  		;branch if no option above selected
-				
+    		cmpb   #15
+    	    lbeq    F_key
+    	    cmpb	#14			;set ascii value to space
+    	    beq	   erase	    
+			lbra    leave	  ;branch if no option above selected
+			
+erase:		ldx	  cursor
+			ldab  #$20		  ;load into a ascii space value
+			bra	  leave
 ;changes space on LCD to 'A' to increment from there    
 inc_alph:	ldx     cursor   		;load current cursor location
             ldab    namev,x   		;load alphabet letters

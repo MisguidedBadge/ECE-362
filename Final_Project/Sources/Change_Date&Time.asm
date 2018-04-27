@@ -1,4 +1,4 @@
-     XDEF  Change_date_time
+    XDEF  Change_date_time
     XREF  date_str,disp,display_string,seloff,Date_Change,clearv
     XREF  Time_Change            
 

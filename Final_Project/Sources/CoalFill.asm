@@ -1,4 +1,4 @@
-	XDEF  Fill_Coal,Coal_S
+	XDEF  Fill_Coal,Coal_S, Fill_Coal_S
 	
 	XREF  port_p, stepper_r, stepper_c, stepper_s, stepper_num, stepper_it
 	
@@ -39,7 +39,14 @@ Fill_Coal:
         STX  coal_place
         movb #0, stepper_r
         BRA  DONE
-              
+
+
+
+Fill_Coal_F:
+; This is the stage where the generator being filled is at 90% so the
+; System goes backwards
+         
+                      
 
 Coal_F:
 			  ;Set values to unuseable state for ignoring interupt

@@ -1,12 +1,11 @@
 
 	XDEF Startup_1, Startup_2, date_str,admin_u,menu_str,GenSelStr,admin_u,PW_String,PW_Verify_String
+	XDEF Fill_Error1, Fill_Error2, Fill_Error3, c_menu_str, chng_pass_str, generator,generators2,generators3, gens_off
+	XDEF Pass_changed, PW_Verify_String2, Pass_changed
 	XDEF re_enter,accepted,re_admin_u,match_a,admin_u2,match_p
-	XDEF generator,generators3,gens_off,generators2, c_menu_str,chng_pass_str,Pass_changed,PW_Verify_String2
 	
-	
-	XREF num, passv2
-	XREF disp, date, time, name, namev, gens1, gens2, gens3, pass, passv
-
+	XREF disp, date, time, name, namev, gens1, gens2, gens3, pass, passv,
+    XREF num, passv2
 	
 MY_EXTENDED_RAM: SECTION	
 
@@ -562,7 +561,7 @@ Fill_Error1:
            movb #' ',disp+31
            movb #0,  disp+32    ;string terminator, acts like '\0' 
 		   
-		   rts
+		       rts
 	
 Fill_Error2:   
 		   movb #'T',disp
@@ -599,7 +598,7 @@ Fill_Error2:
            movb #' ',disp+31
            movb #0,  disp+32    ;string terminator, acts like '\0' 
 		   
-		   rts		   			   	
+		       rts		   			   	
 
 Fill_Error3:   
 		   movb #'T',disp
@@ -636,8 +635,8 @@ Fill_Error3:
            movb #' ',disp+31
            movb #0,  disp+32    ;string terminator, acts like '\0' 
 		   
-		   rts
-		   
+		       rts
+		       
 ;------------------------Generator on-----------------------------		   	
 generator: movb #'G',disp
            movb #'e',disp+1
@@ -922,4 +921,6 @@ PW_Verify_String2:    movb #'V',disp
            		      movb passv2+15,disp+31
            		      movb #0,disp+32
            
-           		      rts           					    	   			   			   			   			   			   	
+           		      rts           					    	   			   	
+		     
+		   			   			   			   	

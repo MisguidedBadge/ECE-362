@@ -1,6 +1,6 @@
- 		XDEF	Change_pass
+        XDEF	Change_pass
 		XREF	Default_PW,Default_RE_PW,PW_Creation,Pass_wordV2,PW_Verify,compare_PW2,chng_pass_display				
-		XREF	equal_f,Pass_changed,password_changed_display,command,PW_Verify2,control_reset			
+		XREF	equal_f,Pass_changed,password_changed_display,command,PW_Verify2,control_reset,go_home			
 Change_pass:
             	pshd
 				jsr		chng_pass_display		;default change password display				
@@ -10,6 +10,7 @@ skip:		  	jsr 	PW_Creation	    		;Display users password inputs
 
 ;---------------check if a or b was pressed in PW_Creation so it doesn't try and verify password
 ;pass and passv2 variables should have been cleared if a or be was pressed
+				brset	go_home,#1,leave
 				ldab	command
 				cmpb	#11
 				beq		leave	  				  ;B was entered so leave
