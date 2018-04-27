@@ -17,7 +17,7 @@
             XDEF date,date_f, time,enter_f, prev_val, seloff;, User_name
             XDEF sound_f,on_off,choose
             XDEF gens1, gens2, gens3			;generator selection
-            XDEF pass, passv,passflag
+            XDEF pass, passv,passflag, num, passv2
             XDEF User_name,name,namev,cursor, equal_f,check,switch_f 
             XDEF PW_Verify, port_p, stepper_r, stepper_s
             
@@ -100,12 +100,15 @@ gens1_coal: ds.b  1 							;generator coal percent value
 gens2_coal: ds.b  1
 gens3_coal:	ds.b  1
 on_off:		ds.b  	1							;Determines which generators are on or off (values 0-7) 
+num			ds.b	3							;Stores which generators are turned on
+
 
 ;LCD Variables
 my_LCD: SECTION
 ;Pass  Variables
 pass:		ds.b	16
 passv:		ds.b	16
+passv2:		ds.b	16
 ;date variables stored in mem array
 cursor:     ds.w  	1							;gives cursor location on LCD			   
 ;Stepper Motor
@@ -145,16 +148,19 @@ _Startup:
 				MOVW  	#0, start_c
 				MOVB  	#0, clearv
 				MOVW  	#0, cursor
-				MOVB	#0, check				;initialize previous switch value to 0
-				MOVB	#1, flag	
-				MOVB	#0, em_v
-				MOVB	#$1E,port_p_ddr
-				MOVB	#0, stepper_r
-				MOVW	#0, stepper_c
-				MOVB	#0, stepper_s
-				movb	#0, choose				;initialize choose to any value
-				movb	#0,passflag
-				movb	#0,homeflag
+				MOVB	  #0, check				;initialize previous switch value to 0
+				MOVB	  #1, flag	
+				MOVB  	#0, em_v
+				MOVB	  #$1E,port_p_ddr
+				MOVB	  #0, stepper_r
+				MOVW	  #0, stepper_c
+				MOVB	  #0, stepper_s
+				movb	  #0, choose				;initialize choose to any value
+				movb	  #0,passflag
+				movb  	#0,homeflag
+				movb  	#0,num					;initialize num
+				movb	  #0,syst_set_f			;initialize system set flag
+				movb	  #0,screen_sel			;initialize screen select
 				jsr	  	init_LCD            	;call init_LCD
 			
 
@@ -259,53 +265,77 @@ SRTMSG2:	    BRCLR 	start_f, #1, SRTMSG2
       			MOVB 	#0, clearv
 
 ;---------------------PROGRAM BODY------------------------------------------------						
-      			jsr 	User_name				;show default username screen				
-				jsr 	user_chng	    		;Display users name inputs						
-				jsr 	Default_PW				;show default password screen				
-				bra 	skip            		;skip the re_enter password subroutine				
-no_match:		jsr 	Default_RE_PW   		;show default "re_enter password" screen			
-skip:			jsr 	PW_Creation	    		;Display users password inputs			
-				jsr 	Pass_wordV				;default verify password screen			
-				jsr 	PW_Verify				;Re_type password to verify			
-				jsr 	compare_PW			
-				brclr 	equal_f,#1, no_match
+      	    jsr 	User_name				;show default username screen				
+				    jsr 	user_chng	    		;Display users name inputs						
+				    jsr 	Default_PW				;show default password screen				
+				    bra 	skip            		;skip the re_enter password subroutine				
+no_match:	  jsr 	Default_RE_PW   		;show default "re_enter password" screen			
+skip:			  jsr 	PW_Creation	    		;Display users password inputs			
+				    jsr 	Pass_wordV				;default verify password screen			
+			  	  jsr 	PW_Verify				;Re_type password to verify			
+				    jsr 	compare_PW			
+			  	  brclr equal_f,#1, no_match
 							
-				jsr 	prompt					;Tell user to turn on each generator and set power output to max         		
+				    		
 				
 							
-				jsr 	MENU					;Shows MW output and time		
-				jsr 	Cont_Men			    ;Control Menu that shows generators
+            jsr 	prompt					;Tell user to turn on each generator and set power output to max         													
+				    jsr 	MENU					  ;Shows MW output and time
 				
+				    jsr		loading_c_menu		
+				    jsr 	Cont_Men			  ;Control Menu that navigates through generators,change date/time, and change password		
 
 				
 			    ;- Reset Stepper Values -;
-				jsr		Coal_S
-				jsr		Song_Start
+				  jsr		Coal_S
+				  jsr		Song_Start
 
 				;-Testing Fill Process -;
 FILL:
-				jsr		CoalFiller
+				  jsr		CoalFiller
 			    bra 	FILL
 				
 				
 
-
 ;------------Re_type password to verify--------------------------------------------
-PW_Verify:	    jsr	    scan		   		    ;check keypad input
-			    jsr	    Password_verify 	    ;manipulates keypad input and provides a PW output
-			    jsr	    PW_Verify_String	    ;store input into variables
-			    ldd	    #disp
-			    jsr	    display_string		    ;display input (password)
-			    BRCLR	enter_f, #1, PW_Verify	;branch away when f is pressed
-			    movb	#0,enter_f			    ;reset f flag
-			    movw	#0,cursor			    ;reset cursor location
-			    rts			
+PW_Verify:		  jsr	    scan		   		    ;check keypad input
+			      jsr	    Password_verify 	    ;manipulates keypad input and provides a PW output
+			      jsr	    PW_Verify_String	    ;store input into variables
+			      ldd	    #disp
+			      jsr	    display_string		    ;display input (password)
+			      BRCLR	enter_f, #1, PW_Verify	;branch away when f is pressed
+			      movb	#0,enter_f			    ;reset f flag
+			      movw	#0,cursor			    ;reset cursor location
+			      
+			      rts
+;-----------Re_type passwod to verify AGAIN, then store it into passv if successful------
+ PW_Verify2:  jsr   scan
+              jsr	Password_verify2		  	;manipulates user inputs
+              jsr   PW_Verify_String2
+              ldd   #disp
+              jsr   display_string
+;--------------check if a or b pressed-------------------------------------
+                ldab  command             ;skip below code if a or b is pressed
+                cmpb  #10
+            	beq   reset_pass_passv2
+            	cmpb  #11
+            	bne	  skip3
+ 
+reset_pass_passv2:
+			   jsr		control_reset
+			   bra		skip2              
+skip3:         brclr 	enter_f,#1,PW_Verify2
+skip2:
+               movb  #0,enter_f
+               movb  #0,cursor
+              
+              rts	
 	      	   
 ;------------PASSWORD ACCEPTED DEFAULT STRING--------------------------------------
-prompt:		    jsr	    accepted
-			    ldd	    #disp
-			    jsr	    display_string
-          		MOVB    #0,start_f              ;to stay in loop in next isntruction
+prompt:		  	jsr	    accepted
+			  	ldd	    #disp
+			  	jsr	    display_string
+          	  	MOVB    #0,start_f              ;to stay in loop in next isntruction
 RSRTMSG2:		BRCLR	start_f, #1, RSRTMSG2   ;display try again message for 3 seconds				    
 			    rts	      			
 

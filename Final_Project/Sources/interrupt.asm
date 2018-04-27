@@ -47,7 +47,7 @@ MIDDLE:
 ;Check if sound is ready to play from sound.asm
 ;
 ;			
-		BRSET sound_rdy, #1, SOUND_RT				;Sound routine to run if flag set
+		BRSET sound_rdy, #1, DONE_SOUND				;Sound routine to run if flag set
 
 DONE_SOUND:
 
@@ -56,13 +56,13 @@ DONE_SOUND:
 ;Check if stepper motor is ready to go from CoalFill.asm
 ;
 ;			
-		BRSET stepper_s, #1,Stepper					;Stepper routine to run if flag set
+		BRCLR stepper_s, #1,DONE_STEPPER					;Stepper routine to run if flag set
 
 DONE_STEPPER:
 		
 		
  
-		lbra exit_ISR
+		bra exit_ISR
  ;----------------------END MIDDLE SEQUENCE-------------------------------;
  
 

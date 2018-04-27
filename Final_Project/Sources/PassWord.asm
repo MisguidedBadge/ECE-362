@@ -20,8 +20,14 @@ Password_start:
     		cmpb    #4
     		beq     L_curs      ;move cursor left on LCD
     		cmpb   #15
-    	    beq    F_key    
-			bra    leave	  ;branch if no option above selected
+    	    lbeq    F_key
+    	    cmpb	#14			;set ascii value to space
+    	    beq	   erase	    
+			lbra    leave	  ;branch if no option above selected
+			
+erase:		ldx	  cursor
+			ldab  #$20		  ;load into a ascii space value
+			bra	  leave							
 				
 ;changes space on LCD to 'A' to increment from there    
 inc_alph:	ldx   cursor   ;load current cursor location
@@ -77,9 +83,9 @@ boundary2:  ldy		#15
 F_key:		movb	#1,enter_f  ;User Pressed F to leave
 		
     
-leave:      stab	pass,x
-	      	clr		command	    ;reset command, or else values will keep changing    
-    	    puly
-    	    pulx
-   	      	puld
-    	    rts
+leave:    stab	pass,x
+	      ;clr		command	    ;reset command, or else values will keep changing    
+    	  puly
+    	  pulx
+   	      puld
+    	  rts
