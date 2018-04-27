@@ -1,6 +1,6 @@
 	XDEF  Fill_Coal,Coal_S, Fill_Coal_S
 	
-	XREF  port_p, stepper_r, stepper_c, stepper_s, stepper_num, stepper_it
+	XREF  port_p, stepper_r, stepper_c, stepper_s, stepper_num, stepper_it, step_f, amount
 	
 	
 MY_EXTENDED_ROM: SECTION
@@ -20,8 +20,10 @@ Coal_S:
 			  movb	#0, stepper_r
 			  movb	#1, stepper_s
 			  movw	#0, stepper_c
-			  movw	#800, stepper_num
+			  movw	#1200, stepper_num
 			  movb  #0, stepper_it
+			  movb	#0, step_f
+			  movw	#1000,amount
 			  rts
 Fill_Coal_S:
 			  LDX  #array 				;load with the first element address

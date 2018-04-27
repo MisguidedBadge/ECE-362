@@ -94,7 +94,8 @@ cont4:			movb	#4,on_off					;Generator 3 on
 ;-------------------------------ENTER ADMIN WHEN SWITCH PRESSED---------------------     
 change:			
             	ldaa  	port_t
-            	staa	check						;store new switch value	
+            	staa	check
+          									;store new switch value	
 		      	movb  	#1,switch_f     ;indicates a switch has been flipped
 		      	jsr		motor
 back2:		  	jsr		User_name2			;show default enter username screen						

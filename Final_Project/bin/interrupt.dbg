@@ -1,10 +1,10 @@
 
- 	Xdef    start_c, RTI_ISR,sound_c, stepper_c, stepper_it, stepper_num
+ 	Xdef    start_c, RTI_ISR,sound_c, stepper_c, stepper_it, stepper_num, emer
 	
 	
   XREF  on_off, Use_Coal, SOUND_RT, EM_SOUND, Stepper, PotRead
   Xref	SECOND, start_f, date_f, PlayTone, sound_f,sound_rdy,repass, em_v, EM_Song, stepper_r, stepper_s
-  XREF  syst_set_f, enter_f,LCD_timer2,LCD_timer1,go_home, blink_label, blink_flag
+  XREF  syst_set_f, enter_f,LCD_timer2,LCD_timer1,go_home, blink_label, blink_flag, emer
  
 
 
@@ -21,6 +21,11 @@ My_code:	section
 
 	
 RTI_ISR:
+
+				
+
+skip_ev:
+
 
 ;----------------------Start Sequence------------------------------------;
 ;Starting sequence delay sequence Procs twice in the program
@@ -58,7 +63,7 @@ leave_control_menu:
 skip:
     
     BRSET blink_flag,#1,Blink_label    
-    BRSET em_v, #1, EM_SOUNDc        
+    ;BRSET em_v, #1, EM_SOUNDc        
     BRSET start_f, #1, MIDDLE		;branch after 3 seconds
 	Ldx	start_c						;load count to x
 		inx								;increment count
@@ -126,8 +131,7 @@ Blink_label:
 		bra exit_start_ISR 
 
 
-EM_SOUNDc:
-		jsr EM_SOUND
+
 ;--------------------EXIT Interrupt---------------------------------------;		
 exit_start_ISR:
     stx start_c

@@ -1,3 +1,4 @@
+
     XDEF  PowScale,PotRead
 	
 	XREF read_pot, pot_value

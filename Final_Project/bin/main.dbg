@@ -7333,7 +7333,7 @@ mPMFDTMC_PMFDTMC11:                      equ        This_symb_has_been_depreciat
 
 
             XREF PW_Creation, compare_string , user_chng,Re_Username,re_admin_u, em_v,Fill_Coal,Coal_S, stepper_c, CoalFiller
-            XREF Fill_Coal_S, loading_c_menu, PW_Verify_String2, Password_verify2
+            XREF Fill_Coal_S, loading_c_menu, PW_Verify_String2, Password_verify2, EM_SOUND, step_f
             
             ; LCD References
 	         
@@ -7374,12 +7374,12 @@ equal_f	    ds.b 1	    						;equal flag
 check:		ds.b 1	   							;previous switch value to compare with current switch value
 switch_f:	ds.b 1	    						;switch pressed flag (1 if switch is pressed)
 flag:		ds.b 1								;User MUST flip a switch when set to 1, otherwise program doesn't wait for it 
-choose:	ds.b 1								;choose which generator to turn on (located in switch input)
+choose:		ds.b 1								;choose which generator to turn on (located in switch input)
 passflag:	ds.b 1								;for when re_entering password after first time verifying
 homeflag	ds.b 1								;so the program only displays 'loading home screen' the first time a switch is flipped, other times displays which generator(s) is/are turned on
 syst_set_f:	ds.b 1								;flag that indicates if system settings menu has been accessed. This will start a 10 second timer in rti if a,b, or f aren't pressed on hex pad
 screen_sel	ds.b 1								;flag that determines which screen the user is choosing (when pushing a or b)	when in control menu
-go_home	ds.b	1		
+go_home		ds.b 1		
 
 ;temporary variables
 command:    ds.b 1
@@ -7463,9 +7463,9 @@ _Startup:
 			
 			
 
-	    			MOVB  	#$F0,port_u_ddr   		;init bits 4-7 of hexpad as outputs    
-	    			MOVB  	#$0F,PER          		;enable pull_enable register for hex
-	    			MOVB  	#$FF,PSR          		;init hexpad input bits 0-3 as 
+	    		MOVB  	#$F0,port_u_ddr   		;init bits 4-7 of hexpad as outputs    
+	    		MOVB  	#$0F,PER          		;enable pull_enable register for hex
+	    		MOVB  	#$FF,PSR          		;init hexpad input bits 0-3 as 
 			
 				MOVB  	#0, start_f				;Make the start flag 0
 				MOVB  	#$28, port_t_ddr
@@ -7531,17 +7531,17 @@ _Startup:
 			ldab 	#1       
 			addb 	#$30        			;Add value to make it ASCII
 			ldx 	#0          			;Start with zero and index up to 8
-date_res:		stab 	date,x
+date_res:	stab 	date,x
 			inx
 			cpx 	#8          			;only want the 8th index
 			bne 	date_res
 			
 ;Set the Date variables to the default value of 11:11 EST per RobCo industry standards	
 			ldab 	#1       
-		      addb 	#$30        			;Add value to make it ASCII
+		    addb 	#$30        			;Add value to make it ASCII
 	      	ldx 	#0          			;Start with zero and index up to 8
-time_res:		stab 	time, x
-		      inx
+time_res:	stab 	time, x
+		    inx
 			cpx 	#4          			;only want the 4th index
 			bne 	time_res
 ;initialize name variables to default space values
@@ -7658,9 +7658,9 @@ skip:			  jsr 	PW_Creation	    	;Display users password inputs
 go_back:                   							
 				  clr   go_home
 				  jsr 	PotRead
-				  jsr 	MENU					    ; Shows MW output and time
+			      jsr 	MENU					    ; Shows MW output and time
 	
-	              jsr   loading_c_menu
+	  jsr   loading_c_menu
 CONMEN:	    	  jsr 	Cont_Men			    ; Control Menu that shows generators
 				  
                   
@@ -7674,6 +7674,7 @@ CONMEN:	    	  jsr 	Cont_Men			    ; Control Menu that shows generators
 				  jsr	Coal_S
 				  jsr   Fill_Coal_S
 				  jsr	Song_Start
+				  ;movb	#0,start_f
 				  bra   FILL
 CONMEN2:
                   brset go_home, #1, go_back
@@ -7683,8 +7684,12 @@ CONMEN2:
 
 				;-Testing Fill Process -;
 FILL:
-			jsr	CoalFiller
-			bra 	FILL
+				  jsr	CoalFiller
+
+				  brclr	step_f,#1,FILL
+
+				 		
+				  bra 	go_back
 				
 				
 ;---------------------MAIN CODE BODY------------------------------------------------
@@ -7695,13 +7700,13 @@ FILL:
 
 
 ;------------Re_type password to verify--------------------------------------------
-PW_Verify:		  jsr	    scan		   		    ;check keypad input
-			  jsr	    Password_verify 	    ;manipulates keypad input and provides a PW output
-			  jsr	    PW_Verify_String	    ;store input into variables
-			  ldd	    #disp
-			  jsr	    display_string		    ;display input (password)
-			  BRCLR	enter_f, #1, PW_Verify	;branch away when f is pressed
-			  movb	#0,enter_f			    ;reset f flag
+PW_Verify:		 jsr	    scan		   		    ;check keypad input
+			  	 jsr	    Password_verify 	    ;manipulates keypad input and provides a PW output
+			  	 jsr	    PW_Verify_String	    ;store input into variables
+			  	 ldd	    #disp
+			     jsr	    display_string		    ;display input (password)
+			  	 BRCLR	enter_f, #1, PW_Verify	;branch away when f is pressed
+			  	movb	#0,enter_f			    ;reset f flag
 			  movw	#0,cursor			    ;reset cursor location
 			      
 			  rts
@@ -7713,12 +7718,12 @@ PW_Verify:		  jsr	    scan		   		    ;check keypad input
               jsr   display_string
 ;--------------check if a or b pressed-------------------------------------
 
-		    	brset	go_home,#1,reset_pass_passv2		
+		   	  brset	go_home,#1,reset_pass_passv2		
               ldab  command             ;skip below code if a or b is pressed
               cmpb  #10
 
-            	beq   reset_pass_passv2
-            	cmpb  #11
+              beq   reset_pass_passv2
+              cmpb  #11
             	bne	  skip3
  
 reset_pass_passv2:
