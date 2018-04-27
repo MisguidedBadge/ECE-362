@@ -13,17 +13,17 @@ EmergShut: SECTION
 Emergency:
 
 ;--------------------SHUT DOWN EVERYTHING------------------------;
-
+			
 			 	jsr		Song_Start
 			 	movb	#1, em_v
-			 ;	cli
+			  	cli
 			 ;	bra 	skip	
 NMatch:			 		
 ;Need to do password verification
-;no_match:		jsr 	Default_RE_PW   		;show default "re_enter password" screen			
+no_match:		jsr 	Default_RE_PW   		;show default "re_enter password" screen			
 ;skip:			jsr 	PW_Creation	    		;Display users password inputs			
 ;				jsr 	Pass_wordV				;default verify password screen			
 ;				jsr 	PW_Verify				;Re_type password to verify			
 ;				jsr 	compare_PW			
-;				brclr 	equal_f,#1, no_match			
-				rts
+				brclr 	equal_f,#1, no_match			
+				rti

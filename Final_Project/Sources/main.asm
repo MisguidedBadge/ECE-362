@@ -176,8 +176,8 @@ _Startup:
 	    			MOVB  	#$FF,PSR          		;init hexpad input bits 0-3 as 
 			
 				MOVB  	#0, start_f				;Make the start flag 0
-				MOVB  	#$20, port_t_ddr
-			
+				MOVB  	#$28, port_t_ddr
+			    movb	#%01000000,$1E
 ;-----------------Variable Reset----------------------------------------------------------;			
 				MOVB  	#0, sound_rdy
 				MOVB  	#0, enter_f
@@ -220,7 +220,7 @@ _Startup:
 
 				movb	#0,go_home 
 				movb	#0, on_off
-				
+				;movb	#$8, port_t
 
 				movb	#0,go_home
 				movb  #0,blink_flag		

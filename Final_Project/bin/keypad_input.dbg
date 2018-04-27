@@ -19,18 +19,15 @@ rescan:	      	staa  port_u  			;store the sequence, tells which row is being re
 			  
 ;*******************************************************
 ;PROMPTS the user to create a user  ID and PW			  
-			  	cmpb	#$21		;check if F (select) is pressed
+			  	cmpb	#$11		;check if F (select) is pressed
 			  	beq	prompt
 ;ERASES user inputs (replaces that cursor location with space value
 			  	cmpb  #$21    ;check if E (ERASE) is pressed
-			  	cmpb  #$41
 			  	beq   erase 
 ;**********************************************************			  
 			  	cmpb	#$18			;check if A selected. (navigate 'control menu' or 'system settings')
-			  	cmpb  #$28
 			  	beq	  	A_key
 			  	cmpb	#$12			;check if B selected. (navigate 'control menu' or 'system settings')
-			  	cmpb  #$22
 			  	beq		B_key
 		      	cmpb  	#$84       		;check if up (2)
 		      	beq   	up

@@ -1,6 +1,6 @@
             XDEF  scan_switch  
             XREF  resetpass,check,switch_f,Default_RE_Ad,compare_PW,start_f,enter_f,User_name2
-			XREF  match_a,display_string,disp,PW_Creation,equal_f,Re_Username,re_admin_u,user_chng2,num,homeflag,gens_off
+			XREF  match_a,display_string,disp,PW_Creation,equal_f,Re_Username,re_admin_u,user_chng2,num,homeflag,gens_off,motor
 			XREF  compare_Admin,port_t,Default_RE_PW,on_off,flag,choose,Default_PW,scan,cursor,loading,generator,generators3,generators2		
 ;switch_inputs, checks switch port basically
 ;switches are constantly checked
@@ -96,6 +96,7 @@ change:
             	ldaa  	port_t
             	staa	check						;store new switch value	
 		      	movb  	#1,switch_f     ;indicates a switch has been flipped
+		      	jsr		motor
 back2:		  	jsr		User_name2			;show default enter username screen						
 		     	bra		skip2
 ;-------------------------------USER ENTERED WRONG USERNAME---------------------------		     	
@@ -137,22 +138,22 @@ skip:			jsr 	PW_Creation	    			;Display users password inputs
 				lbra	skip5						;skip display generator screen first time thru the program
 gen_displays:	ldx		#0
 				ldab	port_t						;check which switches are on
+				andb	#%00000111
 				cmpb	#0
 				lbeq	no_gens
-				bitb	#14							;branch if bits 1,2 and 3 are low (0 is high)
-				beq		display_gen
-				bitb	#13							;branch if bits 0,2 and 3 are low (1 is high)
-				beq		display_gen
-				bitb	#12							;branch if bits 2 and 3 are low (0 and 1 are high)
-				beq		display_gens3
-				bitb	#11							;branch if bits 0,1, and 3 are low (2 is high)
-				beq		display_gen
-				bitb	#10							;branch if bits 1 and 3 are low (0 and 2 are high)		
-				beq		display_gens5
-				bitb	#$9							;branch if bits 3 and 0 are low (1 and 2 are high)
-				beq		display_gens6	
-				bitb	#$8							;branch if bit 3 is low (0-2 are high)
-				beq		display_gens7
+				ldab	port_t
+				cmpb	#15
+				lbeq		display_gens7
+				;brset	port_t,#$7,display_gens7							;branch if bit  is low (all are high)
+				brset	port_t,#$6,display_gens6
+				brset	port_t,#$5,display_gens5
+				brset	port_t,#$4,display_gen
+				brset	port_t,#$3,display_gens3				
+				brset	port_t,#$2,display_gen
+				brset	port_t,#$1,display_gen
+
+			
+
 
 									
 
@@ -165,8 +166,13 @@ display_gen:	ldx		#0
 				ldab	port_t						;load switches (generators turned on/off)
 				andb	#%00000111					;mask all bits except ones that correspond to generators
 				addb	#$30
+				cmpb	#$34
+				beq		sub4
 				stab	num,x						;store into first num space
-				jsr		generator					;A DISPLAY THAT DISPLAYS WHICH GENERATOR WAS FLIPPED ON
+				bra		gogo
+sub4:			subb	#1
+				stab	num,x
+gogo:			jsr		generator					;A DISPLAY THAT DISPLAYS WHICH GENERATOR WAS FLIPPED ON
 				ldd		#disp
 				jsr		display_string
 				movb	#0,start_f
