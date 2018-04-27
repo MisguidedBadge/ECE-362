@@ -1,9 +1,10 @@
+
  	Xdef    start_c, RTI_ISR,sound_c, stepper_c, stepper_it, stepper_num
 	
 	
   XREF  on_off, Use_Coal, SOUND_RT, EM_SOUND, Stepper, PotRead
   Xref	SECOND, start_f, date_f, PlayTone, sound_f,sound_rdy,repass, em_v, EM_Song, stepper_r, stepper_s
-  XREF  syst_set_f, enter_f,LCD_timer2,LCD_timer1,go_home
+  XREF  syst_set_f, enter_f,LCD_timer2,LCD_timer1,go_home, blink_label, blink_flag
  
 
 
@@ -52,26 +53,27 @@ leave_control_menu:
 	movb	#1,go_home			;set go_home flag so that control menu goes to homescreen
 ;----------------------AUSTIN TIMERS-------------------;
 
-	        
-skip:      
-    BRCLR em_v, #1, SKIP_EM
+	     
     
-    jsr EM_SOUND 
-
-SKIP_EM:
-  
-        
+skip:
+    
+    BRSET blink_flag,#1,Blink_label    
+    BRSET em_v, #1, EM_SOUNDc        
     BRSET start_f, #1, MIDDLE		;branch after 3 seconds
-		Ldx	start_c						;load count to x
+	Ldx	start_c						;load count to x
 		inx								;increment count
 		Cpx	#23438		                ;see if equal to 3 seconds 
-		lBne	exit_start_ISR				;
+		Bne	exit_start_ISR				;
 		BSET start_f, #1				;if 3 seconds then 
 		Ldx	#0		                  	;reset to 0 if 3 seconds
-		lbra exit_start_ISR
+		bra exit_start_ISR
+    
+   ; jsr EM_SOUND 
+
 
 		
 
+	
 
 
 
@@ -114,9 +116,18 @@ DONE_STEPPER:
  ;----------------------END MIDDLE SEQUENCE-------------------------------;
 
 					
+Blink_label:
+    ldx start_c
+    inx
+    cpx #3906               ;check if at .5 seconds
+		Bne	exit_start_ISR			;keep looping if not	
+		BSET start_f, #1			  
+		Ldx	#0		               
+		bra exit_start_ISR 
 
 
-
+EM_SOUNDc:
+		jsr EM_SOUND
 ;--------------------EXIT Interrupt---------------------------------------;		
 exit_start_ISR:
     stx start_c
@@ -128,3 +139,4 @@ exit_start_ISR:
 exit_ISR:   
     bset $37, #$80
 		rti
+		

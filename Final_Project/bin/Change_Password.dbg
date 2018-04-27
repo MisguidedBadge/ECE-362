@@ -1,12 +1,16 @@
-        XDEF	Change_pass
+
+		XDEF	Change_pass
 		XREF	Default_PW,Default_RE_PW,PW_Creation,Pass_wordV2,PW_Verify,compare_PW2,chng_pass_display				
-		XREF	equal_f,Pass_changed,password_changed_display,command,PW_Verify2,control_reset,go_home			
+		XREF	equal_f,Pass_changed,password_changed_display,command,PW_Verify2,control_reset,go_home,switch_f			
+
 Change_pass:
             	pshd
 				jsr		chng_pass_display		;default change password display				
 				bra 	skip            		;skip the re_enter password subroutine				
 no_match:		jsr 	Default_RE_PW   		;show default "re_enter password" screen			
 skip:		  	jsr 	PW_Creation	    		;Display users password inputs
+
+            brset switch_f,#1,leave
 
 ;---------------check if a or b was pressed in PW_Creation so it doesn't try and verify password
 ;pass and passv2 variables should have been cleared if a or be was pressed

@@ -1,13 +1,18 @@
         XDEF    PW_Creation
-        XREF    Password_start,PW_String,disp,display_string,chng_pass_str
-        XREF    enter_f,cursor,scan,syst_set_f,control_reset,command,go_home
+
+        XREF    Password_start,PW_String,disp,display_string,chng_pass_str,switch_f
+        XREF    enter_f,cursor,scan,syst_set_f,control_reset,command,go_home,scan_switch
 
 PW_Creation:
-              
-          jsr	    scan		   		          ;check keypad input
+          brclr   syst_set_f,#1,skip5     
+          jsr     scan_switch
+          brset   switch_f,#1,leave       ;may wanna change    
+skip5:    jsr	    scan		   		          ;check keypad input
 			    jsr	    Password_start 		      ;manipulates keypad input and provides a PW output
+			    brset   switch_f,#1,skip4
 			    brset   syst_set_f,#1,Chng_PW_Str           ;branch if system settings is open
-			    jsr	    PW_String			          ;store input into variables
+skip4:	  jsr	    PW_String			          ;store input into variables
+
 			    bra     skip                   ;skip changepassword screen
 Chng_PW_Str:
           		jsr     chng_pass_str			;holds 'pass' variables to change them

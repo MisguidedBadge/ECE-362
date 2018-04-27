@@ -7303,13 +7303,17 @@ mPMFDTMC_PMFDTMC11:                      equ        This_symb_has_been_depreciat
 
 
 ; export symbols
+
             XDEF Entry, _Startup, disp, start_f,flag
             XDEF command, homeflag, coalfill_f
             XDEF port_u, delay, LCD_timer1, LCD_timer2
             XDEF date,date_f, time,enter_f, prev_val, seloff;, User_name
-            XDEF sound_f,on_off, syst_set_f, pow
+            XDEF sound_f,on_off, syst_set_f, pow, port_s
             XDEF gens1, gens2, gens3, gc11,gc12,gc21,gc22,gc31,gc32,gens1_coal,gens2_coal,gens3_coal			; generator selection
-            XDEF pass, passv, passv2, num, go_home, passflag, PW_Verify2,choose 
+            XDEF pass, passv, passv2, num, go_home, passflag, PW_Verify2,choose, blink_flag 
+
+
+
             XDEF User_name,name,namev,cursor, equal_f,check,switch_f 
             XDEF PW_Verify, port_p, stepper_r, stepper_s, port_t
             
@@ -7319,14 +7323,18 @@ mPMFDTMC_PMFDTMC11:                      equ        This_symb_has_been_depreciat
 
             XREF __SEG_END_SSTACK, read_pot, display_string, pot_value, init_LCD, RTI_ISR, start_c    ; symbol defined by the linker for the end of the stack
             XREF Startup_1, Startup_2, date_str, menu_str,GenSelStr,re_enter,accepted
-            XREF Date_Start, Time_Start, Password_start, Password_verify
+            XREF Date_Start, Time_Start, Password_start, Password_verify,control_reset
             XREF scan,admin_u, SendsChr,Username_start,PW_String,PW_Verify_String
+
             XREF User_name,Default_PW,Default_RE_PW,Pass_wordV,compare_PW,PotRead 
             XREF Door_Song, Song_Start, sound_rdy,  tone_count, sound_c
             XREF GenSel,Date_Change, Time_Change, SONG_TIME_START, Song, Cont_Men, MENU, clearv
+
+
+
             XREF PW_Creation, compare_string , user_chng,Re_Username,re_admin_u, em_v,Fill_Coal,Coal_S, stepper_c, CoalFiller
             XREF Fill_Coal_S, loading_c_menu, PW_Verify_String2, Password_verify2
-            XREF control_reset
+            
             ; LCD References
 	         
 
@@ -7343,7 +7351,7 @@ port_s_ddr  equ   $24A                    		;led ddr
 port_s      equ   $248                    		;leds address
 port_u_ddr  equ   $26A                    		;hexpad ddr
 port_u      equ   $268                    		;hexpad address
-PER         equ   $26C                   		;pull_enable register
+PER         equ   $26C                   		  ;pull_enable register
 PSR         equ   $26D                    		;polarity_select
 port_t_ddr	equ	  $242
 port_t		equ	  $240
@@ -7420,13 +7428,21 @@ on_off:		  ds.b  1								;Determines which generators are on or off (values 0-7
 num			ds.b	3
 coalfill_f  ds.b  1               ;coal fill flag (if successful then start filling coal
 pow			ds.b	3
+	   							;previous switch value to compare with current switch value
+	    						;switch pressed flag (1 if switch is pressed)
+								;User MUST flip a switch when set to 1, otherwise program doesn't wait for it 
+							;choose which generator to turn on (located in switch input)
+								;for when re_entering password after first time verifyin								;Leaves control menu and returns to homescreen if f key isn't pressed within 10 seconds
+blink_flag  ds.b 1                ;flag that lets rti know to set a delay between blinks
 
-;LCD Variables
-my_LCD: SECTION
+;Time Variables
+
 ;Pass  Variables
+
 pass:		ds.b	16
 passv:		ds.b	16
 passv2:		ds.b	16
+
 ;date variables stored in mem array
 cursor:     ds.w  1								;gives cursor location on LCD			   
 ;Stepper Motor
@@ -7446,9 +7462,10 @@ _Startup:
 				CLI
 			
 			
-	    	MOVB  	#$F0,port_u_ddr   		;init bits 4-7 of hexpad as outputs    
-	    	MOVB  	#$0F,PER          		;enable pull_enable register for hex
-	      MOVB  	#$FF,PSR          		;init hexpad input bits 0-3 as 
+
+	    			MOVB  	#$F0,port_u_ddr   		;init bits 4-7 of hexpad as outputs    
+	    			MOVB  	#$0F,PER          		;enable pull_enable register for hex
+	    			MOVB  	#$FF,PSR          		;init hexpad input bits 0-3 as 
 			
 				MOVB  	#0, start_f				;Make the start flag 0
 				MOVB  	#$20, port_t_ddr
@@ -7470,6 +7487,7 @@ _Startup:
 				movb	  #1, flag	
 				movb	  #0, em_v
 				movb	  #$1E,port_p_ddr
+				movb	  #$FF,port_s_ddr
 				movb	  #0, stepper_r
 				movw	  #0, stepper_c
 				movb	  #0, stepper_s
@@ -7481,17 +7499,24 @@ _Startup:
 				movw    #1,gc32
 				movb	#0,passflag
 				movb	#0,homeflag
+
 				movb	#100, gens1_coal
 				movb	#100, gens2_coal
 				movb	#100, gens3_coal
+
 				movb	#0,num					;initialize num
 				movb	#0,syst_set_f			;initialize system set flag
 				movb	#0,screen_sel			;initialize screen select
 				movw	#0,LCD_timer1			;initialize counting
 				movw	#0,LCD_timer2
+
 				movb	#0,go_home 
 				movb	#0, on_off
 				
+
+				movb	#0,go_home
+				movb  #0,blink_flag		
+
 				jsr	  	init_LCD            	;call init_LCD
 			
 
@@ -7581,10 +7606,10 @@ gen_res:    	stab 	num,x      				;store ascii value into each memory location
 ;
 ;			
 START:		
-      			jsr 	Startup_1								
-				ldd 	#disp
-				jsr 	display_string 			;display the string
-SRTMSG1:		BRCLR 	start_f, #1, SRTMSG1
+      		jsr 	Startup_1								
+			ldd 	#disp
+			jsr 	display_string 			;display the string
+SRTMSG1:	  	BRCLR 	start_f, #1, SRTMSG1
 
 
 
@@ -7592,16 +7617,17 @@ SRTMSG1:		BRCLR 	start_f, #1, SRTMSG1
 ;Prompt the operator with the current date and time (Hours::Minutes)
 ;
 ;		
-				jsr 	Startup_2
-				ldd 	#disp
-				jsr 	display_string 			;display the date time string
-      			MOVB 	#0, start_f   			;Reset the delay for 3 seconds
+			jsr 	Startup_2
+			ldd 	#disp
+			jsr 	display_string 			;display the date time string
+      		MOVB 	#0, start_f   			;Reset the delay for 3 seconds
       
       
 ;-----------------------STRING DISPLAYS---------------------------;      
-SRTMSG2:	    BRCLR 	start_f, #1, SRTMSG2
+SRTMSG2:	  	BRCLR 	start_f, #1, SRTMSG2
 			
 ;Show default Date and TIme			
+
 				jsr 	date_str				    ;show the default time
 				ldd 	#disp									     
 				jsr 	display_string
@@ -7627,10 +7653,11 @@ skip:			  jsr 	PW_Creation	    	;Display users password inputs
 				  jsr 	prompt					  ;Tell user to turn on each generator and set power output to max         		
 				
 				
+
 				
 go_back:                   							
 				  clr   go_home
-				  jsr PotRead
+				  jsr 	PotRead
 				  jsr 	MENU					    ; Shows MW output and time
 	
 	              jsr   loading_c_menu
@@ -7643,6 +7670,7 @@ CONMEN:	    	  jsr 	Cont_Men			    ; Control Menu that shows generators
 			    
 			    
 			    ;- Reset Stepper Values -;
+
 				  jsr	Coal_S
 				  jsr   Fill_Coal_S
 				  jsr	Song_Start
@@ -7652,10 +7680,12 @@ CONMEN2:
                   bra   CONMEN				  
 				  
 
-				  ;-Testing Fill Process -;
+
+				;-Testing Fill Process -;
 FILL:
-				jsr		CoalFiller
-			    bra FILL
+			jsr	CoalFiller
+			bra 	FILL
+				
 				
 ;---------------------MAIN CODE BODY------------------------------------------------
 ;---------------------MAIN CODE BODY------------------------------------------------
@@ -7682,9 +7712,11 @@ PW_Verify:		  jsr	    scan		   		    ;check keypad input
               ldd   #disp
               jsr   display_string
 ;--------------check if a or b pressed-------------------------------------
+
 		    	brset	go_home,#1,reset_pass_passv2		
-                	ldab  command             ;skip below code if a or b is pressed
-                	cmpb  #10
+              ldab  command             ;skip below code if a or b is pressed
+              cmpb  #10
+
             	beq   reset_pass_passv2
             	cmpb  #11
             	bne	  skip3

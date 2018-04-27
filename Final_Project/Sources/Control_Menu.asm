@@ -19,20 +19,21 @@ Highlight_section: SECTION
 
 ;In control menu highlight the selected generator
 ;Use ASCII char
-
+;----------------------GENERATORS SELECTION BELOW--------------------
 GenSel:
             pshd
             pshx
             pshy
 
 
-            ldab command    ; load the register with the value of command
-            ;
-            cmpb prev_val
+
+            ldab command    ;load the register with the value of command
+
+            ;cmpb prev_val
             lbeq  DONE
-            cmpb #6         ; Right
+            cmpb #6         ;Right
             lbeq  R_num
-            cmpb #4         ; Left
+            cmpb #4         ;Left
             lbeq  L_num
             ;BRCLR clearv, #1, DONE
             BRCLR port_p, #$FF, PB  
@@ -99,10 +100,11 @@ Sel2:
 		MOVB #$20,	gens1			; reset the rest of generators
 		MOVB #$20,	gens2
 		bra DONE
+;--------------------------------END GENERATOR SELECTION----------------
 					
 DONE:		
 		MOVB command, prev_val 
-		;MOVB #0, command
+
 		
 		
 		puly

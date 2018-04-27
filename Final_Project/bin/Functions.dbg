@@ -1,17 +1,20 @@
     XDEF Date_Change, Time_Change, SONG_TIME_START, Song, Cont_Men, MENU, CoalFiller
     
     
-    XREF scan, Date_Start, date_str, disp, display_string, enter_f, seloff,Change_pass,go_home, on_off
-    XREF Door_Song, Song_Start,menu_str, command, prev_val, GenSelStr, Fill_Coal,Change_date_time
-    XREF GenSel, Time_Start,clearv,stepper_r,scan_switch,syst_set_f,clearpassv,screen_sel, pow, PowScale, PotRead
-                                              
+
+    XREF scan, Date_Start, date_str, disp, display_string, enter_f, seloff,Change_pass,go_home,compare_PW,equal_f
+    XREF Door_Song, Song_Start,menu_str, command, prev_val, GenSelStr, Fill_Coal,Change_date_time,Default_RE_PW,switch_f
+    XREF GenSel, Time_Start,clearv,stepper_r,scan_switch,syst_set_f,clearpassv,screen_sel,Default_PW,PW_Creation, on_off
+    XREF Home_generators,Not_home, PowScale, PotRead, pow                                         
+
     
     
 ;----------------------------DATE CHANGE SEQUENCE-----------------;
 								
 Date_Change:
+                
+	    	      jsr	scan						 	        ;keyboard scan inputs
 
-	    	    jsr	scan						 	        ;keyboard scan inputs
             	jsr Date_Start			 			      	;Date changing subroutine
             	jsr date_str			 		  	        ;use the date string which includes date and time var
             	ldd #disp				 			        ;load string
@@ -23,7 +26,7 @@ Date_Change:
             	beq	skip_date_change
             	cmpb	#11
             	beq	skip_date_change
-            	
+
             	BRCLR enter_f, #1, Date_Change 				;branch away when done
 skip_date_change:
             	ldx #0
@@ -34,8 +37,9 @@ skip_date_change:
             
 ;----------------------------TIME CHANGE--------------------------------;
 
-Time_Change:
+Time_Change:    
 	          	jsr scan								    ;keyboard scan inputs
+
 	          	jsr Time_Start						      	;time changing subroutine
 	         	  jsr date_str	     					    ;use the date string which includes date and time var
             	ldd #disp								    ;load string
@@ -45,8 +49,10 @@ Time_Change:
            	 	cmpb	#10
            	 	beq	skip_time_change
            	 	cmpb	#11
-           	 	beq	skip_time_change
-           	 	
+
+           	 	beq	skip_time_change          	          	 	
+
+
             	BRCLR enter_f, #1, Time_Change				;branch away when enter is pressed
 skip_time_change:    		
             	ldx #0
@@ -67,15 +73,17 @@ Song:
       
            		bra Song			  						;loop until done with someting
 
-;----------------------------MAIN MENU--------------------------------;
+;----------------------------MAIN MENU (HOME SCREEN)--------------------------------;
 ; Use this with the main menu screen
 ; Done
 ;
+
 MENU:
 	          	jsr PotRead
 	          	;bset command, #0
 	          	jsr scan									;look for the F key (enter key)
 	          	jsr scan_switch								;looks for switches, MUST fip a switch first time routine is entered		
+	          	jsr Home_generators		        ;display which generators are on in homescreen
 	          	;Binary to BCD
 	          	ldab #0
 	            BRCLR on_off, #%001, g2b
@@ -124,16 +132,31 @@ ps3:			stab pow
 	          	ldd #disp		
 	          	jsr display_string						  	;If enter then exit loop if not then keep looping menu
 	                                            			;Check to see if the enter_f command is set
+					  	;If enter then exit loop if not then keep looping menu
+	          		                                        			;Check to see if the enter_f command is set
+
 	          	BRCLR   clearv, #1, MENU
 	          	ldab    command
-	          	cmpb    #15
+	          	cmpb    #15	          	
 	          	bne     MENU
+
+
+tryagain:	          	
+	          	jsr     Default_PW              ;display enter password, must do this when leaving the home screen
+	          	jsr     PW_Creation             ;display user inputs in 'pass' variable
+	          	jsr     compare_PW              ;compare passwords
+	          	brset   equal_f,#1,move_on
+	          	jsr     Default_RE_PW           ;tell user they failed and to try again
+	          	bra     tryagain
+move_on:	    
+              	jsr     Not_home      	
+
 	          	movb    #1,enter_f
 	          	ldx     #0
-	          	stx     enter_f 							;reset enter flag
-	
+	          	stx     enter_f 							  ;reset enter flag
+	            movb    #0,switch_f             ;reset switch flag
 	          	rts
-;----------------------------
+;--------------------------------------------------------------------
 
 ;----------------------------Control Menu--------------------------------;
 ; After main menu password
@@ -141,9 +164,12 @@ ps3:			stab pow
 ;
 Cont_Men:		  brset	go_home,#1,leave
 			        movb  #0,command		
-			        movb  #1,syst_set_f							;flag that indicates if system settings menu has been accessed. This will start a 10 second timer in rti if a,b, or f aren't pressed on hex pad
+
+			        movb  #1,syst_set_f					  ;flag that indicates if system settings menu has been accessed. This will start a 10 second timer in rti if a,b, or f aren't pressed on hex pad
+			        jsr   scan_switch       
+
 	          	jsr   scan	   								;keyboard input scan
-	          	jsr   GenSel								;generator selection subroutine
+	          	jsr   GenSel								  ;generator selection subroutine
 	          	jsr   GenSelStr								;generator selection String
 	         	  ldd   #disp
 	          	jsr   display_string

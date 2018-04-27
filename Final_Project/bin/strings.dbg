@@ -1,4 +1,5 @@
 
+
 	XDEF Startup_1, Startup_2, date_str,admin_u,menu_str,GenSelStr,admin_u,PW_String,PW_Verify_String
 	XDEF Fill_Error1, Fill_Error2, Fill_Error3, c_menu_str, chng_pass_str, generator,generators2,generators3, gens_off
 	XDEF Pass_changed, PW_Verify_String2, Pass_changed

@@ -1,8 +1,8 @@
+
 	
 	XDEF Time_Start
 	
 	XREF disp, command,enter_f, col, row, dateoff, time, seloff, display_string,syst_set_f
-
 MY_EXTENDED_ROM: SECTION
 numbers:    dc.b    0, 1, 2, 3, 4, 5, 6, 7, 8, 9
 

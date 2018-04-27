@@ -8,7 +8,8 @@ compare_PW:		pshd
 				pshy
 							
 								
-				ldx	    cursor			            ;load initial cursor location
+
+				      ldx	    cursor			            ;load initial cursor location
 compare_p:		ldab	pass,x	                ;load both password inputs
 			    ldaa    passv,x
 			    cba	
