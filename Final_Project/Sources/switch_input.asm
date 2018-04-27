@@ -20,7 +20,7 @@ scan_switch:
 ;to see if any changes have been made to the switches
 ;if change has been made, then a separate label will be used
 ;to prompt user to enter their username and pw
-loop:      		ldaa  	check      					;load in previous values
+loop:      	ldaa  	check      					;load in previous values
       			cmpa  	port_t       				;check if switches have changed
       			lbne   	change      				;branch if switch values have changed
       			      			     			
@@ -79,7 +79,7 @@ cont6:			movb	#6,on_off					;Generators 2 and 3 on
 gen1:
 
 cont1:			movb	#1,on_off					;Generator 1 on
-				lbra	leave	  			
+				    lbra	leave	  			
 ;Generator 2
 gen2:
 
@@ -92,13 +92,14 @@ cont4:			movb	#4,on_off					;Generator 3 on
 				lbra	leave
 							
 ;-------------------------------ENTER ADMIN WHEN SWITCH PRESSED---------------------     
-change:			staa	check						;store new switch value	
-		     	movb  	#1,switch_f       			;indicates a switch has been flipped
-back2:		    jsr		User_name2					;show default enter username screen						
-		     	bra		skip2
+change:			ldaa  port_t
+            staa	check						;store new switch value	
+		      	movb  #1,switch_f     ;indicates a switch has been flipped
+back2:		  jsr		User_name2			;show default enter username screen						
+		     	  bra		skip2
 ;-------------------------------USER ENTERED WRONG USERNAME---------------------------		     	
 no_match_a:		jsr	  	Default_RE_Ad				;display default re_enter admin
-				bra		back2					
+				      bra		back2					
 ;--------------------------------------------------------------------------------------
 skip2:			jsr		user_chng2					;display username inputs
 				jsr		compare_Admin				
@@ -125,7 +126,7 @@ skip:			jsr 	PW_Creation	    			;Display users password inputs
 				jsr 	compare_PW					;checks if password is correct
 				
 				brclr 	equal_f,#1, no_match_p		;re_enter if no match
-				ldab	homeflag					;to skip load homescreen and display which generator is on instead
+				ldab	homeflag					;to skip load homescreen and display which generator is on instead   ;MAY ALWAYS WANT TO DISPLAY THIS 
 				cmpb	#1
 				beq		gen_displays		        ;display which generator(s) is/are turned on/off
 				jsr		loading 					;display loading home screen
@@ -222,7 +223,7 @@ no_gens:		jsr		gens_off
 RSRTMSG7:	    brclr	start_f,#1,RSRTMSG7			;delay the message
 
 ;initialize num all back to space values				
-skip5:			ldx		#0							;reinitialize x to what it was
+skip5:	ldx		#0							;reinitialize x to what it was
 				ldaa	#$20
 				staa	num,x
 				inx
@@ -233,14 +234,14 @@ skip5:			ldx		#0							;reinitialize x to what it was
 				staa	num,x
 									
 ;branch back to the generator(s) that was/were previously flipped on
-				movb	port_t,choose				;store switch value into choose				
-				ldaa	choose
-				cmpa	#0
-				lbeq	cont0 
-				cmpa	#1
-				lbeq	cont1	
-				cmpa	#2
-				lbeq	cont2							     	
+			    	movb	port_t,choose				;store switch value into choose				
+				    ldaa	choose
+				    cmpa	#0
+				    lbeq	cont0 
+				    cmpa	#1
+				    lbeq	cont1	
+				    cmpa	#2
+				    lbeq	cont2							     	
       			cmpa	#3
       			lbeq	cont3
       			cmpa	#4
@@ -249,12 +250,13 @@ skip5:			ldx		#0							;reinitialize x to what it was
       			lbeq	cont5
       			cmpa	#6
       			lbeq	cont6
-      		    cmpa	#7	
+      		  cmpa	#7	
       			lbeq	cont7
 
 
-leave:			staa	check						;store previous switch value
-				    movb	#0,flag						;set flag to 0 after first time leaving
+leave:			
+            staa	check						;store previous switch value
+				    movb	#0,flag					;set flag to 0 after first time leaving
       			puly
       			pulx
       			puld 

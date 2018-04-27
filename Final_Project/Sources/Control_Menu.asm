@@ -26,17 +26,17 @@ GenSel:
             pshy
 
 
-            ldab command    ; load the register with the value of command
+            ldab command    ;load the register with the value of command
             cmpb prev_val
             lbeq  DONE
-            cmpb #6         ; Right
+            cmpb #6         ;Right
             lbeq  R_num
-            cmpb #4         ; Left
+            cmpb #4         ;Left
             lbeq  L_num
             BRCLR clearv, #1, DONE
             cmpb #15
             lbeq  F_key  
-            bra  DONE		; Jump to Done (No change) 
+            bra  DONE		    ;Jump to Done (No change) 
 
 ;-------------Shift Number Place Right--------------------------;
 R_num:

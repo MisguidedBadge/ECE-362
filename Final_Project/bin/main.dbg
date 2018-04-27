@@ -7627,9 +7627,9 @@ PW_Verify:		  jsr	    scan		   		    ;check keypad input
               ldd   #disp
               jsr   display_string
 ;--------------check if a or b pressed-------------------------------------
-		    	brset	go_home,#1,reset_pass_passv2		
-                	ldab  command             ;skip below code if a or b is pressed
-                	cmpb  #10
+		    	    brset	go_home,#1,reset_pass_passv2		
+              ldab  command             ;skip below code if a or b is pressed
+              cmpb  #10
             	beq   reset_pass_passv2
             	cmpb  #11
             	bne	  skip3
