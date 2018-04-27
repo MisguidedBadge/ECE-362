@@ -48,7 +48,7 @@ Time_Change:
            	 	beq	skip_time_change
            	 	
             	BRCLR enter_f, #1, Time_Change				;branch away when enter is pressed
-skip_time_change:     		
+skip_time_change:    		
             	ldx #0
 		          stx seloff				 			    ;reset the offset value
             	stx enter_f
@@ -83,7 +83,7 @@ MENU:
 	          	ldab    command
 	          	cmpb    #15
 	          	bne     MENU
-	          	bset    enter_f, #1
+	          	movb    #1,enter_f
 	          	ldx     #0
 	          	stx     enter_f 							;reset enter flag
 	
@@ -126,7 +126,7 @@ pass_screen:  movb  #0,command              ;clear command so it doesn't keep go
 ;go to change date screen
 time_screen:  
 		          movb  #0,command              ;clear command so it doesn't keep going
-              jsr   Date_Change        ;user inputs and changes date and time here
+              jsr   Date_Change             ;user inputs and changes date and time here
 	            brset go_home,#1,leave
               ldab  command
               cmpb  #10
@@ -148,7 +148,7 @@ skip:
 leave:	      ldx   #0
           	  stx   seloff								  ;reset offset value
 	          	stx   enter_f	 							  ;reset enter flag
-				      movb  #0,syst_set_f							;indicates left control menu (system settings menu) so rti doesn't pick up on it	
+				      movb  #0,syst_set_f						;indicates left control menu (system settings menu) so rti doesn't pick up on it	
 	          	rts
 	          
 

@@ -254,7 +254,7 @@ skip5:			ldx		#0							;reinitialize x to what it was
 
 
 leave:			staa	check						;store previous switch value
-				movb	#0,flag						;set flag to 0 after first time leaving
+				    movb	#0,flag						;set flag to 0 after first time leaving
       			puly
       			pulx
       			puld 

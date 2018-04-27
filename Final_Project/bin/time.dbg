@@ -28,8 +28,8 @@ Time_Start:
 
 
             ldab command    ; load the register with the value of command
-            cmpb prev_val
-            lbeq  DONE
+            ;cmpb prev_val
+            ;lbeq  DONE
             cmpb #2         ; command for increment number
             beq  I_num      ; Increase number for selection
             cmpb #8         ; decrement
@@ -109,9 +109,11 @@ r_res: 	ldx #0
             bra DONE  
             
             
-DONE:       brset	syst_set_f,#1,skip
-		MOVB command, prev_val 
-		MOVB #0, command
+DONE:       
+            
+            brset	syst_set_f,#1,skip
+		        MOVB command, prev_val 
+		        MOVB #0, command
 skip:		
 		
 		puly

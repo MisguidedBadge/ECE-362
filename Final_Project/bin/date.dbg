@@ -108,8 +108,8 @@ r_res: 		ldx #0			; reset to the left most value
             
 ;-------------DONE SEQUENCE------------------------------------;            
 DONE:      		brset	syst_set_f,#1,skip
-			MOVB command, prev_val 
-			MOVB #0, command
+			        MOVB command, prev_val 
+			        MOVB #0, command
 skip:	
 		
 		      puly

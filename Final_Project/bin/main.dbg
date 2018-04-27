@@ -7635,22 +7635,22 @@ PW_Verify:		  jsr	    scan		   		    ;check keypad input
             	bne	  skip3
  
 reset_pass_passv2:
-			jsr		control_reset
-			bra		skip2              
-skip3:         	brclr 	enter_f,#1,PW_Verify2
+			    jsr		control_reset
+			    bra		skip2              
+skip3:    brclr 	enter_f,#1,PW_Verify2
 skip2:
-               	movb  #0,enter_f
-               	movb  #0,cursor
+          movb  #0,enter_f
+          movb  #0,cursor
               
               	rts	
 	      	   
 ;------------PASSWORD ACCEPTED DEFAULT STRING--------------------------------------
 prompt:		jsr	    accepted
-			ldd	    #disp
-			jsr	    display_string
-          	  	MOVB    #0,start_f              ;to stay in loop in next isntruction
-RSRTMSG2:		BRCLR	start_f, #1, RSRTMSG2   ;display try again message for 3 seconds				    
-			rts	      			
+			    ldd	    #disp
+			    jsr	    display_string
+          MOVB    #0,start_f              ;to stay in loop in next isntruction
+RSRTMSG2:	BRCLR	start_f, #1, RSRTMSG2   ;display try again message for 3 seconds				    
+			    rts	      			
 
 	       
 										

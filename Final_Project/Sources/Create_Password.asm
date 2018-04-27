@@ -4,7 +4,7 @@
 
 PW_Creation:
               
-          		jsr	    scan		   		          ;check keypad input
+          jsr	    scan		   		          ;check keypad input
 			    jsr	    Password_start 		      ;manipulates keypad input and provides a PW output
 			    brset   syst_set_f,#1,Chng_PW_Str           ;branch if system settings is open
 			    jsr	    PW_String			          ;store input into variables
