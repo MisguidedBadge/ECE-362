@@ -4,7 +4,7 @@
     XREF scan, Date_Start, date_str, disp, display_string, enter_f, seloff,Change_pass,go_home,compare_PW,equal_f
     XREF Door_Song, Song_Start,menu_str, command, prev_val, GenSelStr, Fill_Coal,Change_date_time,Default_RE_PW,switch_f
     XREF GenSel, Time_Start,clearv,stepper_r,scan_switch,syst_set_f,clearpassv,screen_sel,Default_PW,PW_Creation
-                                              
+    XREF Home_generators,Not_home                                          
     
     
 ;----------------------------DATE CHANGE SEQUENCE-----------------;
@@ -76,7 +76,8 @@ Song:
 MENU:                           ;HOMESCREEN
 	          	;bset command, #0
 	          	jsr scan									    ;look for the F key (enter key)
-	          	jsr scan_switch								;looks for switches, MUST fip a switch first time routine is entered		
+	          	jsr scan_switch								;looks for switches, MUST fip a switch first time routine is entered
+	          	jsr Home_generators		        ;display which generators are on in homescreen
 	          	jsr menu_str    							;display the menu string
 	          	ldd #disp		
 	          	jsr display_string						  	;If enter then exit loop if not then keep looping menu
@@ -92,13 +93,14 @@ tryagain:
 	          	brset   equal_f,#1,move_on
 	          	jsr     Default_RE_PW           ;tell user they failed and to try again
 	          	bra     tryagain
-move_on:	          	
+move_on:	    
+              jsr     Not_home      	
 	          	movb    #1,enter_f
 	          	ldx     #0
-	          	stx     enter_f 							;reset enter flag
-	            movb    #0,switch_f            ;reset switch flag
+	          	stx     enter_f 							  ;reset enter flag
+	            movb    #0,switch_f             ;reset switch flag
 	          	rts
-;----------------------------
+;--------------------------------------------------------------------
 
 ;----------------------------Control Menu--------------------------------;
 ; After main menu password
