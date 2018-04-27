@@ -1,6 +1,6 @@
  	Xdef    start_c, RTI_ISR,sound_c, stepper_c,
 	Xref	SECOND, start_f, date_f, PlayTone, sound_f,sound_rdy,repass, em_v, EM_Song, stepper_r, stepper_s
-      xref	syst_set_f,enter_f,LCD_timer2,LCD_timer1,go_home
+  xref	syst_set_f,enter_f,LCD_timer2,LCD_timer1,go_home,blink_flag
 
 MY_EXTENDED_RAM: section
 start_c	ds.w	1
@@ -44,7 +44,9 @@ leave_control_menu:
 ;Starting sequence delay sequence Procs twice in the program
 ;
 ;	        
-skip:    
+skip:
+    
+    BRSET blink_flag,#1,blink_label    
     BRSET em_v, #1, EM_SOUND        
     BRSET start_f, #1, MIDDLE		;branch after 3 seconds
 		Ldx	start_c						;load count to x
@@ -82,7 +84,20 @@ DONE_STEPPER:
 		
  
 		bra exit_ISR
- ;----------------------END MIDDLE SEQUENCE-------------------------------;
+;-------------------.5 second Delay between LED blinks------------------------------------------
+Blink_label:
+    ldx start_c
+    inx
+    cpx #3906               ;check if at .5 seconds
+		Bne	exit_start_ISR			;keep looping if not	
+		BSET start_f, #1			  
+		Ldx	#0		               
+		bra exit_start_ISR 
+          
+            
+
+		
+;----------------------END MIDDLE SEQUENCE-------------------------------;
  
 
 

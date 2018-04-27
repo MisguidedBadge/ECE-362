@@ -17,7 +17,7 @@
             XDEF date,date_f, time,enter_f, prev_val, seloff;, User_name
             XDEF sound_f,on_off,choose
             XDEF gens1, gens2, gens3,num			;generator selection
-            XDEF pass, passv,passflag
+            XDEF pass, passv,passflag,blink_flag
             XDEF User_name,name,namev,cursor, equal_f,check,switch_f 
             XDEF PW_Verify, port_p, stepper_r, stepper_s
             
@@ -68,47 +68,48 @@ disp:	      ds.b 33
 start_f:    ds.b 1	    						;start flag
 enter_f:    ds.b 1	    						;enter flag
 date_f:     ds.b 1      						;date change flag
-equal_f	ds.b 1	    						;equal flag		
-check:	ds.b 1	   							;previous switch value to compare with current switch value
-switch_f:	ds.b 1	    						;switch pressed flag (1 if switch is pressed)
-flag:		ds.b 1								;User MUST flip a switch when set to 1, otherwise program doesn't wait for it 
-choose:	ds.b 1								;choose which generator to turn on (located in switch input)
-passflag:	ds.b 1								;for when re_entering password after first time verifying
-homeflag	ds.b 1								;so the program only displays 'loading home screen' the first time a switch is flipped, other times displays which generator(s) is/are turned on
+equal_f	    ds.b 1	    						;equal flag		
+check:	    ds.b 1	   							;previous switch value to compare with current switch value
+switch_f:	  ds.b 1	    						;switch pressed flag (1 if switch is pressed)
+flag:		    ds.b 1								;User MUST flip a switch when set to 1, otherwise program doesn't wait for it 
+choose:	    ds.b 1								;choose which generator to turn on (located in switch input)
+passflag:	  ds.b 1								;for when re_entering password after first time verifying
+homeflag	  ds.b 1								;so the program only displays 'loading home screen' the first time a switch is flipped, other times displays which generator(s) is/are turned on
 syst_set_f:	ds.b 1								;flag that indicates if system settings menu has been accessed. This will start a 10 second timer in rti if a,b, or f aren't pressed on hex pad
 screen_sel	ds.b 1								;flag that determines which screen the user is choosing (when pushing a or b)	when in control menu
-go_home	ds.b	1								;Leaves control menu and returns to homescreen if f key isn't pressed within 10 seconds
+go_home	    ds.b 1								;Leaves control menu and returns to homescreen if f key isn't pressed within 10 seconds
+blink_flag  ds.b 1                ;flag that lets rti know to set a delay between blinks
 ;temporary variables
 command:    ds.b 1
-prev_val:	ds.b 1	    						;previous command received from user
+prev_val:	  ds.b 1	    						;previous command received from user
 
 
 ;Time Variables
-date:    	ds.b  8							;Date string
-time:		ds.b  4							;Time string
+date:    	  ds.b  8							;Date string
+time:		    ds.b  4							;Time string
 ;Admin Variables
 name:       ds.b  16
-namev:	ds.b  16	    				    ;Name String
+namev:	    ds.b  16	    				    ;Name String
 ;date variables stored in mem array
 seloff:   	ds.w  1     							;Selection Offset
 LCD_timer1	ds.w	1
 LCD_timer2	ds.w	1
 ;sound variables
-sound_f:	ds.b  1
+sound_f:	  ds.b  1
 
 ;control menu
-gens1:		ds.b  	1	
-gens2:		ds.b  	1
-gens3:		ds.b  	1
-on_off:		ds.b  	1							;Determines which generators are on or off (values 0-7) 
-num			ds.b	3							;Stores which generators are turned on
+gens1:		  ds.b  	1	
+gens2:		  ds.b  	1
+gens3:		  ds.b  	1
+on_off:		  ds.b  	1							;Determines which generators are on or off (values 0-7) 
+num			    ds.b	3							;Stores which generators are turned on
 
 ;LCD Variables
 my_LCD: SECTION
 ;Pass  Variables
-pass:		ds.b	16
-passv:		ds.b	16
-passv2:		ds.b	16
+pass:		    ds.b	16
+passv:		  ds.b	16
+passv2:		  ds.b	16
 ;date variables stored in mem array
 cursor:     ds.w  	1							;gives cursor location on LCD			   
 ;Stepper Motor
@@ -163,7 +164,8 @@ _Startup:
 				movb	#0,screen_sel			;initialize screen select
 				movw	#0,LCD_timer1			;initialize counting
 				movw	#0,LCD_timer2
-				movb	#0,go_home		
+				movb	#0,go_home
+				movb  #0,blink_flag		
 				jsr	  	init_LCD            	;call init_LCD
 			
 
