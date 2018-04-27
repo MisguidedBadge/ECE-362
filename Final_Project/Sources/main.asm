@@ -15,7 +15,7 @@
             XDEF command, homeflag, coalfill_f
             XDEF port_u, delay, LCD_timer1, LCD_timer2
             XDEF date,date_f, time,enter_f, prev_val, seloff;, User_name
-            XDEF sound_f,on_off, syst_set_f
+            XDEF sound_f,on_off, syst_set_f, pow
             XDEF gens1, gens2, gens3, gc11,gc12,gc21,gc22,gc31,gc32,gens1_coal,gens2_coal,gens3_coal			; generator selection
             XDEF pass, passv, passv2, num, go_home, passflag, PW_Verify2,choose 
             XDEF User_name,name,namev,cursor, equal_f,check,switch_f 
@@ -29,7 +29,7 @@
             XREF Startup_1, Startup_2, date_str, menu_str,GenSelStr,re_enter,accepted
             XREF Date_Start, Time_Start, Password_start, Password_verify
             XREF scan,admin_u, SendsChr,Username_start,PW_String,PW_Verify_String
-            XREF User_name,Default_PW,Default_RE_PW,Pass_wordV,compare_PW 
+            XREF User_name,Default_PW,Default_RE_PW,Pass_wordV,compare_PW,PotRead 
             XREF Door_Song, Song_Start, sound_rdy,  tone_count, sound_c
             XREF GenSel,Date_Change, Time_Change, SONG_TIME_START, Song, Cont_Men, MENU, clearv
             XREF PW_Creation, compare_string , user_chng,Re_Username,re_admin_u, em_v,Fill_Coal,Coal_S, stepper_c, CoalFiller
@@ -127,6 +127,7 @@ gens3_coal:	ds.b  1               ;generator coal (720 mil/% at 1%)
 on_off:		  ds.b  1								;Determines which generators are on or off (values 0-7) 
 num			ds.b	3
 coalfill_f  ds.b  1               ;coal fill flag (if successful then start filling coal
+pow			ds.b	3
 
 ;LCD Variables
 my_LCD: SECTION
@@ -183,17 +184,21 @@ _Startup:
 				movw    #65000,gc11      ;default values for the coal
 				movw    #65000,gc21
 				movw    #65000,gc31
-				movw    #738,gc12
-				movw    #1477,gc22
-				movw    #2215,gc32
+				movw    #1,gc12
+				movw    #1,gc22
+				movw    #1,gc32
 				movb	#0,passflag
 				movb	#0,homeflag
+				movb	#100, gens1_coal
+				movb	#100, gens2_coal
+				movb	#100, gens3_coal
 				movb	#0,num					;initialize num
 				movb	#0,syst_set_f			;initialize system set flag
 				movb	#0,screen_sel			;initialize screen select
 				movw	#0,LCD_timer1			;initialize counting
 				movw	#0,LCD_timer2
 				movb	#0,go_home 
+				movb	#0, on_off
 				
 				jsr	  	init_LCD            	;call init_LCD
 			
@@ -333,6 +338,7 @@ skip:			  jsr 	PW_Creation	    	;Display users password inputs
 				
 go_back:                   							
 				  clr   go_home
+				  jsr PotRead
 				  jsr 	MENU					    ; Shows MW output and time
 	
 	              jsr   loading_c_menu

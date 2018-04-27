@@ -1,7 +1,7 @@
  	Xdef    start_c, RTI_ISR,sound_c, stepper_c, stepper_it, stepper_num
 	
 	
-  XREF  on_off, Use_Coal, SOUND_RT, EM_SOUND, Stepper
+  XREF  on_off, Use_Coal, SOUND_RT, EM_SOUND, Stepper, PotRead
   Xref	SECOND, start_f, date_f, PlayTone, sound_f,sound_rdy,repass, em_v, EM_Song, stepper_r, stepper_s
   XREF  syst_set_f, enter_f,LCD_timer2,LCD_timer1,go_home
  
@@ -80,8 +80,8 @@ SKIP_EM:
 	
 MIDDLE: 
     
-
-    BRSET on_off, #7, DONE_COAL
+    
+    BRCLR on_off, #7, DONE_COAL
     jsr Use_Coal
     
 DONE_COAL: 

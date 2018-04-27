@@ -11,7 +11,7 @@ Use_Coal:
                               ;if switch 1 is off then skip
          ldd gc11             ;load lower nibble coal (starts with 6500)
          cpd 0                ; if zero then decrement upper counter
-         ble Coal12           ; branch if lower 
+         bls Coal12           ; branch if lower 
          subd PowScale        ; subtract D by a power scal of 1-100
          std gc11
          bra Coal2            ; Branch to next generator
@@ -23,9 +23,12 @@ Coal12:
          cpx  0               ; if zero then add a percent
          bne  Coal2
          ldaa gens1_coal      ;load the coal percentage
+         BRCLR gens1_coal, #$FF, c1zero
+         suba #5
          deca
          staa gens1_coal      ;add 1 percent
-         MOVW #738,    gc12
+c1zero:         
+         MOVW #1,    gc12
                     
 
 Coal2:
@@ -33,7 +36,7 @@ Coal2:
          
          ldd gc21             ; Load D with the lower of gen 2 coal
          cpd 0
-         ble Coal22           ; Branch if lower
+         bls Coal22           ; Branch if lower
          subd PowScale        ; subtract PowScale 
          std gc21
          bra Coal3            ; branch to Generator 3
@@ -45,9 +48,12 @@ Coal22:
          cpx 0
          bne Coal3
          ldaa gens2_coal
+         BRCLR gens2_coal, #$FF, c2zero
+         suba #3
          deca
          staa gens2_coal
-         MOVW #1477,    gc22
+c2zero:
+         MOVW #1,    gc22
 
 Coal3:
 
@@ -55,7 +61,7 @@ Coal3:
          
          ldd gc31
          cpd 0
-         ble Coal32
+         bls Coal32
          subd PowScale
          std  gc31
          bra DONE_COAL
@@ -63,15 +69,22 @@ Coal3:
 
 Coal32:
          ldx gc32
-         MOVW #65000, gc32
+         MOVW #65000, gc31
          dex
          stx gc32
          cpx 0
          lbne DONE_COAL
          ldaa gens3_coal
-         deca
+         BRCLR gens3_coal, #$FF, c3zero
+         suba  #1
          staa gens3_coal
-         MOVW #2215, gc32 
+         MOVW #1, gc32
+         bra DONE_COAL
+c3zero:
+         MOVW #1, gc32 
 		
 DONE_COAL:
+
+		     
+		     
 		     rts

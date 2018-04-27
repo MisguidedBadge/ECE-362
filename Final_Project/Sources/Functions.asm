@@ -1,9 +1,9 @@
     XDEF Date_Change, Time_Change, SONG_TIME_START, Song, Cont_Men, MENU, CoalFiller
     
     
-    XREF scan, Date_Start, date_str, disp, display_string, enter_f, seloff,Change_pass,go_home
+    XREF scan, Date_Start, date_str, disp, display_string, enter_f, seloff,Change_pass,go_home, on_off
     XREF Door_Song, Song_Start,menu_str, command, prev_val, GenSelStr, Fill_Coal,Change_date_time
-    XREF GenSel, Time_Start,clearv,stepper_r,scan_switch,syst_set_f,clearpassv,screen_sel
+    XREF GenSel, Time_Start,clearv,stepper_r,scan_switch,syst_set_f,clearpassv,screen_sel, pow, PowScale, PotRead
                                               
     
     
@@ -72,9 +72,54 @@ Song:
 ; Done
 ;
 MENU:
+	          	jsr PotRead
 	          	;bset command, #0
 	          	jsr scan									;look for the F key (enter key)
 	          	jsr scan_switch								;looks for switches, MUST fip a switch first time routine is entered		
+	          	;Binary to BCD
+	          	ldab #0
+	            BRCLR on_off, #%001, g2b
+	        	incb
+g2b:	        BRCLR on_off, #%010, g3b
+	          	incb
+g3b:	        BRCLR on_off, #%100, gd
+	          	incb
+gd:	          	ldaa PowScale
+				mul
+				ldx #10
+				idiv
+				;xgdx			;D has the values
+				addb #$30
+				stab pow+2
+				subb #$30
+			
+				xgdx
+				
+				ldx #10
+				idiv
+				
+;				cmpb #0
+				;bne	p2
+				;ldab #$20
+				;bra ps2
+;p2:
+				addb #$30
+ps2:			stab pow+1
+				
+				subb #$30
+				xgdx
+				ldx #10
+				idiv
+				
+;				cmpb #0
+;				bne	 p3
+;				ldab #$20
+;				bra	 ps3
+;p3:				
+				addb #$30
+ps3:			stab pow
+	          	
+	          	;;;;
 	          	jsr menu_str    							;display the menu string
 	          	ldd #disp		
 	          	jsr display_string						  	;If enter then exit loop if not then keep looping menu

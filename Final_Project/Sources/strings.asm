@@ -5,7 +5,7 @@
 	XDEF re_enter,accepted,re_admin_u,match_a,admin_u2,match_p
 	
 	XREF disp, date, time, name, namev, gens1, gens2, gens3, pass, passv,
-    XREF num, passv2
+    XREF num, passv2, pow
 	
 MY_EXTENDED_RAM: SECTION	
 
@@ -189,9 +189,9 @@ menu_str:  movb date,disp
            movb time+3,disp+20
            movb #' ',disp+21
            movb #' ',disp+22
-           movb #'1',disp+23
-           movb #'2',disp+24
-           movb #'0',disp+25
+           movb pow,disp+23
+           movb pow+1,disp+24
+           movb pow+2,disp+25
            movb #'M',disp+26
            movb #'W',disp+27
 	     rts
